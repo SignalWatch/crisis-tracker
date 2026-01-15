@@ -3,9 +3,12 @@ const parser = new Parser();
 
 // Keywords to include as relevant headlines
 const keywords = [
-  "war", "attack", "bomb", "invasion", "massacre",
-  "protests", "crisis", "conflict", "sanctions", "tension"
-];
+    "war", "attack", "bomb", "invasion", "massacre",
+    "protests", "crisis", "conflict", "sanctions", "tension",
+    "violence", "military", "strike", "evacuation", "hostage",
+    "flood", "earthquake", "disaster", "hurricane", "refugee",
+    "riot", "clashes", "escalation", "attackers", "explosion"
+  ];
 
 export default async function handler(req, res) {
   const feeds = [
