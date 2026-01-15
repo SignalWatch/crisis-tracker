@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
 
+// simple keyword-based urgency
+const getUrgencyColor = (title) => {
+  const high = ["war", "attack", "bomb", "massacre", "invasion"];
+  const medium = ["tension", "protests", "crisis", "sanctions"];
+  const text = title.toLowerCase();
+
+  if (high.some((word) => text.includes(word))) return "#ff4d4f"; // red
+  if (medium.some((word) => text.includes(word))) return "#fa8c16"; // orange
+  return "#1890ff"; // blue
+};
+
 export default function Home() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,15 +28,13 @@ export default function Home() {
         .catch((err) => console.error("Failed to fetch news:", err));
     };
 
-    fetchNews(); // initial fetch
-    const interval = setInterval(fetchNews, 5 * 60 * 1000); // every 5 min
-
+    fetchNews();
+    const interval = setInterval(fetchNews, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Group news by source
   const groupedNews = news.reduce((acc, item) => {
-    const source = item.source || item.link.split("/")[2]; // fallback if source not available
+    const source = item.source || item.link.split("/")[2];
     if (!acc[source]) acc[source] = [];
     acc[source].push(item);
     return acc;
@@ -52,35 +61,38 @@ export default function Home() {
               {source.toUpperCase()}
             </h2>
             <div style={{ display: "grid", gap: 15 }}>
-              {items.map((item, index) => (
-                <div
-                  key={index}
-                  style={{
-                    padding: 15,
-                    border: "1px solid #ddd",
-                    borderRadius: 8,
-                    boxShadow: "0 2px 5px rgba(0,0,0,0.05)",
-                    backgroundColor: "#fff",
-                  }}
-                >
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ textDecoration: "none", color: "#111", fontWeight: 600 }}
+              {items.map((item, index) => {
+                const color = getUrgencyColor(item.title);
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      padding: 15,
+                      borderLeft: `6px solid ${color}`, // colored urgency bar
+                      borderRadius: 8,
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.05)",
+                      backgroundColor: "#fff",
+                    }}
                   >
-                    {item.title}
-                  </a>
-                  {item.pubDate && (
-                    <div style={{ fontSize: 12, color: "#888", marginTop: 5 }}>
-                      {new Date(item.pubDate).toLocaleString()}
-                    </div>
-                  )}
-                  {item.contentSnippet && (
-                    <p style={{ marginTop: 10, color: "#333" }}>{item.contentSnippet}</p>
-                  )}
-                </div>
-              ))}
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: "none", color: "#111", fontWeight: 600 }}
+                    >
+                      {item.title}
+                    </a>
+                    {item.pubDate && (
+                      <div style={{ fontSize: 12, color: "#888", marginTop: 5 }}>
+                        {new Date(item.pubDate).toLocaleString()}
+                      </div>
+                    )}
+                    {item.contentSnippet && (
+                      <p style={{ marginTop: 10, color: "#333" }}>{item.contentSnippet}</p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </section>
         ))}
