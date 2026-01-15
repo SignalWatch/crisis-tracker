@@ -1,42 +1,26 @@
 import Parser from "rss-parser";
 const parser = new Parser();
 
-// Keywords to include as relevant headlines
-const keywords = [
-    // Military / war / conflict
-    "war", "attack", "bomb", "invasion", "massacre",
-    "protests", "conflict", "tension", "military", "strike",
-    "clashes", "hostage", "explosion", "siege", "assault",
-    "occupation", "escalation", "airstrike", "shelling", "firefight",
-    
-    // Political / sanctions / government
-    "sanctions", "diplomatic", "coup", "uprising", "resistance",
-    "regime", "embargo", "political", "government", "leaders",
-    
-    // Humanitarian / civilians
-    "refugee", "evacuation", "displacement", "casualty", "injured",
-    "fatalities", "humanitarian", "aid", "crisis", "starvation",
-    
-    // Natural disasters
-    "flood", "earthquake", "hurricane", "tsunami", "wildfire",
-    "storm", "tornado", "landslide", "drought", "eruption",
-    
-    // Health / epidemics
-    "epidemic", "outbreak", "pandemic", "disease", "virus",
-    
-    // Terrorism / attacks
-    "terrorist", "attackers", "bombing", "hostage", "assassination",
-    
-    // Misc urgent / breaking events
-    "emergency", "alert", "disaster", "evacuated", "collapsed"
+export default async function handler(req, res) {
+  // Reliable global news feeds
+  const feeds = [
+    "https://news.google.com/rss/search?q=world+crisis&hl=en-US&gl=US&ceid=US:en", // Google News search
+    "https://www.aljazeera.com/xml/rss/all.xml", // Al Jazeera
+    "https://feeds.bbci.co.uk/news/world/rss.xml" // BBC World News
   ];
 
-export default async function handler(req, res) {
-    const feeds = [
-        "https://news.google.com/rss/search?q=world+crisis",
-        "https://www.aljazeera.com/xml/rss/all.xml",
-        "https://news.google.com/rss/search?q=global+news"
-      ];
+  // Expanded keywords for urgent/global news
+  const keywords = [
+    "war","attack","bomb","invasion","massacre","protests","conflict","tension",
+    "military","strike","clashes","hostage","explosion","siege","assault","occupation",
+    "escalation","airstrike","shelling","firefight","sanctions","diplomatic","coup",
+    "uprising","resistance","regime","embargo","political","government","leaders",
+    "refugee","evacuation","displacement","casualty","injured","fatalities","humanitarian",
+    "aid","crisis","starvation","flood","earthquake","hurricane","tsunami","wildfire",
+    "storm","tornado","landslide","drought","eruption","epidemic","outbreak","pandemic",
+    "disease","virus","terrorist","attackers","bombing","assassination","emergency",
+    "alert","disaster","evacuated","collapsed"
+  ];
 
   let items = [];
 
@@ -44,32 +28,39 @@ export default async function handler(req, res) {
     try {
       const feed = await parser.parseURL(url);
 
-      // Filter each feed by keywords in the title or snippet
+      // Keep all items, but only include relevant keywords
       const relevantItems = feed.items.filter(item => {
         const text = (item.title + " " + (item.contentSnippet || "")).toLowerCase();
-        return keywords.some(word => text.includes(word));
+        return keywords.some(k => text.includes(k));
       });
 
-      // Take up to 20 relevant items per feed
-      items = items.concat(relevantItems.slice(0, 20));
+      items = items.concat(relevantItems);
     } catch (err) {
       console.error("Error fetching feed:", url, err);
     }
   }
 
   // Remove duplicates by title
-  const seenTitles = new Set();
+  const seen = new Set();
   items = items.filter(item => {
-    if (seenTitles.has(item.title)) return false;
-    seenTitles.add(item.title);
+    if (seen.has(item.title)) return false;
+    seen.add(item.title);
     return true;
   });
 
-  // Sort by newest first
+  // Sort newest first
   items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
-  // Limit total items to 50 for clean display
+  // Limit to 50 items
   items = items.slice(0, 50);
 
-  res.status(200).json(items);
+  // Only send clean info to frontend
+  const sanitized = items.map(({ title, link, pubDate, contentSnippet }) => ({
+    title,
+    link,
+    pubDate,
+    contentSnippet
+  }));
+
+  res.status(200).json(sanitized);
 }
