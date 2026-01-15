@@ -3,11 +3,32 @@ const parser = new Parser();
 
 // Keywords to include as relevant headlines
 const keywords = [
+    // Military / war / conflict
     "war", "attack", "bomb", "invasion", "massacre",
-    "protests", "crisis", "conflict", "sanctions", "tension",
-    "violence", "military", "strike", "evacuation", "hostage",
-    "flood", "earthquake", "disaster", "hurricane", "refugee",
-    "riot", "clashes", "escalation", "attackers", "explosion"
+    "protests", "conflict", "tension", "military", "strike",
+    "clashes", "hostage", "explosion", "siege", "assault",
+    "occupation", "escalation", "airstrike", "shelling", "firefight",
+    
+    // Political / sanctions / government
+    "sanctions", "diplomatic", "coup", "uprising", "resistance",
+    "regime", "embargo", "political", "government", "leaders",
+    
+    // Humanitarian / civilians
+    "refugee", "evacuation", "displacement", "casualty", "injured",
+    "fatalities", "humanitarian", "aid", "crisis", "starvation",
+    
+    // Natural disasters
+    "flood", "earthquake", "hurricane", "tsunami", "wildfire",
+    "storm", "tornado", "landslide", "drought", "eruption",
+    
+    // Health / epidemics
+    "epidemic", "outbreak", "pandemic", "disease", "virus",
+    
+    // Terrorism / attacks
+    "terrorist", "attackers", "bombing", "hostage", "assassination",
+    
+    // Misc urgent / breaking events
+    "emergency", "alert", "disaster", "evacuated", "collapsed"
   ];
 
 export default async function handler(req, res) {
