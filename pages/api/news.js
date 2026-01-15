@@ -32,11 +32,11 @@ const keywords = [
   ];
 
 export default async function handler(req, res) {
-  const feeds = [
-    "https://www.reuters.com/world/rss", // Reuters World
-    "https://www.aljazeera.com/xml/rss/all.xml", // Al Jazeera All News
-    "https://apnews.com/rss" // AP Top Stories
-  ];
+    const feeds = [
+        "https://news.google.com/rss/search?q=world+crisis",
+        "https://www.aljazeera.com/xml/rss/all.xml",
+        "https://news.google.com/rss/search?q=global+news"
+      ];
 
   let items = [];
 
