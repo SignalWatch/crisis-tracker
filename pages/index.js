@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState(null); // new state
 
   useEffect(() => {
     const fetchNews = () => {
@@ -11,6 +12,7 @@ export default function Home() {
         .then((data) => {
           setNews(data);
           setLoading(false);
+          setLastUpdated(new Date()); // update timestamp
         })
         .catch((err) => console.error("Failed to fetch news:", err));
     };
@@ -27,6 +29,11 @@ export default function Home() {
       <header style={{ textAlign: "center", marginBottom: 40 }}>
         <h1 style={{ fontSize: 36, color: "#222" }}>SignalWatchGlobal</h1>
         <p style={{ fontSize: 18, color: "#555" }}>Live Global Crisis Tracker</p>
+        {lastUpdated && (
+          <p style={{ fontSize: 12, color: "#888" }}>
+            Last updated: {lastUpdated.toLocaleTimeString()}
+          </p>
+        )}
       </header>
 
       {loading && <p style={{ textAlign: "center" }}>Loading news...</p>}
