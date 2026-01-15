@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-// simple keyword-based urgency
+// Simple keyword-based urgency
 const getUrgencyColor = (title) => {
   const high = ["war", "attack", "bomb", "massacre", "invasion"];
   const medium = ["tension", "protests", "crisis", "sanctions"];
@@ -28,11 +28,12 @@ export default function Home() {
         .catch((err) => console.error("Failed to fetch news:", err));
     };
 
-    fetchNews();
-    const interval = setInterval(fetchNews, 5 * 60 * 1000);
+    fetchNews(); // initial fetch
+    const interval = setInterval(fetchNews, 5 * 60 * 1000); // refresh every 5 min
     return () => clearInterval(interval);
   }, []);
 
+  // Group news by source
   const groupedNews = news.reduce((acc, item) => {
     const source = item.source || item.link.split("/")[2];
     if (!acc[source]) acc[source] = [];
@@ -42,6 +43,7 @@ export default function Home() {
 
   return (
     <div style={{ maxWidth: 1000, margin: "0 auto", padding: 20, fontFamily: "Arial, sans-serif" }}>
+      {/* Header */}
       <header style={{ textAlign: "center", marginBottom: 30 }}>
         <h1 style={{ fontSize: 36, color: "#222" }}>SignalWatchGlobal</h1>
         <p style={{ fontSize: 18, color: "#555" }}>Live Global Crisis Tracker</p>
@@ -54,6 +56,7 @@ export default function Home() {
 
       {loading && <p style={{ textAlign: "center" }}>Loading news...</p>}
 
+      {/* News sections */}
       <main style={{ display: "flex", flexDirection: "column", gap: 30 }}>
         {Object.entries(groupedNews).map(([source, items]) => (
           <section key={source}>
@@ -68,7 +71,7 @@ export default function Home() {
                     key={index}
                     style={{
                       padding: 15,
-                      borderLeft: `6px solid ${color}`, // colored urgency bar
+                      borderLeft: `6px solid ${color}`, // urgency color bar
                       borderRadius: 8,
                       boxShadow: "0 2px 5px rgba(0,0,0,0.05)",
                       backgroundColor: "#fff",
