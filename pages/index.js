@@ -1,3 +1,5 @@
+// index.js
+// Last updated: 2026-01-16
 import { useEffect, useState } from "react";
 
 // Escalation context for deaths → RED
@@ -140,7 +142,7 @@ const getUrgencyColor = (title) => {
     "peace talks stall",
     "sanctions threatened",
 
-    // Death baseline (IMPORTANT)
+    // Death baseline
     "killed",
     "dead",
     "death",
@@ -161,11 +163,12 @@ const getUrgencyColor = (title) => {
   return "#1890ff";                        // BLUE
 };
 
+// Get the NEWEST red headline for breaking
 const getBreakingHeadline = (news) => {
-    return news.find(
-      (item) => getUrgencyColor(item.title) === "#ff4d4f"
-    );
-  };
+  const redItems = news.filter(item => getUrgencyColor(item.title) === "#ff4d4f");
+  if (redItems.length === 0) return null;
+  return redItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))[0];
+};
 
 export default function Home() {
   const [news, setNews] = useState([]);
@@ -174,23 +177,31 @@ export default function Home() {
   const [breaking, setBreaking] = useState(null);
 
   useEffect(() => {
-    const fetchNews = () => {
-      fetch("/api/news")
-        .then((res) => res.json())
-        .then((data) => {
-          const sorted = data.sort(
-            (a, b) => new Date(b.pubDate) - new Date(a.pubDate)
-          );
-          setNews(sorted);
-          setBreaking(getBreakingHeadline(sorted))
-          setLoading(false);
-          setLastUpdated(new Date());
-        })
-        .catch((err) => console.error("Failed to fetch news:", err));
+    const fetchNews = async () => {
+      try {
+        const res = await fetch("/api/news");
+        const data = await res.json();
+        const sorted = data.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+        setNews(sorted);
+
+        // Update breaking headline dynamically
+        const latestBreaking = getBreakingHeadline(sorted);
+        setBreaking(prev => {
+          if (!prev || (latestBreaking && new Date(latestBreaking.pubDate) > new Date(prev.pubDate))) {
+            return latestBreaking;
+          }
+          return prev;
+        });
+
+        setLoading(false);
+        setLastUpdated(new Date());
+      } catch (err) {
+        console.error("Failed to fetch news:", err);
+      }
     };
 
     fetchNews();
-    const interval = setInterval(fetchNews, 5 * 60 * 1000);
+    const interval = setInterval(fetchNews, 60 * 1000); // every 1 minute for live updates
     return () => clearInterval(interval);
   }, []);
 
@@ -199,51 +210,35 @@ export default function Home() {
       <header style={{ textAlign: "center", marginBottom: 40 }}>
         <h1 style={{ fontSize: 36, color: "#222" }}>SignalWatchGlobal</h1>
         <p style={{ fontSize: 18, color: "#555" }}>Live Global Crisis Tracker</p>
-        {lastUpdated && (
-          <p style={{ fontSize: 12, color: "#888" }}>
-            Last updated: {lastUpdated.toLocaleTimeString()}
-          </p>
-        )}
+        {lastUpdated && <p style={{ fontSize: 12, color: "#888" }}>Last updated: {lastUpdated.toLocaleTimeString()}</p>}
       </header>
+
       {breaking && (
-  <a
-    href={breaking.link}
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{ textDecoration: "none" }}
-  >
-    <div
-      style={{
-        backgroundColor: "#ff4d4f",
-        color: "#fff",
-        padding: "14px 20px",
-        borderRadius: 8,
-        marginBottom: 30,
-        fontWeight: 600,
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-        boxShadow: "0 6px 16px rgba(0,0,0,0.15)"
-      }}
-    >
-      <span
-        style={{
-          backgroundColor: "#fff",
-          color: "#ff4d4f",
-          padding: "4px 10px",
-          borderRadius: 4,
-          fontSize: 12,
-          fontWeight: 700
-        }}
-      >
-        BREAKING
-      </span>
-      <span style={{ fontSize: 15 }}>
-        {breaking.title}
-      </span>
-    </div>
-  </a>
-)}
+        <a href={breaking.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+          <div style={{
+            backgroundColor: "#ff4d4f",
+            color: "#fff",
+            padding: "14px 20px",
+            borderRadius: 8,
+            marginBottom: 30,
+            fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            boxShadow: "0 6px 16px rgba(0,0,0,0.15)"
+          }}>
+            <span style={{
+              backgroundColor: "#fff",
+              color: "#ff4d4f",
+              padding: "4px 10px",
+              borderRadius: 4,
+              fontSize: 12,
+              fontWeight: 700
+            }}>BREAKING</span>
+            <span style={{ fontSize: 15 }}>{breaking.title}</span>
+          </div>
+        </a>
+      )}
 
       {loading && <p style={{ textAlign: "center" }}>Loading news...</p>}
 
@@ -251,13 +246,7 @@ export default function Home() {
         {news.map((item, index) => {
           const color = getUrgencyColor(item.title);
           return (
-            <a
-              key={index}
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: "none" }}
-            >
+            <a key={index} href={item.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
               <div
                 style={{
                   padding: 20,
@@ -265,30 +254,20 @@ export default function Home() {
                   borderRadius: 10,
                   boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
                   backgroundColor: "#fff",
-                  transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                  transition: "transform 0.15s ease, box-shadow 0.15s ease"
                 }}
-                onMouseEnter={(e) => {
+                onMouseEnter={e => {
                   e.currentTarget.style.transform = "translateY(-3px)";
                   e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.12)";
                 }}
-                onMouseLeave={(e) => {
+                onMouseLeave={e => {
                   e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
                 }}
               >
-                <div style={{ fontWeight: 600, fontSize: 16, color: "#111" }}>
-                  {item.title}
-                </div>
-                {item.pubDate && (
-                  <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>
-                    {new Date(item.pubDate).toLocaleString()}
-                  </div>
-                )}
-                {item.contentSnippet && (
-                  <p style={{ marginTop: 10, color: "#333", lineHeight: 1.5 }}>
-                    {item.contentSnippet}
-                  </p>
-                )}
+                <div style={{ fontWeight: 600, fontSize: 16, color: "#111" }}>{item.title}</div>
+                {item.pubDate && <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>{new Date(item.pubDate).toLocaleString()}</div>}
+                {item.contentSnippet && <p style={{ marginTop: 10, color: "#333", lineHeight: 1.5 }}>{item.contentSnippet}</p>}
               </div>
             </a>
           );
