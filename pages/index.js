@@ -41,7 +41,7 @@ const DIPLOMACY_RED_TRIGGERS = [
 // Keyword-based urgency colors
 const getUrgencyColor = (title) => {
   // Remove punctuation to prevent misclassification
-  const text = title.toLowerCase().replace(/[^\w\s]/g, "");
+  const text = title.toLowerCase().replace(/[^\w\s]/g, " ");
 
   const high = [
     "war declared",
@@ -162,7 +162,7 @@ const getUrgencyColor = (title) => {
     "targeted attack",
     "data theft",
 
-    // Diplomacy
+    // Diplomacy & tension
     "talks collapse",
     "peace talks stall",
     "sanctions threatened",
@@ -172,13 +172,23 @@ const getUrgencyColor = (title) => {
     "economic coercion",
     "economic pressure",
     "tense",
+    "extremely tense",
     "diplomatic solution",
-    "talks",
+    "diplomacy",
     "negotiation",
     "mediate",
     "mediation",
     "discuss",
     "dialogue",
+    "urgent talks",
+    "crisis talks",
+    "high-level meeting",
+    "summit",
+    "summit talks",
+    "diplomatic efforts",
+    "conflict resolution",
+    "peace negotiations",
+    "intense negotiations",
 
     // Death baseline
     "killed",
