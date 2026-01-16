@@ -155,6 +155,15 @@ const getUrgencyColor = (title) => {
     "trade sanctions",
     "economic coercion",
     "economic pressure",
+    "tense",
+    "extremely tense",
+    "diplomatic solution",
+    "talks",
+    "negotiation",
+    "mediate",
+    "mediation",
+    "discuss",
+    "dialogue",
 
     // Death baseline
     "killed",
