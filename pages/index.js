@@ -21,8 +21,7 @@ const KILLED_RED_TRIGGERS = [
   "bombing",
   "explosion",
   "shelling",
-  "strike",
-  "attack"
+  "strike"
 ];
 
 // High-urgency diplomatic escalation → RED
