@@ -136,7 +136,9 @@ const getUrgencyColor = (title) => {
 
     // Infrastructure collapse
     "nationwide blackout",
-    "critical infrastructure"
+    "critical infrastructure",
+    "hit infrastrusture",
+    "strikes infrastructure"
   ];
 
   const medium = [
