@@ -74,12 +74,35 @@ const GLOBAL_ATTACK_TRIGGERS = [
   "siege",
   "bomb threat",
   "terror plot",
-  "suicide attack",
-  "officials",
-  "hackers",
-  "hack",
-  "hacks"
+  "suicide attack"
+];
 
+// Conflict regions / countries → for context-sensitive global attacks
+const CONFLICT_REGIONS = [
+  "ukraine",
+  "russia",
+  "syria",
+  "iran",
+  "lebanon",
+  "gaza",
+  "yemen",
+  "afghanistan",
+  "iraq",
+  "venezuela",
+  "china",
+  "north korea",
+  "israel",
+  "palestine",
+  "saudi arabia",
+  "ethiopia",
+  "tigray",
+  "libya",
+  "kyiv",
+  "mariupol",
+  "donetsk",
+  "tehran",
+  "damascus",
+  "aleppo"
 ];
 
 // Keyword-based urgency colors
@@ -136,9 +159,7 @@ const getUrgencyColor = (title) => {
 
     // Infrastructure collapse
     "nationwide blackout",
-    "critical infrastructure",
-    "hit infrastrusture",
-    "strikes infrastructure"
+    "critical infrastructure"
   ];
 
   const medium = [
@@ -228,7 +249,11 @@ const getUrgencyColor = (title) => {
   const hasKilled = text.includes("killed") || text.includes("dead");
   const hasRedContext = KILLED_RED_TRIGGERS.some(word => text.includes(word));
   const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some(word => text.includes(word));
-  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some(word => text.includes(word));
+  
+  // Context-sensitive global attack: only RED if a trigger + conflict region appear
+  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some(word => 
+    text.includes(word) && CONFLICT_REGIONS.some(region => text.includes(region))
+  );
 
   // Priority:
   if (hasHigh) return "#ff4d4f";                    // RED
@@ -266,7 +291,7 @@ export default function Home() {
     };
 
     fetchNews();
-    const interval = setInterval(fetchNews, 5 * 60 * 1000); // refresh every 5 mins
+    const interval = setInterval(fetchNews, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
