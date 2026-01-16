@@ -37,6 +37,44 @@ const DIPLOMACY_RED_TRIGGERS = [
   "red alert"
 ];
 
+// Global attack triggers → RED
+const GLOBAL_ATTACK_TRIGGERS = [
+  "drone attack",
+  "drone strike",
+  "airstrike",
+  "air strike",
+  "missile strike",
+  "rocket attack",
+  "ballistic missile",
+  "cruise missile",
+  "intercepted missile",
+  "bombing",
+  "suicide bombing",
+  "terror attack",
+  "terrorist attack",
+  "massacre",
+  "mass killing",
+  "civilian deaths",
+  "deadliest",
+  "hostage crisis",
+  "assassination",
+  "explosion",
+  "shelling",
+  "chemical attack",
+  "biological attack",
+  "radiological attack",
+  "nuclear strike",
+  "rocket strike",
+  "air raid",
+  "armed clash",
+  "military engagement",
+  "cross-border attack",
+  "siege",
+  "bomb threat",
+  "terror plot",
+  "suicide attack"
+];
+
 // Keyword-based urgency colors
 const getUrgencyColor = (title) => {
   // Remove punctuation to prevent misclassification
@@ -48,14 +86,6 @@ const getUrgencyColor = (title) => {
     "full-scale invasion",
     "full scale invasion",
     "invasion",
-    "airstrike",
-    "air strike",
-    "missile strike",
-    "missile attack",
-    "rocket attack",
-    "ballistic missile",
-    "cruise missile",
-    "intercepted missile",
     "nuclear",
     "nuclear threat",
     "nuclear warning",
@@ -68,21 +98,6 @@ const getUrgencyColor = (title) => {
     "martial law",
     "armed conflict",
     "direct conflict",
-
-    // Attacks & mass casualties (without "attack" here, handled separately)
-    "bombing",
-    "explosion",
-    "massacre",
-    "mass killing",
-    "deadliest",
-    "dozens killed",
-    "hundreds killed",
-    "mass casualties",
-    "civilian deaths",
-    "terror attack",
-    "terrorist attack",
-    "suicide bombing",
-    "assassination",
 
     // Evacuation & citizen warnings
     "evacuate immediately",
@@ -193,24 +208,24 @@ const getUrgencyColor = (title) => {
     "dead",
     "death",
     "fatal",
-    "attack",
     "fatalities"
   ];
 
+  // Detection flags
   const hasHigh = high.some(word => text.includes(word));
   const hasMedium = medium.some(word => text.includes(word));
   const hasKilled = text.includes("killed") || text.includes("dead");
   const hasRedContext = KILLED_RED_TRIGGERS.some(word => text.includes(word));
   const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some(word => text.includes(word));
+  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some(word => text.includes(word));
 
-  // Check for global/mass attack
-  const isGlobalAttack = text.includes("attack") &&
-                         (text.includes("mass") || text.includes("civilian") || text.includes("terrorist") || text.includes("bombing") || text.includes("airstrike"));
-
-  // Priority
-  if (hasHigh || (hasKilled && hasRedContext) || hasDiplomacyRed || isGlobalAttack) return "#ff4d4f"; // RED
-  if (hasMedium || hasKilled) return "#fa8c16"; // ORANGE
-  return "#1890ff"; // BLUE
+  // Priority:
+  if (hasHigh) return "#ff4d4f";                    // RED
+  if (hasKilled && hasRedContext) return "#ff4d4f"; // Escalated RED
+  if (hasDiplomacyRed) return "#ff4d4f";            // Diplomatic crisis → RED
+  if (isGlobalAttack) return "#ff4d4f";            // Major global attack → RED
+  if (hasMedium || hasKilled) return "#fa8c16";     // ORANGE
+  return "#1890ff";                                  // BLUE
 };
 
 // Get first red headline for breaking banner
@@ -240,7 +255,7 @@ export default function Home() {
     };
 
     fetchNews();
-    const interval = setInterval(fetchNews, 5 * 60 * 1000);
+    const interval = setInterval(fetchNews, 5 * 60 * 1000); // refresh every 5 mins
     return () => clearInterval(interval);
   }, []);
 
