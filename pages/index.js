@@ -142,7 +142,7 @@ const getUrgencyColor = (title) => {
     "peace talks stall",
     "sanctions threatened",
 
-    // Death baseline (IMPORTANT)
+    // Death baseline
     "killed",
     "dead",
     "death",
@@ -163,11 +163,9 @@ const getUrgencyColor = (title) => {
   return "#1890ff";                        // BLUE
 };
 
-// Get the first red headline for breaking banner
+// Get first red headline for breaking banner
 const getBreakingHeadline = (news) => {
-  return news.find(
-    (item) => getUrgencyColor(item.title) === "#ff4d4f"
-  );
+  return news.find((item) => getUrgencyColor(item.title) === "#ff4d4f");
 };
 
 export default function Home() {
@@ -182,9 +180,7 @@ export default function Home() {
       fetch("/api/news")
         .then((res) => res.json())
         .then((data) => {
-          const sorted = data.sort(
-            (a, b) => new Date(b.pubDate) - new Date(a.pubDate)
-          );
+          const sorted = data.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
           setNews(sorted);
           setBreaking(getBreakingHeadline(sorted));
           setLoading(false);
@@ -194,7 +190,7 @@ export default function Home() {
     };
 
     fetchNews();
-    const interval = setInterval(fetchNews, 5 * 60 * 1000);
+    const interval = setInterval(fetchNews, 5 * 60 * 1000); // refresh every 5 mins
     return () => clearInterval(interval);
   }, []);
 
@@ -203,20 +199,30 @@ export default function Home() {
       <header style={{ textAlign: "center", marginBottom: 20 }}>
         <h1 style={{ fontSize: 36, color: "#222" }}>SignalWatchGlobal</h1>
         <p style={{ fontSize: 18, color: "#555" }}>Live Global Crisis Tracker</p>
-        {lastUpdated && (
-          <p style={{ fontSize: 12, color: "#888" }}>
-            Last updated: {lastUpdated.toLocaleTimeString()}
-          </p>
-        )}
+        {lastUpdated && <p style={{ fontSize: 12, color: "#888" }}>Last updated: {lastUpdated.toLocaleTimeString()}</p>}
       </header>
 
-      {/* Show only red toggle */}
+      {/* Red toggle */}
       <div style={{ marginBottom: 30, textAlign: "center" }}>
-        <label style={{ fontSize: 14, color: "#555", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+        <label
+          style={{
+            fontSize: 16,
+            color: "#222",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+            cursor: "pointer",
+            backgroundColor: "#f5f5f5",
+            padding: "8px 12px",
+            borderRadius: 6,
+            boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+          }}
+        >
           <input
             type="checkbox"
             checked={showOnlyRed}
             onChange={() => setShowOnlyRed(!showOnlyRed)}
+            style={{ width: 18, height: 18, cursor: "pointer" }}
           />
           Show only high-urgency news
         </label>
@@ -224,12 +230,7 @@ export default function Home() {
 
       {/* Breaking banner */}
       {breaking && (
-        <a
-          href={breaking.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}
-        >
+        <a href={breaking.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
           <div
             style={{
               backgroundColor: "#ff4d4f",
@@ -256,9 +257,7 @@ export default function Home() {
             >
               BREAKING
             </span>
-            <span style={{ fontSize: 15 }}>
-              {breaking.title}
-            </span>
+            <span style={{ fontSize: 15 }}>{breaking.title}</span>
           </div>
         </a>
       )}
@@ -271,13 +270,7 @@ export default function Home() {
           .map((item, index) => {
             const color = getUrgencyColor(item.title);
             return (
-              <a
-                key={index}
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: "none" }}
-              >
+              <a key={index} href={item.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
                 <div
                   style={{
                     padding: 20,
@@ -286,7 +279,7 @@ export default function Home() {
                     boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
                     backgroundColor: "#fff",
                     transition: "transform 0.15s ease, box-shadow 0.15s ease",
-                    cursor: "pointer",
+                    cursor: "pointer"
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = "translateY(-3px)";
@@ -297,19 +290,9 @@ export default function Home() {
                     e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
                   }}
                 >
-                  <div style={{ fontWeight: 600, fontSize: 16, color: "#111" }}>
-                    {item.title}
-                  </div>
-                  {item.pubDate && (
-                    <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>
-                      {new Date(item.pubDate).toLocaleString()}
-                    </div>
-                  )}
-                  {item.contentSnippet && (
-                    <p style={{ marginTop: 10, color: "#333", lineHeight: 1.5 }}>
-                      {item.contentSnippet}
-                    </p>
-                  )}
+                  <div style={{ fontWeight: 600, fontSize: 16, color: "#111" }}>{item.title}</div>
+                  {item.pubDate && <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>{new Date(item.pubDate).toLocaleString()}</div>}
+                  {item.contentSnippet && <p style={{ marginTop: 10, color: "#333", lineHeight: 1.5 }}>{item.contentSnippet}</p>}
                 </div>
               </a>
             );
