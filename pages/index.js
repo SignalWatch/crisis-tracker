@@ -69,7 +69,7 @@ const getUrgencyColor = (title) => {
     "armed conflict",
     "direct conflict",
 
-    // Attacks & mass casualties
+    // Attacks & mass casualties (without "attack" here, handled separately)
     "bombing",
     "explosion",
     "massacre",
@@ -203,12 +203,14 @@ const getUrgencyColor = (title) => {
   const hasRedContext = KILLED_RED_TRIGGERS.some(word => text.includes(word));
   const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some(word => text.includes(word));
 
-  // Priority:
-  if (hasHigh) return "#ff4d4f";            // RED
-  if (hasKilled && hasRedContext) return "#ff4d4f"; // Escalated RED
-  if (hasDiplomacyRed) return "#ff4d4f";    // Diplomatic crisis → RED
-  if (hasMedium || hasKilled) return "#fa8c16";     // ORANGE
-  return "#1890ff";                          // BLUE
+  // Check for global/mass attack
+  const isGlobalAttack = text.includes("attack") &&
+                         (text.includes("mass") || text.includes("civilian") || text.includes("terrorist") || text.includes("bombing") || text.includes("airstrike"));
+
+  // Priority
+  if (hasHigh || (hasKilled && hasRedContext) || hasDiplomacyRed || isGlobalAttack) return "#ff4d4f"; // RED
+  if (hasMedium || hasKilled) return "#fa8c16"; // ORANGE
+  return "#1890ff"; // BLUE
 };
 
 // Get first red headline for breaking banner
