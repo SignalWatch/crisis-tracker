@@ -136,11 +136,25 @@ const getUrgencyColor = (title) => {
     "cyberattack",
     "communications disrupted",
     "transport disrupted",
+    "hack",
+    "hackers",
+    "hacking",
+    "cyber breach",
+    "espionage",
+    "malware",
+    "security breach",
+    "targeted attack",
+    "data theft",
 
     // Diplomacy
     "talks collapse",
     "peace talks stall",
     "sanctions threatened",
+    "tariff",
+    "tariffs",
+    "trade sanctions",
+    "economic coercion",
+    "economic pressure",
 
     // Death baseline
     "killed",
