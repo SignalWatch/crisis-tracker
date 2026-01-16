@@ -21,8 +21,7 @@ const KILLED_RED_TRIGGERS = [
   "bombing",
   "explosion",
   "shelling",
-  "strike",
-  "strikes"
+  "strike"
 ];
 
 // High-urgency diplomatic escalation → RED
@@ -42,7 +41,6 @@ const DIPLOMACY_RED_TRIGGERS = [
 const GLOBAL_ATTACK_TRIGGERS = [
   "drone attack",
   "drone strike",
-  "drone strikes",
   "airstrike",
   "air strike",
   "missile strike",
@@ -77,38 +75,22 @@ const GLOBAL_ATTACK_TRIGGERS = [
   "suicide attack"
 ];
 
-// Conflict regions / countries → for context-sensitive global attacks
+// Regions currently in conflict → needed for RED escalation
 const CONFLICT_REGIONS = [
   "ukraine",
   "russia",
-  "syria",
   "iran",
+  "syria",
   "lebanon",
-  "gaza",
-  "yemen",
-  "afghanistan",
-  "iraq",
-  "venezuela",
-  "china",
-  "north korea",
-  "israel",
   "palestine",
-  "saudi arabia",
-  "ethiopia",
-  "tigray",
-  "libya",
-  "kyiv",
-  "mariupol",
-  "donetsk",
-  "tehran",
-  "damascus",
-  "aleppo"
+  "afghanistan",
+  "iraq"
 ];
 
 // Keyword-based urgency colors
 const getUrgencyColor = (title) => {
-  // Remove punctuation to prevent misclassification
-  const text = title.toLowerCase().replace(/[^\w\s]/g, " ");
+  // Lowercase and remove punctuation
+  const text = title.toLowerCase().replace(/[^\w\s]/g, " ").replace(/\s+/g, " ").trim();
 
   const high = [
     "war declared",
@@ -247,17 +229,17 @@ const getUrgencyColor = (title) => {
   const hasKilled = text.includes("killed") || text.includes("dead");
   const hasRedContext = KILLED_RED_TRIGGERS.some(word => text.includes(word));
   const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some(word => text.includes(word));
-  
-  // Context-sensitive global attack: only RED if a trigger + conflict region appear
-  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some(word => 
-    text.includes(word) && CONFLICT_REGIONS.some(region => text.includes(region))
+
+  // Global attack + region filter
+  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some(attack =>
+    text.includes(attack) && CONFLICT_REGIONS.some(region => text.includes(region))
   );
 
-  // Priority:
+  // Priority coloring
   if (hasHigh) return "#ff4d4f";                    // RED
   if (hasKilled && hasRedContext) return "#ff4d4f"; // Escalated RED
   if (hasDiplomacyRed) return "#ff4d4f";            // Diplomatic crisis → RED
-  if (isGlobalAttack) return "#ff4d4f";            // Major global attack → RED
+  if (isGlobalAttack) return "#ff4d4f";            // Global conflict → RED
   if (hasMedium || hasKilled) return "#fa8c16";     // ORANGE
   return "#1890ff";                                  // BLUE
 };
@@ -289,7 +271,7 @@ export default function Home() {
     };
 
     fetchNews();
-    const interval = setInterval(fetchNews, 5 * 60 * 1000);
+    const interval = setInterval(fetchNews, 5 * 60 * 1000); // refresh every 5 mins
     return () => clearInterval(interval);
   }, []);
 
