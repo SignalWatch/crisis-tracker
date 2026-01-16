@@ -1,195 +1,164 @@
 import { useEffect, useState } from "react";
 
-// Keyword-based urgency colors
-const getUrgencyColor = (title) => {
-  const high = ["war declared",
-  "state of war",
-  "full-scale invasion",
-  "full scale invasion",
-  "invasion",
+// Escalation context for deaths → RED
+const KILLED_RED_TRIGGERS = [
+  "at least",
+  "dozens",
+  "scores",
+  "hundreds",
+  "multiple",
+  "mass",
+  "massacre",
+  "civilians",
+  "children",
+  "journalists",
+  "aid workers",
   "airstrike",
   "air strike",
-  "missile strike",
-  "missile attack",
-  "rocket attack",
-  "ballistic missile",
-  "cruise missile",
-  "intercepted missile",
-  "nuclear",
-  "nuclear threat",
-  "nuclear warning",
-  "nuclear strike",
-  "military escalation",
-  "escalation",
-  "troops deployed",
-  "troop deployment",
-  "mobilization",
-  "martial law",
-  "armed conflict",
-  "direct conflict",
-
-  // Attacks & mass casualties
-  "attack",
+  "missile",
   "bombing",
   "explosion",
-  "massacre",
-  "mass killing",
-  "deadliest",
-  "dozens killed",
-  "hundreds killed",
-  "mass casualties",
-  "civilian deaths",
-  "strike hits",
-  "terror attack",
-  "terrorist attack",
-  "suicide bombing",
-  "assassination",
+  "shelling",
+  "strike",
+  "attack"
+];
 
-  // Evacuation & citizen warnings
-  "evacuate immediately",
-  "evacuation ordered",
-  "mandatory evacuation",
-  "leave immediately",
-  "get out now",
-  "fleeing",
-  "border closed",
-  "airspace closed",
-  "embassy evacuates",
-  "embassy closed",
-  "emergency departure",
-  "citizens urged to leave",
-  "do not travel",
+// Keyword-based urgency colors
+const getUrgencyColor = (title) => {
+  const high = [
+    "war declared",
+    "state of war",
+    "full-scale invasion",
+    "full scale invasion",
+    "invasion",
+    "airstrike",
+    "air strike",
+    "missile strike",
+    "missile attack",
+    "rocket attack",
+    "ballistic missile",
+    "cruise missile",
+    "intercepted missile",
+    "nuclear",
+    "nuclear threat",
+    "nuclear warning",
+    "nuclear strike",
+    "military escalation",
+    "escalation",
+    "troops deployed",
+    "troop deployment",
+    "mobilization",
+    "martial law",
+    "armed conflict",
+    "direct conflict",
 
-  // Government / state emergency alerts
-  "security alert",
-  "state of emergency",
-  "emergency declaration",
-  "government warning",
-  "official warning",
-  "travel alert",
-  "travel warning",
-  "worldwide caution",
-  "highest alert level",
-  "red alert",
-  "alert level raised",
+    // Attacks & mass casualties
+    "attack",
+    "bombing",
+    "explosion",
+    "massacre",
+    "mass killing",
+    "deadliest",
+    "dozens killed",
+    "hundreds killed",
+    "mass casualties",
+    "civilian deaths",
+    "terror attack",
+    "terrorist attack",
+    "suicide bombing",
+    "assassination",
 
-  // Hostage / terror situations
-  "hostages taken",
-  "hostage situation",
-  "kidnapped",
-  "abduction",
-  "terror cell",
-  "militant attack",
+    // Evacuation & citizen warnings
+    "evacuate immediately",
+    "evacuation ordered",
+    "mandatory evacuation",
+    "leave immediately",
+    "get out now",
+    "border closed",
+    "airspace closed",
+    "embassy evacuates",
+    "embassy closed",
+    "emergency departure",
+    "citizens urged to leave",
+    "do not travel",
 
-  // Weapons of mass destruction
-  "chemical weapons",
-  "biological threat",
-  "radiological threat",
-  "dirty bomb",
+    // State emergency alerts
+    "state of emergency",
+    "emergency declaration",
+    "red alert",
+    "alert level raised",
 
-  // Infrastructure collapse
-  "power grid attacked",
-  "communications down",
-  "internet blackout",
-  "nationwide blackout",
-  "critical infrastructure"];
-  const medium = ["military buildup",
-  "troops massing",
-  "troops gathering",
-  "forces deployed",
-  "naval deployment",
-  "warships deployed",
-  "fighter jets",
-  "military drills",
-  "military exercise",
-  "combat readiness",
-  "heightened readiness",
-  "defense posture",
-  "border tensions",
+    // WMDs
+    "chemical weapons",
+    "biological threat",
+    "radiological threat",
+    "dirty bomb",
 
-  // Rising conflict / instability
-  "rising tensions",
-  "escalating tensions",
-  "conflict intensifies",
-  "clashes reported",
-  "cross-border clashes",
-  "exchange of fire",
-  "skirmishes",
-  "armed standoff",
-  "ceasefire violation",
-  "fragile ceasefire",
+    // Infrastructure collapse
+    "nationwide blackout",
+    "critical infrastructure"
+  ];
 
-  // Government actions & warnings (non-evac)
-  "security warning",
-  "travel advisory",
-  "shelter in place",
-  "curfew imposed",
-  "curfew extended",
-  "emergency measures",
-  "public safety alert",
-  "civil defense warning",
+  const medium = [
+    // Military movement
+    "military buildup",
+    "troops massing",
+    "forces deployed",
+    "warships deployed",
+    "fighter jets",
+    "military drills",
+    "combat readiness",
 
-  // Protests, unrest, instability
-  "protests erupt",
-  "mass protests",
-  "violent protests",
-  "unrest",
-  "civil unrest",
-  "riots",
-  "crackdown",
-  "police clash",
-  "crowd dispersal",
-  "state violence",
+    // Rising conflict
+    "rising tensions",
+    "escalating tensions",
+    "clashes reported",
+    "exchange of fire",
+    "skirmishes",
+    "ceasefire violation",
 
-  // Terror & extremism indicators (non-attack)
-  "terror threat",
-  "credible threat",
-  "suspected militants",
-  "extremist group",
-  "terror warning",
-  "radicalization concerns",
+    // Government actions
+    "travel advisory",
+    "security warning",
+    "shelter in place",
+    "curfew imposed",
 
-  // Cyber & infrastructure incidents
-  "cyberattack",
-  "cyber attack",
-  "cyber incident",
-  "hacking incident",
-  "communications disrupted",
-  "transport disrupted",
-  "airport disruption",
-  "rail disruption",
-  "supply chain disruption",
+    // Unrest
+    "protests erupt",
+    "violent protests",
+    "civil unrest",
+    "riots",
+    "crackdown",
 
-  // Border, airspace, travel issues
-  "border restrictions",
-  "border tensions",
-  "airspace restrictions",
-  "flight suspensions",
-  "flights suspended",
-  "port closures",
-  "shipping disruption",
+    // Cyber / infrastructure
+    "cyberattack",
+    "communications disrupted",
+    "transport disrupted",
 
-  // Diplomatic & geopolitical signals
-  "diplomatic tensions",
-  "relations deteriorate",
-  "talks collapse",
-  "peace talks stall",
-  "talks suspended",
-  "envoy recalled",
-  "ambassador recalled",
-  "sanctions threatened",
+    // Diplomacy
+    "talks collapse",
+    "peace talks stall",
+    "sanctions threatened",
 
-  // Intelligence & warnings
-  "intelligence warning",
-  "threat assessment",
-  "risk assessment",
-  "monitoring situation",
-  "situation developing"];
+    // Death baseline (IMPORTANT)
+    "killed",
+    "dead",
+    "death",
+    "fatal",
+    "fatalities"
+  ];
+
   const text = title.toLowerCase();
 
-  if (high.some((word) => text.includes(word))) return "#ff4d4f"; // red
-  if (medium.some((word) => text.includes(word))) return "#fa8c16"; // orange
-  return "#1890ff"; // blue
+  const hasHigh = high.some(word => text.includes(word));
+  const hasMedium = medium.some(word => text.includes(word));
+  const hasKilled = text.includes("killed") || text.includes("dead");
+  const hasRedContext = KILLED_RED_TRIGGERS.some(word => text.includes(word));
+
+  if (hasHigh) return "#ff4d4f";           // RED
+  if (hasKilled && hasRedContext) return "#ff4d4f"; // Escalated RED
+  if (hasMedium || hasKilled) return "#fa8c16";     // ORANGE
+  return "#1890ff";                        // BLUE
 };
 
 export default function Home() {
@@ -213,13 +182,12 @@ export default function Home() {
     };
 
     fetchNews();
-    const interval = setInterval(fetchNews, 5 * 60 * 1000); // every 5 min
+    const interval = setInterval(fetchNews, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div style={{ maxWidth: 1000, margin: "0 auto", padding: 20, fontFamily: "Arial, sans-serif" }}>
-      {/* Header */}
       <header style={{ textAlign: "center", marginBottom: 40 }}>
         <h1 style={{ fontSize: 36, color: "#222" }}>SignalWatchGlobal</h1>
         <p style={{ fontSize: 18, color: "#555" }}>Live Global Crisis Tracker</p>
@@ -232,7 +200,6 @@ export default function Home() {
 
       {loading && <p style={{ textAlign: "center" }}>Loading news...</p>}
 
-      {/* News feed */}
       <main style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         {news.map((item, index) => {
           const color = getUrgencyColor(item.title);
@@ -252,7 +219,6 @@ export default function Home() {
                   boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
                   backgroundColor: "#fff",
                   transition: "transform 0.15s ease, box-shadow 0.15s ease",
-                  cursor: "pointer",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-3px)";
