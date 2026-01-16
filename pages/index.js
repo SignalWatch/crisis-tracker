@@ -40,11 +40,15 @@ const DIPLOMACY_RED_TRIGGERS = [
 // Global attack triggers → RED
 const GLOBAL_ATTACK_TRIGGERS = [
   "drone attack",
+  "drone strikes",
   "drone strike",
   "airstrike",
+  "air strikes",
   "air strike",
   "missile strike",
+  "missile strikes",
   "rocket attack",
+  "rocket attacks",
   "ballistic missile",
   "cruise missile",
   "intercepted missile",
@@ -77,9 +81,10 @@ const GLOBAL_ATTACK_TRIGGERS = [
 
 // Keyword-based urgency colors
 const getUrgencyColor = (title) => {
-  // Remove punctuation to prevent misclassification
+  // Lowercase and remove punctuation
   const text = title.toLowerCase().replace(/[^\w\s]/g, " ");
 
+  // High urgency keywords
   const high = [
     "war declared",
     "state of war",
@@ -98,8 +103,6 @@ const getUrgencyColor = (title) => {
     "martial law",
     "armed conflict",
     "direct conflict",
-
-    // Evacuation & citizen warnings
     "evacuate immediately",
     "evacuation ordered",
     "mandatory evacuation",
@@ -112,26 +115,20 @@ const getUrgencyColor = (title) => {
     "emergency departure",
     "citizens urged to leave",
     "do not travel",
-
-    // State emergency alerts
     "state of emergency",
     "emergency declaration",
     "red alert",
     "alert level raised",
-
-    // WMDs
     "chemical weapons",
     "biological threat",
     "radiological threat",
     "dirty bomb",
-
-    // Infrastructure collapse
     "nationwide blackout",
     "critical infrastructure"
   ];
 
+  // Medium urgency keywords
   const medium = [
-    // Military movement
     "military buildup",
     "troops massing",
     "forces deployed",
@@ -139,29 +136,21 @@ const getUrgencyColor = (title) => {
     "fighter jets",
     "military drills",
     "combat readiness",
-
-    // Rising conflict
     "rising tensions",
     "escalating tensions",
     "clashes reported",
     "exchange of fire",
     "skirmishes",
     "ceasefire violation",
-
-    // Government actions
     "travel advisory",
     "security warning",
     "shelter in place",
     "curfew imposed",
-
-    // Unrest
     "protests erupt",
     "violent protests",
     "civil unrest",
     "riots",
     "crackdown",
-
-    // Cyber / infrastructure
     "cyberattack",
     "communications disrupted",
     "transport disrupted",
@@ -174,8 +163,6 @@ const getUrgencyColor = (title) => {
     "security breach",
     "targeted attack",
     "data theft",
-
-    // Diplomacy & tension
     "talks collapse",
     "peace talks stall",
     "sanctions threatened",
@@ -202,8 +189,6 @@ const getUrgencyColor = (title) => {
     "conflict resolution",
     "peace negotiations",
     "intense negotiations",
-
-    // Death baseline
     "killed",
     "dead",
     "death",
@@ -217,7 +202,10 @@ const getUrgencyColor = (title) => {
   const hasKilled = text.includes("killed") || text.includes("dead");
   const hasRedContext = KILLED_RED_TRIGGERS.some(word => text.includes(word));
   const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some(word => text.includes(word));
-  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some(word => text.includes(word));
+  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some(word => {
+    const regex = new RegExp(`\\b${word.replace(/\s+/g, '\\s+')}\\b`, 'i');
+    return regex.test(text);
+  });
 
   // Priority:
   if (hasHigh) return "#ff4d4f";                    // RED
