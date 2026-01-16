@@ -161,10 +161,17 @@ const getUrgencyColor = (title) => {
   return "#1890ff";                        // BLUE
 };
 
+const getBreakingHeadline = (news) => {
+    return news.find(
+      (item) => getUrgencyColor(item.title) === "#ff4d4f"
+    );
+  };
+
 export default function Home() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [breaking, setBreaking] = useState(null);
 
   useEffect(() => {
     const fetchNews = () => {
@@ -175,6 +182,7 @@ export default function Home() {
             (a, b) => new Date(b.pubDate) - new Date(a.pubDate)
           );
           setNews(sorted);
+          setBreaking(getBreakingHeadline(sorted))
           setLoading(false);
           setLastUpdated(new Date());
         })
@@ -197,6 +205,45 @@ export default function Home() {
           </p>
         )}
       </header>
+      {breaking && (
+  <a
+    href={breaking.link}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ textDecoration: "none" }}
+  >
+    <div
+      style={{
+        backgroundColor: "#ff4d4f",
+        color: "#fff",
+        padding: "14px 20px",
+        borderRadius: 8,
+        marginBottom: 30,
+        fontWeight: 600,
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        boxShadow: "0 6px 16px rgba(0,0,0,0.15)"
+      }}
+    >
+      <span
+        style={{
+          backgroundColor: "#fff",
+          color: "#ff4d4f",
+          padding: "4px 10px",
+          borderRadius: 4,
+          fontSize: 12,
+          fontWeight: 700
+        }}
+      >
+        BREAKING
+      </span>
+      <span style={{ fontSize: 15 }}>
+        {breaking.title}
+      </span>
+    </div>
+  </a>
+)}
 
       {loading && <p style={{ textAlign: "center" }}>Loading news...</p>}
 
