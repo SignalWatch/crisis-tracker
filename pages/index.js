@@ -41,6 +41,7 @@ const DIPLOMACY_RED_TRIGGERS = [
 // Global attack triggers → RED
 const GLOBAL_ATTACK_TRIGGERS = [
   "drone attack",
+  "drone attacks",
   "drone strike",
   "drone strikes",
   "airstrike",
@@ -88,7 +89,8 @@ const CONFLICT_REGIONS = [
   "afghanistan",
   "yemen",
   "palestine",
-  "gaza"
+  "gaza",
+  "israel"
 ];
 
 // Keyword-based urgency colors
@@ -143,7 +145,12 @@ const getUrgencyColor = (title) => {
 
     // Infrastructure collapse
     "nationwide blackout",
-    "critical infrastructure"
+    "critical infrastructure",
+    "hit infrastructure",
+    "strikes infrastructure",
+    "strikes hit infrastructure",
+    "hits infrastructure",
+    "destroys infrastructure"
   ];
 
   const medium = [
