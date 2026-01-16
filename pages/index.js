@@ -25,8 +25,24 @@ const KILLED_RED_TRIGGERS = [
   "attack"
 ];
 
+// High-urgency diplomatic escalation → RED
+const DIPLOMACY_RED_TRIGGERS = [
+  "extremely tense",
+  "urgent talks",
+  "crisis meeting",
+  "emergency summit",
+  "high alert",
+  "diplomatic emergency",
+  "imminent conflict",
+  "potential war",
+  "red alert"
+];
+
 // Keyword-based urgency colors
 const getUrgencyColor = (title) => {
+  // Remove punctuation to prevent misclassification
+  const text = title.toLowerCase().replace(/[^\w\s]/g, "");
+
   const high = [
     "war declared",
     "state of war",
@@ -156,7 +172,6 @@ const getUrgencyColor = (title) => {
     "economic coercion",
     "economic pressure",
     "tense",
-    "extremely tense",
     "diplomatic solution",
     "talks",
     "negotiation",
@@ -173,17 +188,18 @@ const getUrgencyColor = (title) => {
     "fatalities"
   ];
 
-  const text = title.toLowerCase();
-
   const hasHigh = high.some(word => text.includes(word));
   const hasMedium = medium.some(word => text.includes(word));
   const hasKilled = text.includes("killed") || text.includes("dead");
   const hasRedContext = KILLED_RED_TRIGGERS.some(word => text.includes(word));
+  const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some(word => text.includes(word));
 
-  if (hasHigh) return "#ff4d4f";           // RED
+  // Priority:
+  if (hasHigh) return "#ff4d4f";            // RED
   if (hasKilled && hasRedContext) return "#ff4d4f"; // Escalated RED
+  if (hasDiplomacyRed) return "#ff4d4f";    // Diplomatic crisis → RED
   if (hasMedium || hasKilled) return "#fa8c16";     // ORANGE
-  return "#1890ff";                        // BLUE
+  return "#1890ff";                          // BLUE
 };
 
 // Get first red headline for breaking banner
@@ -213,7 +229,7 @@ export default function Home() {
     };
 
     fetchNews();
-    const interval = setInterval(fetchNews, 5 * 60 * 1000); // refresh every 5 mins
+    const interval = setInterval(fetchNews, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
