@@ -75,11 +75,7 @@ const GLOBAL_ATTACK_TRIGGERS = [
   "siege",
   "bomb threat",
   "terror plot",
-  "suicide attack",
-  "attack",
-  "attacks",
-  "strike",
-  "strikes"
+  "suicide attack"
 ];
 
 // Conflict regions for global attack detection
@@ -244,10 +240,13 @@ const getUrgencyColor = (title) => {
   const hasKilled = text.includes("killed") || text.includes("dead");
   const hasRedContext = KILLED_RED_TRIGGERS.some(word => text.includes(word));
   const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some(word => text.includes(word));
-  
-  // Global attack detection with word boundaries
-  const isGlobalAttack = CONFLICT_REGIONS.some(region => text.includes(region)) &&
-                         GLOBAL_ATTACK_TRIGGERS.some(word => new RegExp(`\\b${word}\\b`).test(text));
+
+  // Improved global attack detection
+  const isGlobalAttack = CONFLICT_REGIONS.some(region => 
+    GLOBAL_ATTACK_TRIGGERS.some(trigger => 
+      new RegExp(`\\b${region}\\b.*\\b${trigger}\\b|\\b${trigger}\\b.*\\b${region}\\b`, 'i').test(title)
+    )
+  );
 
   // Priority:
   if (hasHigh) return "#ff4d4f";                    // RED
