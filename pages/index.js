@@ -71,7 +71,6 @@ const getUrgencyColor = (title) => {
     "direct conflict",
 
     // Attacks & mass casualties
-    "attack",
     "bombing",
     "explosion",
     "massacre",
@@ -195,6 +194,7 @@ const getUrgencyColor = (title) => {
     "dead",
     "death",
     "fatal",
+    "attack",
     "fatalities"
   ];
 
