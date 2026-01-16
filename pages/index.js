@@ -105,6 +105,7 @@ const getUrgencyColor = (title) => {
     "martial law",
     "armed conflict",
     "direct conflict",
+    "attacks",
 
     // Evacuation & citizen warnings
     "evacuate immediately",
