@@ -21,7 +21,8 @@ const KILLED_RED_TRIGGERS = [
   "bombing",
   "explosion",
   "shelling",
-  "strike"
+  "strike",
+  "strikes"
 ];
 
 // High-urgency diplomatic escalation → RED
@@ -41,6 +42,7 @@ const DIPLOMACY_RED_TRIGGERS = [
 const GLOBAL_ATTACK_TRIGGERS = [
   "drone attack",
   "drone strike",
+  "drone strikes",
   "airstrike",
   "air strike",
   "missile strike",
@@ -72,7 +74,12 @@ const GLOBAL_ATTACK_TRIGGERS = [
   "siege",
   "bomb threat",
   "terror plot",
-  "suicide attack"
+  "suicide attack",
+  "officials",
+  "hackers",
+  "hack",
+  "hacks"
+
 ];
 
 // Keyword-based urgency colors
