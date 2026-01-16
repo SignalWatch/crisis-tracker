@@ -21,7 +21,8 @@ const KILLED_RED_TRIGGERS = [
   "bombing",
   "explosion",
   "shelling",
-  "strike"
+  "strike",
+  "strikes"
 ];
 
 // High-urgency diplomatic escalation → RED
@@ -41,6 +42,7 @@ const DIPLOMACY_RED_TRIGGERS = [
 const GLOBAL_ATTACK_TRIGGERS = [
   "drone attack",
   "drone strike",
+  "drone strikes",
   "airstrike",
   "air strike",
   "missile strike",
@@ -75,22 +77,24 @@ const GLOBAL_ATTACK_TRIGGERS = [
   "suicide attack"
 ];
 
-// Regions currently in conflict → needed for RED escalation
+// Conflict regions for global attack detection
 const CONFLICT_REGIONS = [
   "ukraine",
   "russia",
-  "iran",
   "syria",
+  "iran",
+  "iraq",
   "lebanon",
-  "palestine",
   "afghanistan",
-  "iraq"
+  "yemen",
+  "palestine",
+  "gaza"
 ];
 
 // Keyword-based urgency colors
 const getUrgencyColor = (title) => {
-  // Lowercase and remove punctuation
-  const text = title.toLowerCase().replace(/[^\w\s]/g, " ").replace(/\s+/g, " ").trim();
+  // Remove punctuation to prevent misclassification
+  const text = title.toLowerCase().replace(/[^\w\s]/g, " ");
 
   const high = [
     "war declared",
@@ -229,17 +233,14 @@ const getUrgencyColor = (title) => {
   const hasKilled = text.includes("killed") || text.includes("dead");
   const hasRedContext = KILLED_RED_TRIGGERS.some(word => text.includes(word));
   const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some(word => text.includes(word));
+  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some(word => text.includes(word)) &&
+                         CONFLICT_REGIONS.some(region => text.includes(region));
 
-  // Global attack + region filter
-  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some(attack =>
-    text.includes(attack) && CONFLICT_REGIONS.some(region => text.includes(region))
-  );
-
-  // Priority coloring
+  // Priority:
   if (hasHigh) return "#ff4d4f";                    // RED
   if (hasKilled && hasRedContext) return "#ff4d4f"; // Escalated RED
   if (hasDiplomacyRed) return "#ff4d4f";            // Diplomatic crisis → RED
-  if (isGlobalAttack) return "#ff4d4f";            // Global conflict → RED
+  if (isGlobalAttack) return "#ff4d4f";             // Major global attack → RED
   if (hasMedium || hasKilled) return "#fa8c16";     // ORANGE
   return "#1890ff";                                  // BLUE
 };
@@ -271,7 +272,7 @@ export default function Home() {
     };
 
     fetchNews();
-    const interval = setInterval(fetchNews, 5 * 60 * 1000); // refresh every 5 mins
+    const interval = setInterval(fetchNews, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
