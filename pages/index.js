@@ -2,8 +2,189 @@ import { useEffect, useState } from "react";
 
 // Keyword-based urgency colors
 const getUrgencyColor = (title) => {
-  const high = ["war", "attack", "bomb", "massacre", "invasion"];
-  const medium = ["tension", "protests", "crisis", "sanctions"];
+  const high = ["war declared",
+  "state of war",
+  "full-scale invasion",
+  "full scale invasion",
+  "invasion",
+  "airstrike",
+  "air strike",
+  "missile strike",
+  "missile attack",
+  "rocket attack",
+  "ballistic missile",
+  "cruise missile",
+  "intercepted missile",
+  "nuclear",
+  "nuclear threat",
+  "nuclear warning",
+  "nuclear strike",
+  "military escalation",
+  "escalation",
+  "troops deployed",
+  "troop deployment",
+  "mobilization",
+  "martial law",
+  "armed conflict",
+  "direct conflict",
+
+  // Attacks & mass casualties
+  "attack",
+  "bombing",
+  "explosion",
+  "massacre",
+  "mass killing",
+  "deadliest",
+  "dozens killed",
+  "hundreds killed",
+  "mass casualties",
+  "civilian deaths",
+  "strike hits",
+  "terror attack",
+  "terrorist attack",
+  "suicide bombing",
+  "assassination",
+
+  // Evacuation & citizen warnings
+  "evacuate immediately",
+  "evacuation ordered",
+  "mandatory evacuation",
+  "leave immediately",
+  "get out now",
+  "fleeing",
+  "border closed",
+  "airspace closed",
+  "embassy evacuates",
+  "embassy closed",
+  "emergency departure",
+  "citizens urged to leave",
+  "do not travel",
+
+  // Government / state emergency alerts
+  "security alert",
+  "state of emergency",
+  "emergency declaration",
+  "government warning",
+  "official warning",
+  "travel alert",
+  "travel warning",
+  "worldwide caution",
+  "highest alert level",
+  "red alert",
+  "alert level raised",
+
+  // Hostage / terror situations
+  "hostages taken",
+  "hostage situation",
+  "kidnapped",
+  "abduction",
+  "terror cell",
+  "militant attack",
+
+  // Weapons of mass destruction
+  "chemical weapons",
+  "biological threat",
+  "radiological threat",
+  "dirty bomb",
+
+  // Infrastructure collapse
+  "power grid attacked",
+  "communications down",
+  "internet blackout",
+  "nationwide blackout",
+  "critical infrastructure"];
+  const medium = ["military buildup",
+  "troops massing",
+  "troops gathering",
+  "forces deployed",
+  "naval deployment",
+  "warships deployed",
+  "fighter jets",
+  "military drills",
+  "military exercise",
+  "combat readiness",
+  "heightened readiness",
+  "defense posture",
+  "border tensions",
+
+  // Rising conflict / instability
+  "rising tensions",
+  "escalating tensions",
+  "conflict intensifies",
+  "clashes reported",
+  "cross-border clashes",
+  "exchange of fire",
+  "skirmishes",
+  "armed standoff",
+  "ceasefire violation",
+  "fragile ceasefire",
+
+  // Government actions & warnings (non-evac)
+  "security warning",
+  "travel advisory",
+  "shelter in place",
+  "curfew imposed",
+  "curfew extended",
+  "emergency measures",
+  "public safety alert",
+  "civil defense warning",
+
+  // Protests, unrest, instability
+  "protests erupt",
+  "mass protests",
+  "violent protests",
+  "unrest",
+  "civil unrest",
+  "riots",
+  "crackdown",
+  "police clash",
+  "crowd dispersal",
+  "state violence",
+
+  // Terror & extremism indicators (non-attack)
+  "terror threat",
+  "credible threat",
+  "suspected militants",
+  "extremist group",
+  "terror warning",
+  "radicalization concerns",
+
+  // Cyber & infrastructure incidents
+  "cyberattack",
+  "cyber attack",
+  "cyber incident",
+  "hacking incident",
+  "communications disrupted",
+  "transport disrupted",
+  "airport disruption",
+  "rail disruption",
+  "supply chain disruption",
+
+  // Border, airspace, travel issues
+  "border restrictions",
+  "border tensions",
+  "airspace restrictions",
+  "flight suspensions",
+  "flights suspended",
+  "port closures",
+  "shipping disruption",
+
+  // Diplomatic & geopolitical signals
+  "diplomatic tensions",
+  "relations deteriorate",
+  "talks collapse",
+  "peace talks stall",
+  "talks suspended",
+  "envoy recalled",
+  "ambassador recalled",
+  "sanctions threatened",
+
+  // Intelligence & warnings
+  "intelligence warning",
+  "threat assessment",
+  "risk assessment",
+  "monitoring situation",
+  "situation developing"];
   const text = title.toLowerCase();
 
   if (high.some((word) => text.includes(word))) return "#ff4d4f"; // red
