@@ -29,7 +29,24 @@ const COUNTRY_FLAGS = {
     "germany": "🇩🇪",
     "france": "🇫🇷",
     "uk": "🇬🇧",
-    "britain": "🇬🇧"
+    "britain": "🇬🇧",
+    "russian": "🇷🇺",
+    "ukrainian": "🇺🇦",
+    "israeli": "🇮🇱",
+    "palestinian": "🇵🇸",
+    "lebanese": "🇱🇧",
+    "iranian": "🇮🇷",
+    "syrian": "🇸🇾",
+    "iraqi": "🇮🇶",
+    "afghan": "🇦🇫",
+    "yemeni": "🇾🇪",
+    "chinese": "🇨🇳",
+    "north korean": "🇰🇵",
+    "south korean": "🇰🇷",
+    "american": "🇺🇸",
+    "u s": "🇺🇸",
+    "u.s": "🇺🇸",
+    "us": "🇺🇸"
   };
 
   // Leader → Country map
