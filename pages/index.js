@@ -4,49 +4,294 @@ import { useEffect, useState } from "react";
 
 // Country → Flag map
 const COUNTRY_FLAGS = {
+    // ======================
+    // United States
+    // ======================
     "united states": "🇺🇸",
-    "u s": "🇺🇸",
+    "united states of america": "🇺🇸",
     "usa": "🇺🇸",
+    "u.s.": "🇺🇸",
+    "u s": "🇺🇸",
+    "us": "🇺🇸",
     "america": "🇺🇸",
+    "american": "🇺🇸",
   
+    // ======================
+    // Russia / Ukraine
+    // ======================
     "russia": "🇷🇺",
+    "russian": "🇷🇺",
+  
     "ukraine": "🇺🇦",
+    "ukrainian": "🇺🇦",
+  
+    "belarus": "🇧🇾",
+    "belarusian": "🇧🇾",
+  
+    // ======================
+    // China / Taiwan / East Asia
+    // ======================
     "china": "🇨🇳",
-    "north korea": "🇰🇵",
-    "south korea": "🇰🇷",
-    "iran": "🇮🇷",
-    "israel": "🇮🇱",
-    "gaza": "🇵🇸",
-    "palestine": "🇵🇸",
-    "lebanon": "🇱🇧",
-    "yemen": "🇾🇪",
-    "syria": "🇸🇾",
-    "iraq": "🇮🇶",
-    "afghanistan": "🇦🇫",
-    "venezuela": "🇻🇪",
+    "chinese": "🇨🇳",
+  
     "taiwan": "🇹🇼",
+    "taiwanese": "🇹🇼",
+  
     "japan": "🇯🇵",
-    "germany": "🇩🇪",
-    "france": "🇫🇷",
+    "japanese": "🇯🇵",
+  
+    // ======================
+    // Koreas
+    // ======================
+    "north korea": "🇰🇵",
+    "north korean": "🇰🇵",
+  
+    "south korea": "🇰🇷",
+    "south korean": "🇰🇷",
+  
+    // ======================
+    // Middle East
+    // ======================
+    "israel": "🇮🇱",
+    "israeli": "🇮🇱",
+  
+    "palestine": "🇵🇸",
+    "palestinian": "🇵🇸",
+  
+    "gaza": "🇵🇸",
+  
+    "iran": "🇮🇷",
+    "iranian": "🇮🇷",
+  
+    "lebanon": "🇱🇧",
+    "lebanese": "🇱🇧",
+  
+    "syria": "🇸🇾",
+    "syrian": "🇸🇾",
+  
+    "iraq": "🇮🇶",
+    "iraqi": "🇮🇶",
+  
+    "yemen": "🇾🇪",
+    "yemeni": "🇾🇪",
+  
+    "turkey": "🇹🇷",
+    "turkish": "🇹🇷",
+  
+    "saudi arabia": "🇸🇦",
+    "saudi": "🇸🇦",
+  
+    "united arab emirates": "🇦🇪",
+    "uae": "🇦🇪",
+    "emirati": "🇦🇪",
+  
+    "qatar": "🇶🇦",
+    "qatari": "🇶🇦",
+  
+    "jordan": "🇯🇴",
+    "jordanian": "🇯🇴",
+  
+    "egypt": "🇪🇬",
+    "egyptian": "🇪🇬",
+  
+    // ======================
+    // South & Central Asia
+    // ======================
+    "afghanistan": "🇦🇫",
+    "afghan": "🇦🇫",
+  
+    "pakistan": "🇵🇰",
+    "pakistani": "🇵🇰",
+  
+    "india": "🇮🇳",
+    "indian": "🇮🇳",
+  
+    "bangladesh": "🇧🇩",
+    "bangladeshi": "🇧🇩",
+  
+    "sri lanka": "🇱🇰",
+    "sri lankan": "🇱🇰",
+  
+    // ======================
+    // Europe
+    // ======================
+    "united kingdom": "🇬🇧",
     "uk": "🇬🇧",
     "britain": "🇬🇧",
-    "russian": "🇷🇺",
-    "ukrainian": "🇺🇦",
-    "israeli": "🇮🇱",
-    "palestinian": "🇵🇸",
-    "lebanese": "🇱🇧",
-    "iranian": "🇮🇷",
-    "syrian": "🇸🇾",
-    "iraqi": "🇮🇶",
-    "afghan": "🇦🇫",
-    "yemeni": "🇾🇪",
-    "chinese": "🇨🇳",
-    "north korean": "🇰🇵",
-    "south korean": "🇰🇷",
-    "american": "🇺🇸",
-    "u s": "🇺🇸",
-    "u.s": "🇺🇸",
-    "us": "🇺🇸"
+    "british": "🇬🇧",
+  
+    "france": "🇫🇷",
+    "french": "🇫🇷",
+  
+    "germany": "🇩🇪",
+    "german": "🇩🇪",
+  
+    "italy": "🇮🇹",
+    "italian": "🇮🇹",
+  
+    "spain": "🇪🇸",
+    "spanish": "🇪🇸",
+  
+    "portugal": "🇵🇹",
+    "portuguese": "🇵🇹",
+  
+    "netherlands": "🇳🇱",
+    "dutch": "🇳🇱",
+  
+    "belgium": "🇧🇪",
+    "belgian": "🇧🇪",
+  
+    "switzerland": "🇨🇭",
+    "swiss": "🇨🇭",
+  
+    "austria": "🇦🇹",
+    "austrian": "🇦🇹",
+  
+    "poland": "🇵🇱",
+    "polish": "🇵🇱",
+  
+    "czech republic": "🇨🇿",
+    "czech": "🇨🇿",
+  
+    "slovakia": "🇸🇰",
+    "slovak": "🇸🇰",
+  
+    "hungary": "🇭🇺",
+    "hungarian": "🇭🇺",
+  
+    "romania": "🇷🇴",
+    "romanian": "🇷🇴",
+  
+    "bulgaria": "🇧🇬",
+    "bulgarian": "🇧🇬",
+  
+    "greece": "🇬🇷",
+    "greek": "🇬🇷",
+  
+    "serbia": "🇷🇸",
+    "serbian": "🇷🇸",
+  
+    "croatia": "🇭🇷",
+    "croatian": "🇭🇷",
+  
+    "bosnia": "🇧🇦",
+    "bosnian": "🇧🇦",
+  
+    "albania": "🇦🇱",
+    "albanian": "🇦🇱",
+  
+    "slovenia": "🇸🇮",
+    "slovenian": "🇸🇮",
+  
+    // ======================
+    // Nordics
+    // ======================
+    "norway": "🇳🇴",
+    "norwegian": "🇳🇴",
+  
+    "sweden": "🇸🇪",
+    "swedish": "🇸🇪",
+  
+    "finland": "🇫🇮",
+    "finnish": "🇫🇮",
+  
+    "denmark": "🇩🇰",
+    "danish": "🇩🇰",
+  
+    "iceland": "🇮🇸",
+    "icelandic": "🇮🇸",
+  
+    // ======================
+    // Africa
+    // ======================
+    "ethiopia": "🇪🇹",
+    "ethiopian": "🇪🇹",
+  
+    "somalia": "🇸🇴",
+    "somali": "🇸🇴",
+  
+    "kenya": "🇰🇪",
+    "kenyan": "🇰🇪",
+  
+    "nigeria": "🇳🇬",
+    "nigerian": "🇳🇬",
+  
+    "ghana": "🇬🇭",
+    "ghanaian": "🇬🇭",
+  
+    "south africa": "🇿🇦",
+    "south african": "🇿🇦",
+  
+    "sudan": "🇸🇩",
+    "sudanese": "🇸🇩",
+  
+    "libya": "🇱🇾",
+    "libyan": "🇱🇾",
+  
+    "tunisia": "🇹🇳",
+    "tunisian": "🇹🇳",
+  
+    "algeria": "🇩🇿",
+    "algerian": "🇩🇿",
+  
+    "morocco": "🇲🇦",
+    "moroccan": "🇲🇦",
+  
+    // ======================
+    // Southeast Asia
+    // ======================
+    "philippines": "🇵🇭",
+    "philippine": "🇵🇭",
+    "filipino": "🇵🇭",
+  
+    "thailand": "🇹🇭",
+    "thai": "🇹🇭",
+  
+    "vietnam": "🇻🇳",
+    "vietnamese": "🇻🇳",
+  
+    "indonesia": "🇮🇩",
+    "indonesian": "🇮🇩",
+  
+    "malaysia": "🇲🇾",
+    "malaysian": "🇲🇾",
+  
+    "singapore": "🇸🇬",
+    "singaporean": "🇸🇬",
+  
+    "myanmar": "🇲🇲",
+    "burma": "🇲🇲",
+    "burmese": "🇲🇲",
+  
+    // ======================
+    // Americas
+    // ======================
+    "canada": "🇨🇦",
+    "canadian": "🇨🇦",
+  
+    "mexico": "🇲🇽",
+    "mexican": "🇲🇽",
+  
+    "brazil": "🇧🇷",
+    "brazilian": "🇧🇷",
+  
+    "argentina": "🇦🇷",
+    "argentine": "🇦🇷",
+  
+    "chile": "🇨🇱",
+    "chilean": "🇨🇱",
+  
+    "colombia": "🇨🇴",
+    "colombian": "🇨🇴",
+  
+    "peru": "🇵🇪",
+    "peruvian": "🇵🇪",
+  
+    "venezuela": "🇻🇪",
+    "venezuelan": "🇻🇪",
+  
+    "cuba": "🇨🇺",
+    "cuban": "🇨🇺"
   };
 
   // Leader → Country map
