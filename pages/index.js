@@ -2,46 +2,76 @@
 // Date: 2026-01-16
 import { useEffect, useState } from "react";
 
+// Country → Flag map
 const COUNTRY_FLAGS = {
-    ukraine: "🇺🇦",
-    russia: "🇷🇺",
-    israel: "🇮🇱",
-    palestine: "🇵🇸",
-    gaza: "🇵🇸",
-    iran: "🇮🇷",
-    iraq: "🇮🇶",
-    syria: "🇸🇾",
-    lebanon: "🇱🇧",
-    yemen: "🇾🇪",
-    afghanistan: "🇦🇫",
-    china: "🇨🇳",
-    taiwan: "🇹🇼",
+    "united states": "🇺🇸",
+    "u s": "🇺🇸",
+    "usa": "🇺🇸",
+    "america": "🇺🇸",
+  
+    "russia": "🇷🇺",
+    "ukraine": "🇺🇦",
+    "china": "🇨🇳",
     "north korea": "🇰🇵",
     "south korea": "🇰🇷",
-    japan: "🇯🇵",
-    germany: "🇩🇪",
-    france: "🇫🇷",
-    uk: "🇬🇧",
-    britain: "🇬🇧",
-    england: "🇬🇧",
-    "united kingdom": "🇬🇧",
-    usa: "🇺🇸",
-    us: "🇺🇸",
-    "united states": "🇺🇸",
-    america: "🇺🇸"
+    "iran": "🇮🇷",
+    "israel": "🇮🇱",
+    "gaza": "🇵🇸",
+    "palestine": "🇵🇸",
+    "lebanon": "🇱🇧",
+    "yemen": "🇾🇪",
+    "syria": "🇸🇾",
+    "iraq": "🇮🇶",
+    "afghanistan": "🇦🇫",
+    "venezuela": "🇻🇪",
+    "taiwan": "🇹🇼",
+    "japan": "🇯🇵",
+    "germany": "🇩🇪",
+    "france": "🇫🇷",
+    "uk": "🇬🇧",
+    "britain": "🇬🇧"
+  };
+
+  // Leader → Country map
+const LEADER_TO_COUNTRY = {
+    "trump": "united states",
+    "biden": "united states",
+  
+    "putin": "russia",
+    "zelensky": "ukraine",
+  
+    "xi": "china",
+    "jinping": "china",
+  
+    "kim jong un": "north korea",
+    "netanyahu": "israel",
+  
+    "khamenei": "iran",
+    "pezeshkian": "iran",
+  
+    "erdogan": "turkey"
   };
   
   const getFlagsFromTitle = (title) => {
     const text = title.toLowerCase().replace(/[^\w\s]/g, " ");
-    const flags = [];
+    const flags = new Set();
   
+    // Country name detection
     Object.entries(COUNTRY_FLAGS).forEach(([country, flag]) => {
-      if (text.includes(country) && !flags.includes(flag)) {
-        flags.push(flag);
+      if (text.includes(country)) {
+        flags.add(flag);
       }
     });
   
-    return flags;
+    // Leader detection → infer country → flag
+    Object.entries(LEADER_TO_COUNTRY).forEach(([leader, country]) => {
+      if (text.includes(leader)) {
+        const flag = COUNTRY_FLAGS[country];
+        if (flag) flags.add(flag);
+      }
+    });
+  
+    return Array.from(flags);
   };
   
 
@@ -406,6 +436,7 @@ export default function Home() {
           .filter(item => !showOnlyRed || getUrgencyColor(item.title) === "#ff4d4f")
           .map((item, index) => {
             const color = getUrgencyColor(item.title);
+            const flags = getFlagsFromTitle(item.title);
             return (
               <a key={index} href={item.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
                 <div
@@ -427,8 +458,14 @@ export default function Home() {
                     e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
                   }}
                 >
-                  <div style={{ fontWeight: 600, fontSize: 16, color: "#111" }}>{item.title}</div>
-                  {item.pubDate && <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>{new Date(item.pubDate).toLocaleString()}</div>}
+                <div style={{ fontWeight: 600, fontSize: 16, color: "#111" }}>
+                {flags.length > 0 && (
+                <div style={{ fontSize: 18, marginBottom: 6 }}>
+                  {flags.join(" ")}
+                </div>
+)}
+{item.title}
+</div>                  {item.pubDate && <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>{new Date(item.pubDate).toLocaleString()}</div>}
                   {item.contentSnippet && <p style={{ marginTop: 10, color: "#333", lineHeight: 1.5 }}>{item.contentSnippet}</p>}
                 </div>
               </a>
