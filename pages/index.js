@@ -2,6 +2,49 @@
 // Date: 2026-01-16
 import { useEffect, useState } from "react";
 
+const COUNTRY_FLAGS = {
+    ukraine: "🇺🇦",
+    russia: "🇷🇺",
+    israel: "🇮🇱",
+    palestine: "🇵🇸",
+    gaza: "🇵🇸",
+    iran: "🇮🇷",
+    iraq: "🇮🇶",
+    syria: "🇸🇾",
+    lebanon: "🇱🇧",
+    yemen: "🇾🇪",
+    afghanistan: "🇦🇫",
+    china: "🇨🇳",
+    taiwan: "🇹🇼",
+    "north korea": "🇰🇵",
+    "south korea": "🇰🇷",
+    japan: "🇯🇵",
+    germany: "🇩🇪",
+    france: "🇫🇷",
+    uk: "🇬🇧",
+    britain: "🇬🇧",
+    england: "🇬🇧",
+    "united kingdom": "🇬🇧",
+    usa: "🇺🇸",
+    us: "🇺🇸",
+    "united states": "🇺🇸",
+    america: "🇺🇸"
+  };
+  
+  const getFlagsFromTitle = (title) => {
+    const text = title.toLowerCase().replace(/[^\w\s]/g, " ");
+    const flags = [];
+  
+    Object.entries(COUNTRY_FLAGS).forEach(([country, flag]) => {
+      if (text.includes(country) && !flags.includes(flag)) {
+        flags.push(flag);
+      }
+    });
+  
+    return flags;
+  };
+  
+
 // Escalation context for deaths → RED
 const KILLED_RED_TRIGGERS = [
   "at least",
