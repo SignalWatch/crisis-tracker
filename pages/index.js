@@ -971,6 +971,24 @@ export default function Home() {
             >
               Signal Watch Global
             </h1>
+            <div style={{ marginTop: 10 }}>
+  <a
+    href="/dashboard"
+    style={{
+      color: "#fff",
+      textDecoration: "none",
+      background: "rgba(255,255,255,0.10)",
+      border: "1px solid rgba(255,255,255,0.15)",
+      padding: "8px 12px",
+      borderRadius: 10,
+      fontWeight: 900,
+      fontSize: 13,
+    }}
+  >
+    Open Dashboard →
+  </a>
+</div>
+
             <p style={{ fontSize: 18, color: "#aaa" }}>Live Global Crisis Tracker</p>
             {lastUpdated && (
               <p style={{ fontSize: 12, color: "#aaa" }}>
