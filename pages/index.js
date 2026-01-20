@@ -934,8 +934,8 @@ export default function Home() {
           <h1 style={{
             fontSize: 42,
             fontWeight: 800,
-            color: "#00ffcc",
-            textShadow: "0 0 8px #00ffcc, 0 0 12px #00ffcc",
+            color: "#2E2D29",
+            textShadow: "0 0 4px #EDEDE6, 0 0 12px #EDEDE6",
             letterSpacing: 1.2,
           }}>SignalWatchGlobal</h1>
           <p style={{ fontSize: 18, color: "#88ffdd" }}>Live Global Crisis Tracker</p>
