@@ -938,7 +938,7 @@ export default function Home() {
             textShadow: "0 0 4px #EDEDE6, 0 0 12px #EDEDE6",
             letterSpacing: 1.2,
           }}>SignalWatchGlobal</h1>
-          <p style={{ fontSize: 18, color: "#88ffdd" }}>Live Global Crisis Tracker</p>
+          <p style={{ fontSize: 18, color: "#2E2D29" }}>Live Global Crisis Tracker</p>
           {lastUpdated && <p style={{ fontSize: 12, color: "#aaa" }}>Last updated: {lastUpdated.toLocaleTimeString()}</p>}
         </header>
   
