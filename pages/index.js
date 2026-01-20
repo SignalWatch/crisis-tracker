@@ -879,6 +879,10 @@ export default function Home() {
   const [breaking, setBreaking] = useState(null);
   const [showOnlyRed, setShowOnlyRed] = useState(false);
   const [selectedStory, setSelectedStory] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSource, setSelectedSource] = useState("all");
+  const [selectedUrgency, setSelectedUrgency] = useState("all");
+  const [timeRange, setTimeRange] = useState("all");
 
   useEffect(() => {
     const fetchNews = () => {
@@ -923,6 +927,50 @@ export default function Home() {
     const interval = setInterval(fetchNews, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
+
+  const sources = useMemo(() => {
+    const unique = new Set();
+    news.forEach((item) => {
+      if (item.source) unique.add(item.source);
+    });
+    return ["all", ...Array.from(unique).sort((a, b) => a.localeCompare(b))];
+  }, [news]);
+
+  const filteredNews = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    const now = Date.now();
+    const timeMs =
+      timeRange === "24h" ? 24 * 60 * 60 * 1000
+        : timeRange === "7d" ? 7 * 24 * 60 * 60 * 1000
+          : null;
+
+    return news.filter((item) => {
+      if (showOnlyRed && item.urgencyColor !== "#ff4d4f") return false;
+
+      if (selectedSource !== "all" && item.source !== selectedSource) return false;
+
+      if (selectedUrgency !== "all") {
+        const matchesUrgency =
+          (selectedUrgency === "red" && item.urgencyColor === "#ff4d4f")
+          || (selectedUrgency === "orange" && item.urgencyColor === "#fa8c16")
+          || (selectedUrgency === "blue" && item.urgencyColor === "#1890ff");
+        if (!matchesUrgency) return false;
+      }
+
+      if (timeMs && item.pubDate) {
+        const itemTime = new Date(item.pubDate).getTime();
+        if (!Number.isNaN(itemTime) && now - itemTime > timeMs) return false;
+      }
+
+      if (query) {
+        const haystack = `${item.title || ""} ${item.contentSnippet || ""} ${item.source || ""}`.toLowerCase();
+        if (!haystack.includes(query)) return false;
+      }
+
+      return true;
+    });
+  }, [news, searchQuery, selectedSource, selectedUrgency, timeRange, showOnlyRed]);
+
 
   // Related stories computed only when modal story changes
   const related = useMemo(() => {
@@ -1047,12 +1095,108 @@ export default function Home() {
 </header>
 
 
-          {/* Red toggle */}
-          <div style={{ marginBottom: 30, textAlign: "center" }}>
+          {/* Filters */}
+          <div
+            style={{
+              marginBottom: 26,
+              display: "grid",
+              gap: 12,
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              background: "rgba(0,0,0,0.35)",
+              padding: 14,
+              borderRadius: 12,
+              border: "1px solid rgba(255,255,255,0.12)",
+            }}
+          >
+            <label style={{ color: "#ccc", fontSize: 12, fontWeight: 700 }}>
+              Search
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search headlines, snippets, sources"
+                style={{
+                  marginTop: 6,
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "rgba(0,0,0,0.5)",
+                  color: "#fff",
+                }}
+              />
+            </label>
+
+            <label style={{ color: "#ccc", fontSize: 12, fontWeight: 700 }}>
+              Source
+              <select
+                value={selectedSource}
+                onChange={(e) => setSelectedSource(e.target.value)}
+                style={{
+                  marginTop: 6,
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "rgba(0,0,0,0.5)",
+                  color: "#fff",
+                }}
+              >
+                {sources.map((source) => (
+                  <option key={source} value={source} style={{ color: "#111" }}>
+                    {source === "all" ? "All sources" : source}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label style={{ color: "#ccc", fontSize: 12, fontWeight: 700 }}>
+              Urgency
+              <select
+                value={selectedUrgency}
+                onChange={(e) => setSelectedUrgency(e.target.value)}
+                style={{
+                  marginTop: 6,
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "rgba(0,0,0,0.5)",
+                  color: "#fff",
+                }}
+              >
+                <option value="all" style={{ color: "#111" }}>All urgency</option>
+                <option value="red" style={{ color: "#111" }}>High (Red)</option>
+                <option value="orange" style={{ color: "#111" }}>Medium (Orange)</option>
+                <option value="blue" style={{ color: "#111" }}>Low (Blue)</option>
+              </select>
+            </label>
+
+            <label style={{ color: "#ccc", fontSize: 12, fontWeight: 700 }}>
+              Time range
+              <select
+                value={timeRange}
+                onChange={(e) => setTimeRange(e.target.value)}
+                style={{
+                  marginTop: 6,
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "rgba(0,0,0,0.5)",
+                  color: "#fff",
+                }}
+              >
+                <option value="all" style={{ color: "#111" }}>All time</option>
+                <option value="24h" style={{ color: "#111" }}>Last 24 hours</option>
+                <option value="7d" style={{ color: "#111" }}>Last 7 days</option>
+              </select>
+            </label>
+
             <label
               style={{
-                fontSize: 16,
-                color: "#fff",
+                fontSize: 12,
+                color: "#ccc",
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 10,
@@ -1060,6 +1204,7 @@ export default function Home() {
                 backgroundColor: "rgba(0,0,0,0.5)",
                 padding: "8px 12px",
                 borderRadius: 6,
+                border: "1px solid rgba(255,255,255,0.15)",
               }}
             >
               <input
@@ -1068,7 +1213,7 @@ export default function Home() {
                 onChange={() => setShowOnlyRed(!showOnlyRed)}
                 style={{ width: 18, height: 18, cursor: "pointer" }}
               />
-              Show only high-urgency news
+               High urgency only
             </label>
           </div>
 
@@ -1114,9 +1259,8 @@ export default function Home() {
           {loading && <p style={{ textAlign: "center", color: "#fff" }}>Loading news...</p>}
 
           <main style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            {news
-              .filter((item) => !showOnlyRed || item.urgencyColor === "#ff4d4f")
-              .map((item) => {
+          {filteredNews.map((item) => {
+            
                 return (
                   <div
                     key={item.id || item.link}
