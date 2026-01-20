@@ -979,10 +979,10 @@ export default function Home() {
       textDecoration: "none",
       background: "rgba(255,255,255,0.10)",
       border: "1px solid rgba(255,255,255,0.15)",
-      padding: "8px 12px",
-      borderRadius: 10,
+      padding: "4px 6px",
+      borderRadius: 5,
       fontWeight: 900,
-      fontSize: 13,
+      fontSize: 25,
     }}
   >
     Open Dashboard →
