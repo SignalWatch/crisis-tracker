@@ -879,7 +879,7 @@ export default function Home() {
             fontSize: 42,
             fontWeight: 800,
             color: "#fff",
-            textShadow: "0 0 8px #00ffcc, 0 0 12px #00ffcc",
+            textShadow: "0 0 8px #aaa, 0 0 12px #aaa",
             letterSpacing: 1.2,
           }}>SignalWatchGlobal</h1>
           <p style={{ fontSize: 18, color: "#aaa" }}>Live Global Crisis Tracker</p>
