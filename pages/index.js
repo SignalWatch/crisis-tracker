@@ -865,7 +865,7 @@ export default function Home() {
         margin: "0 auto",
         padding: 20,
         fontFamily: "Arial, sans-serif",
-        backgroundImage: `public/nasa-Q1p7bh3SHj8-unsplash (1).jpg`,
+        backgroundImage: "url('/nasa.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",
