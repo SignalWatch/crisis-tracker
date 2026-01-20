@@ -7,6 +7,7 @@ const COUNTRY_FLAGS = {
     // ======================
     // United States
     // ======================
+
     "united states": "🇺🇸",
     "united states of america": "🇺🇸",
     "usa": "🇺🇸",
@@ -17,82 +18,138 @@ const COUNTRY_FLAGS = {
     "american": "🇺🇸",
   
     // ======================
-    // Russia / Ukraine
+    // Russia / Ukraine region
     // ======================
     "russia": "🇷🇺",
     "russian": "🇷🇺",
-  
+
     "ukraine": "🇺🇦",
     "ukrainian": "🇺🇦",
-  
+
     "belarus": "🇧🇾",
     "belarusian": "🇧🇾",
+
+    "moldova": "🇲🇩",
+    "moldovan": "🇲🇩",
+
+    "estonia": "🇪🇪",
+    "estonian": "🇪🇪",
+
+    "latvia": "🇱🇻",
+    "latvian": "🇱🇻",
+
+    "lithuania": "🇱🇹",
+    "lithuanian": "🇱🇹",
+
+    "georgia": "🇬🇪",
+    "georgian": "🇬🇪",
+
+    "armenia": "🇦🇲",
+    "armenian": "🇦🇲",
+
+    "azerbaijan": "🇦🇿",
+    "azerbaijani": "🇦🇿",
+
+    "kazakhstan": "🇰🇿",
+    "kazakh": "🇰🇿",
+
+    "uzbekistan": "🇺🇿",
+    "uzbek": "🇺🇿",
+
+    "turkmenistan": "🇹🇲",
+    "turkmen": "🇹🇲",
+
+    "tajikistan": "🇹🇯",
+    "tajik": "🇹🇯",
+
+    "kyrgyzstan": "🇰🇬",
+    "kyrgyz": "🇰🇬",
   
     // ======================
     // China / Taiwan / East Asia
     // ======================
+    
     "china": "🇨🇳",
     "chinese": "🇨🇳",
-  
-    "taiwan": "🇹🇼",
-    "taiwanese": "🇹🇼",
-  
+
     "japan": "🇯🇵",
     "japanese": "🇯🇵",
-  
-    // ======================
-    // Koreas
-    // ======================
+
     "north korea": "🇰🇵",
     "north korean": "🇰🇵",
-  
+
     "south korea": "🇰🇷",
     "south korean": "🇰🇷",
+
+    "taiwan": "🇹🇼",
+    "taiwanese": "🇹🇼",
+
+    "mongolia": "🇲🇳",
+    "mongolian": "🇲🇳",
+
+    "hong kong": "🇭🇰",
+    "hongkonger": "🇭🇰",
+    "hk": "🇭🇰",
+
+    "macau": "🇲🇴",
+    "macaense": "🇲🇴",
   
     // ======================
     // Middle East
     // ======================
-    "israel": "🇮🇱",
-    "israeli": "🇮🇱",
-  
-    "palestine": "🇵🇸",
-    "palestinian": "🇵🇸",
-  
-    "gaza": "🇵🇸",
-  
+
+    "bahrain": "🇧🇭",
+    "bahraini": "🇧🇭",
+
+    "cyprus": "🇨🇾",
+    "cypriot": "🇨🇾",
+
+    "egypt": "🇪🇬",
+    "egyptian": "🇪🇬",
+
     "iran": "🇮🇷",
     "iranian": "🇮🇷",
-  
-    "lebanon": "🇱🇧",
-    "lebanese": "🇱🇧",
-  
-    "syria": "🇸🇾",
-    "syrian": "🇸🇾",
-  
+
     "iraq": "🇮🇶",
     "iraqi": "🇮🇶",
-  
-    "yemen": "🇾🇪",
-    "yemeni": "🇾🇪",
-  
-    "turkey": "🇹🇷",
-    "turkish": "🇹🇷",
-  
+
+    "israel": "🇮🇱",
+    "israeli": "🇮🇱",
+
+    "jordan": "🇯🇴",
+    "jordanian": "🇯🇴",
+
+    "kuwait": "🇰🇼",
+    "kuwaiti": "🇰🇼",
+
+    "lebanon": "🇱🇧",
+    "lebanese": "🇱🇧",
+
+    "oman": "🇴🇲",
+    "omani": "🇴🇲",
+
+    "palestine": "🇵🇸",
+    "palestinian": "🇵🇸",
+
+    "qatar": "🇶🇦",
+    "qatari": "🇶🇦",
+
     "saudi arabia": "🇸🇦",
     "saudi": "🇸🇦",
-  
+    "saudi arabian": "🇸🇦",
+
+    "syria": "🇸🇾",
+    "syrian": "🇸🇾",
+
+    "turkey": "🇹🇷",
+    "turkish": "🇹🇷",
+
     "united arab emirates": "🇦🇪",
     "uae": "🇦🇪",
     "emirati": "🇦🇪",
-  
-    "qatar": "🇶🇦",
-    "qatari": "🇶🇦",
-  
-    "jordan": "🇯🇴",
-    "jordanian": "🇯🇴",
-  
-    "egypt": "🇪🇬",
-    "egyptian": "🇪🇬",
+
+    "yemen": "🇾🇪",
+    "yemeni": "🇾🇪",
   
     // ======================
     // South & Central Asia
@@ -155,6 +212,7 @@ const COUNTRY_FLAGS = {
   
     "slovakia": "🇸🇰",
     "slovak": "🇸🇰",
+    "slovakian": "🇸🇰",
   
     "hungary": "🇭🇺",
     "hungarian": "🇭🇺",
@@ -200,42 +258,176 @@ const COUNTRY_FLAGS = {
   
     "iceland": "🇮🇸",
     "icelandic": "🇮🇸",
+
+    "greenland": "🇬🇱",
+    "greenlandic": "🇬🇱",
+    "greenlanders": "🇬🇱",
   
     // ======================
     // Africa
     // ======================
-    "ethiopia": "🇪🇹",
-    "ethiopian": "🇪🇹",
-  
-    "somalia": "🇸🇴",
-    "somali": "🇸🇴",
-  
-    "kenya": "🇰🇪",
-    "kenyan": "🇰🇪",
-  
-    "nigeria": "🇳🇬",
-    "nigerian": "🇳🇬",
-  
-    "ghana": "🇬🇭",
-    "ghanaian": "🇬🇭",
-  
-    "south africa": "🇿🇦",
-    "south african": "🇿🇦",
-  
-    "sudan": "🇸🇩",
-    "sudanese": "🇸🇩",
-  
-    "libya": "🇱🇾",
-    "libyan": "🇱🇾",
-  
-    "tunisia": "🇹🇳",
-    "tunisian": "🇹🇳",
-  
     "algeria": "🇩🇿",
     "algerian": "🇩🇿",
-  
+
+    "angola": "🇦🇴",
+    "angolan": "🇦🇴",
+
+    "benin": "🇧🇯",
+    "beninese": "🇧🇯",
+
+    "botswana": "🇧🇼",
+    "botswanan": "🇧🇼",
+
+    "burkina faso": "🇧🇫",
+    "burkinabe": "🇧🇫",
+
+    "burundi": "🇧🇮",
+    "burundian": "🇧🇮",
+
+    "cabo verde": "🇨🇻",
+    "cape verdean": "🇨🇻",
+
+    "cameroon": "🇨🇲",
+    "cameroonian": "🇨🇲",
+
+    "central african republic": "🇨🇫",
+    "central african": "🇨🇫",
+
+    "chad": "🇹🇩",
+    "chadian": "🇹🇩",
+
+    "comoros": "🇰🇲",
+    "comorian": "🇰🇲",
+
+    "congo": "🇨🇬",
+    "congolese": "🇨🇬",
+
+    "democratic republic of the congo": "🇨🇩",
+    "congolese": "🇨🇩",
+
+    "djibouti": "🇩🇯",
+    "djiboutian": "🇩🇯",
+
+    "egypt": "🇪🇬",
+    "egyptian": "🇪🇬",
+
+    "equatorial guinea": "🇬🇶",
+    "equatoguinean": "🇬🇶",
+
+    "eritrea": "🇪🇷",
+    "eritrean": "🇪🇷",
+
+    "eswatini": "🇸🇿",
+    "swazi": "🇸🇿",
+
+    "ethiopia": "🇪🇹",
+    "ethiopian": "🇪🇹",
+
+    "gabon": "🇬🇦",
+    "gabonese": "🇬🇦",
+
+    "gambia": "🇬🇲",
+    "gambian": "🇬🇲",
+
+    "ghana": "🇬🇭",
+    "ghanaian": "🇬🇭",
+
+    "guinea": "🇬🇳",
+    "guinean": "🇬🇳",
+
+    "guinea-bissau": "🇬🇼",
+    "guinea-bissauan": "🇬🇼",
+
+    "ivory coast": "🇨🇮",
+    "côte d'ivoire": "🇨🇮",
+    "ivorian": "🇨🇮",
+
+    "kenya": "🇰🇪",
+    "kenyan": "🇰🇪",
+
+    "lesotho": "🇱🇸",
+    "lesothan": "🇱🇸",
+
+    "liberia": "🇱🇷",
+    "liberian": "🇱🇷",
+
+    "libya": "🇱🇾",
+    "libyan": "🇱🇾",
+
+    "madagascar": "🇲🇬",
+    "malagasy": "🇲🇬",
+
+    "malawi": "🇲🇼",
+    "malawian": "🇲🇼",
+
+    "mali": "🇲🇱",
+    "malian": "🇲🇱",
+
+    "mauritania": "🇲🇷",
+    "mauritanian": "🇲🇷",
+
+    "mauritius": "🇲🇺",
+    "mauritian": "🇲🇺",
+
     "morocco": "🇲🇦",
     "moroccan": "🇲🇦",
+
+    "mozambique": "🇲🇿",
+    "mozambican": "🇲🇿",
+
+    "namibia": "🇳🇦",
+    "namibian": "🇳🇦",
+
+    "niger": "🇳🇪",
+    "nigerien": "🇳🇪",
+
+    "nigeria": "🇳🇬",
+    "nigerian": "🇳🇬",
+
+    "rwanda": "🇷🇼",
+    "rwandan": "🇷🇼",
+
+    "sao tome and principe": "🇸🇹",
+    "sao tomean": "🇸🇹",
+
+    "senegal": "🇸🇳",
+    "senegalese": "🇸🇳",
+
+    "seychelles": "🇸🇨",
+    "seychellois": "🇸🇨",
+
+    "sierra leone": "🇸🇱",
+    "sierra leonean": "🇸🇱",
+
+    "somalia": "🇸🇴",
+    "somali": "🇸🇴",
+
+    "south africa": "🇿🇦",
+    "south african": "🇿🇦",
+
+    "south sudan": "🇸🇸",
+    "south sudanese": "🇸🇸",
+
+    "sudan": "🇸🇩",
+    "sudanese": "🇸🇩",
+
+    "tanzania": "🇹🇿",
+    "tanzanian": "🇹🇿",
+
+    "togo": "🇹🇬",
+    "togolese": "🇹🇬",
+
+    "tunisia": "🇹🇳",
+    "tunisian": "🇹🇳",
+
+    "uganda": "🇺🇬",
+    "ugandan": "🇺🇬",
+
+    "zambia": "🇿🇲",
+    "zambian": "🇿🇲",
+
+    "zimbabwe": "🇿🇼",
+    "zimbabwean": "🇿🇼",
   
     // ======================
     // Southeast Asia
@@ -262,6 +454,15 @@ const COUNTRY_FLAGS = {
     "myanmar": "🇲🇲",
     "burma": "🇲🇲",
     "burmese": "🇲🇲",
+
+    "laos": "🇱🇦",
+    "laotian": "🇱🇦",
+
+    "timor-leste": "🇹🇱",
+    "timorese": "🇹🇱",
+
+    "cambodia": "🇰🇭",
+    "cambodian": "🇰🇭",
   
     // ======================
     // Americas
@@ -277,6 +478,7 @@ const COUNTRY_FLAGS = {
   
     "argentina": "🇦🇷",
     "argentine": "🇦🇷",
+    "argentenian": "🇦🇷",
   
     "chile": "🇨🇱",
     "chilean": "🇨🇱",
@@ -291,7 +493,29 @@ const COUNTRY_FLAGS = {
     "venezuelan": "🇻🇪",
   
     "cuba": "🇨🇺",
-    "cuban": "🇨🇺"
+    "cuban": "🇨🇺",
+
+    "guatemala": "🇬🇹",
+    "guatemalan": "🇬🇹",
+
+    "bolivia": "🇧🇴",
+    "bolivian": "🇧🇴",
+
+    "uruguay": "🇺🇾",
+    "uruguayan": "🇺🇾",
+
+    "ecuador": "🇪🇨",
+    "ecuadorian": "🇪🇨",
+
+    "paraguay": "🇵🇾",
+    "paraguayan": "🇵🇾",
+
+    "venezuela": "🇻🇪",
+    "venezuelan": "🇻🇪",
+
+    "suriname": "🇸🇷",
+    "surinamese": "🇸🇷",
+
   };
 
   // Leader → Country map
