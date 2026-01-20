@@ -19,29 +19,68 @@
   }
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overscroll-behavior-y: none;
+}
+
 body {
   background: transparent;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
+/* Ensure Next.js root sits above the fixed background */
+#__next {
+  position: relative;
+  min-height: 100vh;
+  z-index: 0;
 }
 
+/* Keep app container simple (no background here) */
 .app-container {
   min-height: 100vh;
-  background-image: url('/nasa.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Custom dark scrollbar */
+/* Fixed background layer (stable, no scroll shimmer) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/nasa.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -2;
+  pointer-events: none;
+
+  /* reduce subtle shifting on desktop */
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* Overlay for readability */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: -1;
+  pointer-events: none;
+
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
 /* Custom scrollbar (dark + subtle) */
 ::-webkit-scrollbar {
   width: 10px;
@@ -58,33 +97,4 @@ html, body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.35);
-}
-
-/* App background container */
-.app-container {
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* Fixed background layer (no scroll-jump) */
-.app-container::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("/nasa.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: -2;              /* background layer */
-  transform: translateZ(0);
-}
-
-/* Overlay on top of background, still behind content */
-.app-container::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.25);
-  z-index: -1;              /* overlay layer */
 }
