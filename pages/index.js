@@ -870,13 +870,22 @@ export default function Home() {
         position: "relative"
       }}>
       <div style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        zIndex: 0
+      }}></div>
+      <div style={{
         maxWidth: 1000,
         margin: "0 auto",
         padding: 20,
         color: "#fff",
         position: "relative",
         zIndex: 1
-      }}>
+      }}> 
       </div>
 
         <header style={{ textAlign: "center", marginBottom: 20 }}>
