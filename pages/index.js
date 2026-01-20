@@ -873,62 +873,6 @@ export default function Home() {
         position: "relative",
         overflow: "hidden"
       }}>
-        {/* ===== Crosshair HUD (behind content) ===== */}
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: cursorPos.y,
-            left: 0,
-            width: "100%",
-            height: 1,
-            backgroundColor: "rgba(0,255,204,0.2)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: cursorPos.x,
-            width: 1,
-            height: "100%",
-            backgroundColor: "rgba(0,255,204,0.2)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: cursorPos.y - 10,
-            left: cursorPos.x - 10,
-            width: 20,
-            height: 20,
-            border: "2px solid rgba(0,255,204,0.2)",
-            borderRadius: 2,
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            background:
-              "linear-gradient(rgba(0,255,204,0.02) 1px, transparent 1px)",
-            backgroundSize: "100% 4px",
-          }}
-        />
-      </div>
 
         <header style={{ textAlign: "center", marginBottom: 20 }}>
           <h1 style={{
@@ -1036,32 +980,6 @@ export default function Home() {
               );
             })}
         </main>
-  
-        {/* HUD animations */}
-        <style jsx>{`
-          @keyframes hudScan {
-            0% { background-position: 0 0, 0 0; }
-            100% { background-position: 1000px 0, 0 1000px; }
-          }
-          @keyframes scanLine {
-            0% { top: -2px; }
-            100% { top: 100%; }
-          }
-            @keyframes linePulse {
-                0% { opacity: 0.5; }
-                100% { opacity: 1; }
-            }
-
-                @keyframes squarePulse {
-                0% { box-shadow: 0 0 6px #00ffcc; transform: scale(0.95); }
-                100% { box-shadow: 0 0 14px #00ffcc; transform: scale(1.05); }
-            }
-
-                @keyframes scanLine {
-                0% { background-position: 0 0; }
-                100% { background-position: 0 100%; }
-            }
-        `}</style>
       </div>
     );
   }
