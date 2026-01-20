@@ -968,6 +968,7 @@ export default function Home() {
       alignItems: "center",
       justifyContent: "center",
       gap: 16,
+      marginTop: 6,
       marginBottom: 6
     }}
   >
