@@ -979,13 +979,13 @@ export default function Home() {
       textDecoration: "none",
       background: "rgba(255,255,255,0.10)",
       border: "1px solid rgba(255,255,255,0.15)",
-      padding: "4px 6px",
+      padding: "2px 3px",
       borderRadius: 5,
-      fontWeight: 900,
+      fontWeight: 700,
       fontSize: 25,
     }}
   >
-    Open Dashboard →
+    Dashboard
   </a>
 </div>
 
