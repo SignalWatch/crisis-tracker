@@ -860,113 +860,134 @@ export default function Home() {
 
   return (
     <div style={{
-      minHeight: "100vh",
-      backgroundImage: 'url("/background.jpg")',
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundAttachment: "fixed",
-      padding: 20,
-      fontFamily: "Arial, sans-serif",
-      color: "#fff"
-    }}>
-      <header style={{ textAlign: "center", marginBottom: 20, textShadow: "2px 2px 6px #000" }}>
-        <h1 style={{ fontSize: 36, color: "#0f0", textShadow: "0 0 6px #0f0" }}>SignalWatchGlobal</h1>
-        <p style={{ fontSize: 18, color: "#ccc" }}>Live Global Crisis Tracker</p>
-        {lastUpdated && <p style={{ fontSize: 12, color: "#aaa" }}>Last updated: {lastUpdated.toLocaleTimeString()}</p>}
-      </header>
-
-      {/* Toggle */}
-      <div style={{ marginBottom: 30, textAlign: "center" }}>
-        <label style={{
-          fontSize: 16,
-          color: "#0f0",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 10,
-          cursor: "pointer",
-          backgroundColor: "rgba(0,0,0,0.5)",
-          padding: "8px 12px",
-          borderRadius: 6,
-        }}>
-          <input
-            type="checkbox"
-            checked={showOnlyRed}
-            onChange={() => setShowOnlyRed(!showOnlyRed)}
-            style={{ width: 18, height: 18, cursor: "pointer" }}
-          />
-          Show only high-urgency news
-        </label>
-      </div>
-
-      {/* Breaking Banner */}
-      {breaking && (
-        <a href={breaking.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
-          <div style={{
-            backgroundColor: "#ff4d4f",
+        maxWidth: 1000,
+        margin: "0 auto",
+        padding: 20,
+        fontFamily: "Arial, sans-serif",
+        backgroundImage: `url('/background.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+        color: "#fff",
+      }}>
+        <header style={{ textAlign: "center", marginBottom: 20 }}>
+          <h1 style={{
+            fontSize: 42,
+            fontWeight: 800,
+            color: "#00ffcc",
+            textShadow: "0 0 8px #00ffcc, 0 0 12px #00ffcc",
+            letterSpacing: 1.2,
+          }}>SignalWatchGlobal</h1>
+          <p style={{ fontSize: 18, color: "#88ffdd" }}>Live Global Crisis Tracker</p>
+          {lastUpdated && <p style={{ fontSize: 12, color: "#aaa" }}>Last updated: {lastUpdated.toLocaleTimeString()}</p>}
+        </header>
+  
+        {/* Red toggle */}
+        <div style={{ marginBottom: 30, textAlign: "center" }}>
+          <label style={{
+            fontSize: 16,
             color: "#fff",
-            padding: "14px 20px",
-            borderRadius: 8,
-            marginBottom: 30,
-            fontWeight: 600,
-            display: "flex",
+            display: "inline-flex",
             alignItems: "center",
-            gap: 12,
-            boxShadow: "0 6px 16px rgba(0,0,0,0.25)"
+            gap: 10,
+            cursor: "pointer",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            padding: "8px 12px",
+            borderRadius: 6,
           }}>
-            <span style={{
-              backgroundColor: "#fff",
-              color: "#ff4d4f",
-              padding: "4px 10px",
-              borderRadius: 4,
-              fontSize: 12,
-              fontWeight: 700
-            }}>BREAKING</span>
-            <span style={{ fontSize: 15 }}>{breaking.title}</span>
-          </div>
-        </a>
-      )}
-
-      {loading && <p style={{ textAlign: "center" }}>Loading news...</p>}
-
-      <main style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        {news
-          .filter(item => !showOnlyRed || getUrgencyColor(item.title) === "#ff4d4f")
-          .map((item,index) => {
-            const color = getUrgencyColor(item.title);
-            const flags = getFlagsFromTitle(item.title);
-            return (
-              <a key={index} href={item.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
-                <div style={{
-                  padding: 20,
-                  borderLeft: `6px solid ${color}`,
-                  borderRadius: 10,
-                  backgroundColor: "rgba(0,0,0,0.6)",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
-                  transition: "transform 0.15s ease, box-shadow 0.15s ease",
-                  cursor: "pointer"
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                  e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.6)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.4)";
-                }}
-                >
-                  <div style={{ fontWeight: 600, fontSize: 16 }}>
-                    {flags.length > 0 && (
-                      <div style={{ fontSize: 18, marginBottom: 6 }}>{flags.join(" ")}</div>
-                    )}
-                    {item.title}
+            <input
+              type="checkbox"
+              checked={showOnlyRed}
+              onChange={() => setShowOnlyRed(!showOnlyRed)}
+              style={{ width: 18, height: 18, cursor: "pointer" }}
+            />
+            Show only high-urgency news
+          </label>
+        </div>
+  
+        {/* Breaking banner */}
+        {breaking && (
+          <a href={breaking.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+            <div style={{
+              backgroundColor: "#ff4d4f",
+              color: "#fff",
+              padding: "14px 20px",
+              borderRadius: 8,
+              marginBottom: 30,
+              fontWeight: 600,
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              boxShadow: "0 6px 16px rgba(0,0,0,0.4)"
+            }}>
+              <span style={{
+                backgroundColor: "#fff",
+                color: "#ff4d4f",
+                padding: "4px 10px",
+                borderRadius: 4,
+                fontSize: 12,
+                fontWeight: 700
+              }}>BREAKING</span>
+              <span style={{ fontSize: 15 }}>{breaking.title}</span>
+            </div>
+          </a>
+        )}
+  
+        {loading && <p style={{ textAlign: "center", color: "#fff" }}>Loading news...</p>}
+  
+        <main style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          {news
+            .filter(item => !showOnlyRed || getUrgencyColor(item.title) === "#ff4d4f")
+            .map((item, index) => {
+              const color = getUrgencyColor(item.title);
+              const flags = getFlagsFromTitle(item.title);
+              return (
+                <a key={index} href={item.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+                  <div style={{
+                    padding: 20,
+                    borderLeft: `6px solid ${color}`,
+                    borderRadius: 10,
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                    cursor: "pointer"
+                  }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-3px)";
+                      e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.6)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.5)";
+                    }}
+                  >
+                    <div style={{ fontWeight: 600, fontSize: 16, color: "#fff" }}>
+                      {flags.length > 0 && (
+                        <div style={{ fontSize: 18, marginBottom: 6 }}>
+                          {flags.join(" ")}
+                        </div>
+                      )}
+                      {item.title}
+                    </div>
+                    {item.pubDate && <div style={{ fontSize: 12, color: "#ccc", marginTop: 6 }}>{new Date(item.pubDate).toLocaleString()}</div>}
+                    {item.contentSnippet && <p style={{ marginTop: 10, color: "#eee", lineHeight: 1.5 }}>{item.contentSnippet}</p>}
                   </div>
-                  {item.pubDate && <div style={{ fontSize: 12, color: "#ccc", marginTop: 6 }}>{new Date(item.pubDate).toLocaleString()}</div>}
-                  {item.contentSnippet && <p style={{ marginTop: 10, lineHeight: 1.5 }}>{item.contentSnippet}</p>}
-                </div>
-              </a>
-            );
-          })}
-      </main>
-    </div>
-  );
-}
+                </a>
+              );
+            })}
+        </main>
+  
+        {/* HUD animations */}
+        <style jsx>{`
+          @keyframes hudScan {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 1000px 0, 0 1000px; }
+          }
+          @keyframes scanLine {
+            0% { top: -2px; }
+            100% { top: 100%; }
+          }
+        `}</style>
+      </div>
+    );
+  }
