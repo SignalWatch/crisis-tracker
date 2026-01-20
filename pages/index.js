@@ -960,30 +960,49 @@ export default function Home() {
           }}
         >
           <header style={{ textAlign: "center", marginBottom: 20 }}>
-          <header style={{ textAlign: "center", marginBottom: 20 }}>
-
-  <div
+  <h1
     style={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: 16,
-      marginTop: 6,
-      marginBottom: 6
+      fontSize: 42,
+      fontWeight: 800,
+      color: "#fff",
+      textShadow: "0 0 8px #aaa, 0 0 12px #aaa",
+      letterSpacing: 1.2,
+      margin: 0,
     }}
   >
-    <h1
+    Signal Watch Global
+  </h1>
+
+  {/* ✅ NAVBAR directly under title */}
+  <nav
+    style={{
+      marginTop: 10,
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 10,
+      padding: "10px 12px",
+      borderRadius: 12,
+      background: "rgba(0,0,0,0.45)",
+      border: "1px solid rgba(255,255,255,0.12)",
+      boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
+      backdropFilter: "blur(10px)",
+    }}
+  >
+    <a
+      href="/"
       style={{
-        fontSize: 42,
-        fontWeight: 800,
         color: "#fff",
-        textShadow: "0 0 8px #aaa, 0 0 12px #aaa",
-        letterSpacing: 1.2,
-        margin: 0
+        textDecoration: "none",
+        background: "rgba(255,255,255,0.08)",
+        border: "1px solid rgba(255,255,255,0.12)",
+        padding: "8px 12px",
+        borderRadius: 10,
+        fontWeight: 800,
+        fontSize: 14,
       }}
     >
-      Signal Watch Global
-    </h1>
+      Home
+    </a>
 
     <a
       href="/dashboard"
@@ -993,27 +1012,26 @@ export default function Home() {
         background: "rgba(255,255,255,0.10)",
         border: "1px solid rgba(255,255,255,0.15)",
         padding: "8px 12px",
-        borderRadius: 8,
+        borderRadius: 10,
         fontWeight: 800,
-        fontSize: 14
+        fontSize: 14,
       }}
     >
       Dashboard
     </a>
-  </div>
+  </nav>
 
-  <p style={{ fontSize: 18, color: "#aaa", marginTop: 4 }}>
+  <p style={{ fontSize: 18, color: "#aaa", marginTop: 10, marginBottom: 0 }}>
     Live Global Crisis Tracker
   </p>
 
+  {lastUpdated && (
+    <p style={{ fontSize: 12, color: "#aaa", marginTop: 6, marginBottom: 0 }}>
+      Last updated: {lastUpdated.toLocaleTimeString()}
+    </p>
+  )}
 </header>
 
-            {lastUpdated && (
-              <p style={{ fontSize: 12, color: "#aaa" }}>
-                Last updated: {lastUpdated.toLocaleTimeString()}
-              </p>
-            )}
-          </header>
 
           {/* Red toggle */}
           <div style={{ marginBottom: 30, textAlign: "center" }}>
