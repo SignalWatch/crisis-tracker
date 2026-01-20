@@ -1019,6 +1019,20 @@ export default function Home() {
     >
       Dashboard
     </a>
+    <a href="/map" 
+    style={{
+        color: "#fff",
+        textDecoration: "none",
+        background: "rgba(255,255,255,0.10)",
+        border: "1px solid rgba(255,255,255,0.15)",
+        padding: "8px 12px",
+        borderRadius: 10,
+        fontWeight: 800,
+        fontSize: 14,
+      }}>
+  Map
+</a>
+
   </nav>
 
   <p style={{ fontSize: 18, color: "#aaa", marginTop: 10, marginBottom: 0 }}>
