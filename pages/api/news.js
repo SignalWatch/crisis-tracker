@@ -1,257 +1,180 @@
-// File: pages/api/news.js
 import Parser from "rss-parser";
 
-const parser = new Parser();
+const parser = new Parser({
+  timeout: 10000, // rss-parser option (not always enforced by all fetches, but helps)
+});
 
-/**
- * Feeds (label + url) so we can tag stories with a source name.
- */
-const FEEDS = [
-  {
-    source: "Google News",
-    url: "https://news.google.com/rss/search?q=world+crisis&hl=en-US&gl=US&ceid=US:en",
-  },
-  {
-    source: "Al Jazeera",
-    url: "https://www.aljazeera.com/xml/rss/all.xml",
-  },
-  {
-    source: "BBC",
-    url: "https://feeds.bbci.co.uk/news/world/rss.xml",
-  },
-];
-
-/**
- * Keywords grouped by crisis category.
- * Tip: keep them lowercase.
- */
-const CRISIS_KEYWORDS = {
-  military: [
-    "ceasefire","truce","mobilization","conscription","draft","martial law",
-    "air raid","no-fly zone","ground offensive","counteroffensive",
-    "artillery","missile launch","troop movement","naval blockade","border skirmish",
-    "armed confrontation","insurgency","rebels","militants","paramilitary",
-    "war crimes","genocide","ethnic cleansing","peacekeeping","un peacekeepers",
-    "military exercise","drone strike","rocket fire","retaliatory strike",
-    "evacuation corridor","human shields","prisoners of war",
-    // keep some of your originals
-    "war","invasion","attack","strike","clashes","shelling","airstrike","escalation",
-  ],
-  terrorism_security: [
-    "terror threat","terror alert","hostage situation","active shooter","car bomb",
-    "roadside bomb","ied","ieds","suicide bomber","security lockdown","sabotage",
-    "infrastructure attack","embassy attack","assassination attempt","kidnapping",
-    "abduction","ransom demand","terrorist","bombing","assassination",
-  ],
-  disasters: [
-    "aftershocks","richter","magnitude","flash floods","storm surge","flooding emergency",
-    "mudslide","landslide","volcanic ash","lava flow","wildfire evacuation",
-    "heatwave emergency","blizzard warning","cyclone","state of disaster","dam collapse",
-    "levee breach","tsunami warning","extreme weather",
-    // keep some of your originals
-    "earthquake","hurricane","tsunami","wildfire","storm","tornado","drought","eruption",
-    "flood","disaster",
-  ],
-  public_health: [
-    "health emergency","quarantine","quarantine zone","lockdown imposed",
-    "outbreak declared","variant detected","public health emergency",
-    "biohazard","toxic exposure","radiation leak","contaminated water",
-    "cholera outbreak","ebola outbreak",
-    // keep some of your originals
-    "epidemic","outbreak","pandemic","disease","virus",
-  ],
-  infrastructure: [
-    "power outage","nationwide blackout","grid failure","internet outage",
-    "communication blackout","water shortage","fuel shortage","energy crisis",
-    "pipeline explosion","port closure","airport closure","transportation shutdown",
-    "rail derailment","bridge collapse","building collapse","factory explosion",
-    "industrial accident","chemical spill","toxic leak","gas leak",
-    // keep some of your originals
-    "collapsed","explosion",
-  ],
-  civil_unrest: [
-    "mass protests","violent clashes","police crackdown","state of emergency",
-    "curfew declared","civil disorder","rioting","looting","military coup",
-    "attempted coup","regime collapse","government resigns","parliament dissolved",
-    "constitutional crisis","uprising","insurrection","revolution",
-    "border closure","refugee crisis","mass migration",
-    // keep some of your originals
-    "protests","coup","uprising",
-  ],
-  economic: [
-    "bank run","financial collapse","currency crash","default on debt",
-    "stock market crash","trade war escalation","energy embargo","food crisis",
-    "hyperinflation","supply chain collapse","shortages reported",
-    // keep some of your originals
-    "sanctions","embargo",
-  ],
-  transport: [
-    "plane crash","aircraft crash","missing aircraft","ship sinking","ferry disaster",
-    "oil spill","maritime collision","submarine accident","hijacked plane",
-  ],
+// --- Simple in-memory cache (works great on warm serverless instances) ---
+let CACHE = {
+  ts: 0,
+  data: null,
 };
 
-/**
- * Region / hotspot triggers:
- * If these appear, we still consider the item "relevant" even if keywords are weak.
- * (Helps catch headlines that are vague but important.)
- */
-const HOTSPOT_TERMS = [
-  "gaza","west bank","israel","palestine",
-  "ukraine","russia","donetsk","kharkiv","kyiv","odessa",
-  "syria","iraq","iran","lebanon","yemen",
-  "taiwan strait","south china sea",
-  "kabul","afghanistan",
-].map((s) => s.toLowerCase());
+const CACHE_TTL_MS = 3 * 60 * 1000; // 3 minutes
 
-/**
- * Negative filters to reduce obvious false positives.
- * (Keep this list small + safe; you can add more over time.)
- */
-const EXCLUDE_TERMS = [
-  "celebrity","oscars","grammys","box office","movie",
-  "concert","festival","tv show","premiere",
-  "football","soccer","nba","nfl","mlb","nhl","ufc",
-  "recipe","fashion","giveaway",
-].map((s) => s.toLowerCase());
+// Utility: Abortable fetch with timeout
+async function fetchWithTimeout(url, timeoutMs = 9000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
 
-/**
- * Helpers
- */
-function normalizeText(item) {
-  const title = (item.title || "").toLowerCase();
-  const snippet = (item.contentSnippet || item.content || "").toLowerCase();
-  return `${title} ${snippet}`.replace(/\s+/g, " ").trim();
-}
-
-function safeDate(item) {
-  const d = item.isoDate || item.pubDate;
-  const parsed = d ? new Date(d) : null;
-  return parsed && !Number.isNaN(parsed.getTime()) ? parsed : null;
-}
-
-function containsAny(text, terms) {
-  return terms.some((t) => text.includes(t));
-}
-
-function getMatchedCategories(text) {
-  const categories = [];
-
-  for (const [category, terms] of Object.entries(CRISIS_KEYWORDS)) {
-    if (containsAny(text, terms)) categories.push(category);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+    return await res.text();
+  } finally {
+    clearTimeout(timer);
   }
-
-  return categories;
 }
 
-function shouldExclude(text) {
-  return containsAny(text, EXCLUDE_TERMS);
+function getSourceName(url = "") {
+  try {
+    const host = new URL(url).hostname.replace("www.", "");
+    if (host.includes("bbc")) return "BBC";
+    if (host.includes("aljazeera")) return "Al Jazeera";
+    if (host.includes("news.google")) return "Google News";
+    return host;
+  } catch {
+    return "Source";
+  }
 }
 
-function isRelevant(text, categories) {
-  const hasCrisisKeywords = categories.length > 0;
-  const hasHotspot = containsAny(text, HOTSPOT_TERMS);
-
-  // Relevant if it hits at least one crisis category OR a hotspot,
-  // but reject if it hits the exclude list (unless it’s strongly crisis-tagged).
-  if (shouldExclude(text) && categories.length === 0) return false;
-
-  return hasCrisisKeywords || hasHotspot;
+function normalizeTitle(t = "") {
+  return t
+    .toLowerCase()
+    .replace(/[^\w\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-async function parseWithTimeout(url, timeoutMs = 7000) {
-  return await Promise.race([
-    parser.parseURL(url),
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error(`Timeout after ${timeoutMs}ms`)), timeoutMs)
-    ),
-  ]);
+// Stable-ish id from title+link (no extra deps)
+function makeId(title = "", link = "") {
+  const base = `${normalizeTitle(title)}|${link}`;
+  let hash = 0;
+  for (let i = 0; i < base.length; i++) {
+    hash = (hash * 31 + base.charCodeAt(i)) >>> 0;
+  }
+  return `n_${hash.toString(16)}`;
 }
 
 export default async function handler(req, res) {
-  if (req.method !== "GET") {
-    res.setHeader("Allow", "GET");
-    return res.status(405).json({ error: "Method not allowed" });
+  // Allow caching at the edge/CDN a bit too (optional)
+  res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=300");
+
+  // Return cached if fresh
+  const now = Date.now();
+  if (CACHE.data && now - CACHE.ts < CACHE_TTL_MS) {
+    return res.status(200).json(CACHE.data);
   }
 
-  // Edge cache headers (Vercel-friendly)
-  res.setHeader("Cache-Control", "public, s-maxage=180, stale-while-revalidate=600");
+  // Reliable global news feeds
+  const feeds = [
+    "https://news.google.com/rss/search?q=world+crisis&hl=en-US&gl=US&ceid=US:en",
+    "https://www.aljazeera.com/xml/rss/all.xml",
+    "https://feeds.bbci.co.uk/news/world/rss.xml",
+  ];
 
-  try {
-    // Fetch feeds in parallel
-    const results = await Promise.allSettled(
-      FEEDS.map((f) => parseWithTimeout(f.url, 7000))
+  // Expanded keywords for urgent/global news (keep it focused; too many creates noise)
+  const keywords = [
+    // conflict / security
+    "war","attack","invasion","missile","rocket","drone","airstrike","bombing","explosion","shelling",
+    "clashes","raid","assault","siege","hostage","kidnapping","assassination","terror","militant",
+    "ceasefire","sanctions","martial law","mobilization",
+
+    // unrest / governance
+    "coup","uprising","protests","riot","crackdown","state of emergency","curfew","border closed",
+
+    // humanitarian
+    "refugee","evacuation","displacement","casualty","killed","dead","fatalities","injured",
+    "humanitarian","aid","famine","starvation",
+
+    // disasters
+    "earthquake","hurricane","storm","flood","wildfire","tsunami","landslide","drought","eruption",
+    "tornado",
+
+    // health
+    "outbreak","epidemic","pandemic","virus","disease",
+
+    // critical infrastructure / cyber
+    "blackout","power outage","communications down","cyberattack","ransomware","hack",
+  ];
+
+  const keywordSet = new Set(keywords.map(k => k.toLowerCase()));
+
+  // Parse feeds in parallel + safely
+  const results = await Promise.allSettled(
+    feeds.map(async (url) => {
+      // rss-parser parseURL does its own fetching; to control timeouts reliably,
+      // we fetch ourselves then parseString.
+      const xml = await fetchWithTimeout(url, 9000);
+      const feed = await parser.parseString(xml);
+      return { url, feed };
+    })
+  );
+
+  let items = [];
+
+  for (const r of results) {
+    if (r.status !== "fulfilled") continue;
+    const { url, feed } = r.value;
+
+    const source = getSourceName(url);
+
+    const relevant = (feed.items || []).filter((item) => {
+      const text = `${item.title || ""} ${(item.contentSnippet || item.content || "")}`.toLowerCase();
+      // quick keyword match
+      for (const k of keywordSet) {
+        if (text.includes(k)) return true;
+      }
+      return false;
+    });
+
+    items = items.concat(
+      relevant.map((it) => ({
+        title: it.title || "",
+        link: it.link || "",
+        pubDate: it.pubDate || it.isoDate || null,
+        contentSnippet: it.contentSnippet || "",
+        source,
+      }))
     );
-
-    let items = [];
-
-    for (let i = 0; i < results.length; i++) {
-      const r = results[i];
-      const feedInfo = FEEDS[i];
-
-      if (r.status !== "fulfilled") {
-        console.error("Error fetching feed:", feedInfo.url, r.reason);
-        continue;
-      }
-
-      const feed = r.value;
-      const feedItems = Array.isArray(feed.items) ? feed.items : [];
-
-      // Keep feed from dominating
-      const limited = feedItems.slice(0, 40);
-
-      for (const item of limited) {
-        if (!item?.title || !item?.link) continue;
-
-        const text = normalizeText(item);
-        const categories = getMatchedCategories(text);
-
-        if (!isRelevant(text, categories)) continue;
-
-        items.push({
-          ...item,
-          __source: feedInfo.source,
-          __categories: categories.length ? categories : ["hotspot"],
-        });
-      }
-    }
-
-    // De-dupe: prefer link; if missing, fall back to title
-    const seen = new Set();
-    items = items.filter((item) => {
-      const key = (item.link || "").trim() || (item.title || "").trim();
-      if (!key) return false;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-
-    // Sort newest first
-    items.sort((a, b) => {
-      const da = safeDate(a);
-      const db = safeDate(b);
-      return (db?.getTime() || 0) - (da?.getTime() || 0);
-    });
-
-    // Limit to 50 items
-    items = items.slice(0, 50);
-
-    // Sanitize for frontend (+ add useful metadata)
-    const sanitized = items.map((item) => {
-      const d = safeDate(item);
-      return {
-        title: item.title,
-        link: item.link,
-        pubDate: d ? d.toISOString() : item.pubDate || item.isoDate || null,
-        contentSnippet: item.contentSnippet || item.content || "",
-        source: item.__source || null,
-        categories: item.__categories || [],
-      };
-    });
-
-    return res.status(200).json(sanitized);
-  } catch (err) {
-    console.error("News API failed:", err);
-    return res.status(200).json([]); // graceful empty response
   }
+
+  // Dedupe: prefer unique by link; fallback to normalized title
+  const seenLinks = new Set();
+  const seenTitles = new Set();
+  items = items.filter((it) => {
+    const link = (it.link || "").trim();
+    const nt = normalizeTitle(it.title);
+
+    if (link && seenLinks.has(link)) return false;
+    if (nt && seenTitles.has(nt)) return false;
+
+    if (link) seenLinks.add(link);
+    if (nt) seenTitles.add(nt);
+    return true;
+  });
+
+  // Sort newest first (handle null dates)
+  items.sort((a, b) => {
+    const da = a.pubDate ? new Date(a.pubDate).getTime() : 0;
+    const db = b.pubDate ? new Date(b.pubDate).getTime() : 0;
+    return db - da;
+  });
+
+  // Limit items (50 is fine; you can raise to 75 without major impact)
+  items = items.slice(0, 50);
+
+  const sanitized = items.map((it) => ({
+    id: makeId(it.title, it.link),
+    title: it.title,
+    link: it.link,
+    pubDate: it.pubDate,
+    contentSnippet: it.contentSnippet,
+    source: it.source,
+  }));
+
+  // store cache
+  CACHE = { ts: now, data: sanitized };
+
+  return res.status(200).json(sanitized);
 }
