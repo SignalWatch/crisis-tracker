@@ -634,7 +634,9 @@ const GLOBAL_ATTACK_TRIGGERS = [
   "siege",
   "bomb threat",
   "terror plot",
-  "suicide attack"
+  "suicide attack",
+  "military raid",
+  "large-scale raid"
 ];
 
 // Conflict regions for global attack detection
@@ -649,7 +651,16 @@ const CONFLICT_REGIONS = [
   "yemen",
   "palestine",
   "gaza",
-  "israel"
+  "israel",
+  "odessa",
+  "kyiv",
+  "kiev",
+  "donetsk",
+  "kharkiv",
+  "luhansk",
+  "hebron",
+  "gaza strip",
+  "west bank"
 ];
 
 // Keyword-based urgency colors
@@ -801,9 +812,9 @@ const getUrgencyColor = (title) => {
   const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some(word => text.includes(word));
 
   // Improved global attack detection
-  const isGlobalAttack = CONFLICT_REGIONS.some(region => 
-    GLOBAL_ATTACK_TRIGGERS.some(trigger => 
-      new RegExp(`\\b${region}\\b.*\\b${trigger}\\b|\\b${trigger}\\b.*\\b${region}\\b`, 'i').test(title)
+  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some(trigger =>
+    CONFLICT_REGIONS.some(region =>
+      new RegExp(`\\b${trigger}\\b|\\b${region}\\b`, 'i').test(title)
     )
   );
 
