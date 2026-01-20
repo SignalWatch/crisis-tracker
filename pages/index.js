@@ -870,7 +870,7 @@ export default function Home() {
         backgroundPosition: "center",
         minHeight: "100vh",
         color: "#fff",
-        position: "fixed",
+        position: "relative",
         overflow: "hidden"
       }}>
 
