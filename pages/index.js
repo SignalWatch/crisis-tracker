@@ -859,37 +859,17 @@ export default function Home() {
   }, []);
 
   return (
-       <div style={{
-      position: "relative",
-      minHeight: "100vh",
-      backgroundImage: `url('/background.jpg')`, // <-- your image here
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      cursor: "crosshair",
-      overflow: "hidden",
-    }}>
-      {/* Overlay for dimming so text pops */}
-      <div style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        backgroundColor: "rgba(0,0,0,0.6)", // dark overlay
-        zIndex: 0
-      }} />
-
-      {/* Main content */}
-      <div style={{
-        position: "relative",
-        zIndex: 1,
+    <div style={{
         maxWidth: 1000,
         margin: "0 auto",
         padding: 20,
         fontFamily: "Arial, sans-serif",
+        backgroundImage: `url('/background.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
         color: "#fff",
       }}>
-        {/* Header */}
         <header style={{ textAlign: "center", marginBottom: 20 }}>
           <h1 style={{
             fontSize: 42,
@@ -901,7 +881,7 @@ export default function Home() {
           <p style={{ fontSize: 18, color: "#88ffdd" }}>Live Global Crisis Tracker</p>
           {lastUpdated && <p style={{ fontSize: 12, color: "#aaa" }}>Last updated: {lastUpdated.toLocaleTimeString()}</p>}
         </header>
-
+  
         {/* Red toggle */}
         <div style={{ marginBottom: 30, textAlign: "center" }}>
           <label style={{
@@ -924,7 +904,7 @@ export default function Home() {
             Show only high-urgency news
           </label>
         </div>
-
+  
         {/* Breaking banner */}
         {breaking && (
           <a href={breaking.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
@@ -952,9 +932,9 @@ export default function Home() {
             </div>
           </a>
         )}
-
+  
         {loading && <p style={{ textAlign: "center", color: "#fff" }}>Loading news...</p>}
-
+  
         <main style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           {news
             .filter(item => !showOnlyRed || getUrgencyColor(item.title) === "#ff4d4f")
@@ -968,7 +948,7 @@ export default function Home() {
                     borderLeft: `6px solid ${color}`,
                     borderRadius: 10,
                     boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
-                    backgroundColor: "rgba(0,0,0,0.8)", // slightly more opaque for cards
+                    backgroundColor: "rgba(0,0,0,0.6)",
                     transition: "transform 0.15s ease, box-shadow 0.15s ease",
                     cursor: "pointer"
                   }}
@@ -996,7 +976,18 @@ export default function Home() {
               );
             })}
         </main>
+  
+        {/* HUD animations */}
+        <style jsx>{`
+          @keyframes hudScan {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 1000px 0, 0 1000px; }
+          }
+          @keyframes scanLine {
+            0% { top: -2px; }
+            100% { top: 100%; }
+          }
+        `}</style>
       </div>
-    </div>
-  );
-}
+    );
+  }
