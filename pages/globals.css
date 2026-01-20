@@ -42,23 +42,49 @@ html, body {
 }
 
 /* Custom dark scrollbar */
+/* Custom scrollbar (dark + subtle) */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a; /* very dark */
+  background: #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333; /* gray handle */
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: rgba(255, 255, 255, 0.35);
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.2);
+/* App background container */
+.app-container {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Fixed background layer (no scroll-jump) */
+.app-container::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("/nasa.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -2;              /* background layer */
+  transform: translateZ(0);
+}
+
+/* Overlay on top of background, still behind content */
+.app-container::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: -1;              /* overlay layer */
 }
