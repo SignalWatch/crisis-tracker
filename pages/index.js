@@ -778,6 +778,7 @@ const getUrgencyColor = (title) => {
     "economic coercion",
     "economic pressure",
     "tense",
+    "tensions",
     "extremely tense",
     "diplomatic solution",
     "diplomacy",
@@ -928,7 +929,7 @@ export default function Home() {
           }}
         />
       </div>
-      
+
         <header style={{ textAlign: "center", marginBottom: 20 }}>
           <h1 style={{
             fontSize: 42,
