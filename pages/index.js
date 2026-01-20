@@ -860,19 +860,33 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{
-        maxWidth: 1000,
-        margin: "0 auto",
-        padding: 20,
-        fontFamily: "Arial, sans-serif",
-        backgroundImage: "url('/nasa.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-        color: "#fff",
-        position: "relative",
-        overflow: "hidden"
-      }}>
+        <div
+          style={{
+            minHeight: "100vh",
+            width: "100%",
+            backgroundImage: "url('/nasa.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundAttachment: "fixed",
+            color: "#fff",
+          }}
+        >
+          <div
+            style={{
+              minHeight: "100vh",
+              width: "100%",
+              backgroundColor: "rgba(0,0,0,0.25)",
+              padding: 20,
+            }}
+          >
+            <div
+              style={{
+                maxWidth: 1000,
+                margin: "0 auto",
+                fontFamily: "Arial, sans-serif",
+              }}
+            >
 
         <header style={{ textAlign: "center", marginBottom: 20 }}>
           <h1 style={{
@@ -981,5 +995,7 @@ export default function Home() {
             })}
         </main>
       </div>
+    </div>
+</div>
     );
   }
