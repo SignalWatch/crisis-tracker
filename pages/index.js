@@ -861,17 +861,16 @@ export default function Home() {
 
   return (
     <div style={{
-        maxWidth: 1000,
-        margin: "0 auto",
-        padding: 20,
-        fontFamily: "Arial, sans-serif",
-        backgroundImage: "url('/nasa.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-        color: "#fff",
-        position: "relative",
-        overflow: "hidden"
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundImage: "url('/nasa.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            zIndex: -2
       }}>
 
         <header style={{ textAlign: "center", marginBottom: 20 }}>
