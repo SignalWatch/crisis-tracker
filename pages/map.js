@@ -291,6 +291,8 @@ const COUNTRY_COORDS = {
   "united states": [37.0902, -95.7129],
   mexico: [23.6345, -102.5528],
   brazil: [-14.235, -51.9253],
+  "south africa": [-30.5595, 22.9375],
+
 };
 
 // Aliases that should map to keys in COUNTRY_COORDS
@@ -301,7 +303,6 @@ const COUNTRY_ALIASES = {
   usa: "united states",
   "u.s": "united states",
   "u.s.": "united states",
-  us: "united states",
   america: "united states",
   american: "united states",
 
@@ -310,17 +311,29 @@ const COUNTRY_ALIASES = {
   "west bank": "palestine",
 };
 
+const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const hasWholeWord = (text, phrase) => {
+  // phrase can be multi-word (e.g., "south africa")
+  const pattern = new RegExp(`\\b${escapeRegex(phrase)}\\b`, "i");
+  return pattern.test(text);
+};
+
 const findCountryCoordsFromTitle = (rawTitle = "") => {
   const t = normalizeText(rawTitle);
 
-  // 1) direct match on COUNTRY_COORDS keys
-  for (const key of Object.keys(COUNTRY_COORDS)) {
-    if (t.includes(key)) return { country: key, coords: COUNTRY_COORDS[key] };
+  // 1) Prefer the longest direct COUNTRY_COORDS matches first
+  const directKeys = Object.keys(COUNTRY_COORDS).sort((a, b) => b.length - a.length);
+  for (const key of directKeys) {
+    if (hasWholeWord(t, key)) {
+      return { country: key, coords: COUNTRY_COORDS[key] };
+    }
   }
 
-  // 2) alias match
-  for (const alias of Object.keys(COUNTRY_ALIASES)) {
-    if (t.includes(alias)) {
+  // 2) Then aliases (also longest first)
+  const aliasKeys = Object.keys(COUNTRY_ALIASES).sort((a, b) => b.length - a.length);
+  for (const alias of aliasKeys) {
+    if (hasWholeWord(t, alias)) {
       const canonical = COUNTRY_ALIASES[alias];
       const coords = COUNTRY_COORDS[canonical];
       if (coords) return { country: canonical, coords };
@@ -329,6 +342,7 @@ const findCountryCoordsFromTitle = (rawTitle = "") => {
 
   return null;
 };
+
 
 export default function MapPage() {
   const [news, setNews] = useState([]);
