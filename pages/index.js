@@ -860,18 +860,7 @@ export default function Home() {
   }, []);
 
   return (
-        <div
-          style={{
-            minHeight: "100vh",
-            width: "100%",
-            backgroundImage: "url('/nasa.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundAttachment: "fixed",
-            color: "#fff",
-          }}
-        >
+    <div style={{ minHeight: "100vh", width: "100%", color: "#fff" }}>
           <div
             style={{
               minHeight: "100vh",
