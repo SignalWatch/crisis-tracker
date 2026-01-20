@@ -878,11 +878,11 @@ export default function Home() {
           <h1 style={{
             fontSize: 42,
             fontWeight: 800,
-            color: "#00ffcc",
+            color: "#fff",
             textShadow: "0 0 8px #00ffcc, 0 0 12px #00ffcc",
             letterSpacing: 1.2,
           }}>SignalWatchGlobal</h1>
-          <p style={{ fontSize: 18, color: "#88ffdd" }}>Live Global Crisis Tracker</p>
+          <p style={{ fontSize: 18, color: "#aaa" }}>Live Global Crisis Tracker</p>
           {lastUpdated && <p style={{ fontSize: 12, color: "#aaa" }}>Last updated: {lastUpdated.toLocaleTimeString()}</p>}
         </header>
   
