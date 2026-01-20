@@ -1,6 +1,6 @@
 // File: pages/index.js
 // Date: 2026-01-16
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // Country → Flag map
 const COUNTRY_FLAGS = {
