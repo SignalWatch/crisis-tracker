@@ -960,36 +960,53 @@ export default function Home() {
           }}
         >
           <header style={{ textAlign: "center", marginBottom: 20 }}>
-            <h1
-              style={{
-                fontSize: 42,
-                fontWeight: 800,
-                color: "#fff",
-                textShadow: "0 0 8px #aaa, 0 0 12px #aaa",
-                letterSpacing: 1.2,
-              }}
-            >
-              Signal Watch Global
-            </h1>
-            <div style={{ marginTop: 10 }}>
-  <a
-    href="/dashboard"
+          <header style={{ textAlign: "center", marginBottom: 20 }}>
+
+  <div
     style={{
-      color: "#fff",
-      textDecoration: "none",
-      background: "rgba(255,255,255,0.10)",
-      border: "1px solid rgba(255,255,255,0.15)",
-      padding: "2px 3px",
-      borderRadius: 5,
-      fontWeight: 700,
-      fontSize: 25,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 16,
+      marginBottom: 6
     }}
   >
-    Dashboard
-  </a>
-</div>
+    <h1
+      style={{
+        fontSize: 42,
+        fontWeight: 800,
+        color: "#fff",
+        textShadow: "0 0 8px #aaa, 0 0 12px #aaa",
+        letterSpacing: 1.2,
+        margin: 0
+      }}
+    >
+      Signal Watch Global
+    </h1>
 
-            <p style={{ fontSize: 18, color: "#aaa" }}>Live Global Crisis Tracker</p>
+    <a
+      href="/dashboard"
+      style={{
+        color: "#fff",
+        textDecoration: "none",
+        background: "rgba(255,255,255,0.10)",
+        border: "1px solid rgba(255,255,255,0.15)",
+        padding: "8px 12px",
+        borderRadius: 8,
+        fontWeight: 800,
+        fontSize: 14
+      }}
+    >
+      Dashboard
+    </a>
+  </div>
+
+  <p style={{ fontSize: 18, color: "#aaa", marginTop: 4 }}>
+    Live Global Crisis Tracker
+  </p>
+
+</header>
+
             {lastUpdated && (
               <p style={{ fontSize: 12, color: "#aaa" }}>
                 Last updated: {lastUpdated.toLocaleTimeString()}
