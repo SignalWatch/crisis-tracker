@@ -4,562 +4,554 @@ import { useEffect, useState } from "react";
 
 // Country → Flag map
 const COUNTRY_FLAGS = {
-    // ======================
-    // United States
-    // ======================
+  // ======================
+  // United States
+  // ======================
 
-    "united states": "🇺🇸",
-    "united states of america": "🇺🇸",
-    "usa": "🇺🇸",
-    "u.s.": "🇺🇸",
-    "u s": "🇺🇸",
-    "us": "🇺🇸",
-    "america": "🇺🇸",
-    "american": "🇺🇸",
-  
-    // ======================
-    // Russia / Ukraine region
-    // ======================
-    "russia": "🇷🇺",
-    "russian": "🇷🇺",
+  "united states": "🇺🇸",
+  "united states of america": "🇺🇸",
+  "usa": "🇺🇸",
+  "u.s.": "🇺🇸",
+  "u s": "🇺🇸",
+  "us": "🇺🇸",
+  "america": "🇺🇸",
+  "american": "🇺🇸",
 
-    "ukraine": "🇺🇦",
-    "ukrainian": "🇺🇦",
+  // ======================
+  // Russia / Ukraine region
+  // ======================
+  "russia": "🇷🇺",
+  "russian": "🇷🇺",
 
-    "belarus": "🇧🇾",
-    "belarusian": "🇧🇾",
+  "ukraine": "🇺🇦",
+  "ukrainian": "🇺🇦",
 
-    "moldova": "🇲🇩",
-    "moldovan": "🇲🇩",
+  "belarus": "🇧🇾",
+  "belarusian": "🇧🇾",
 
-    "estonia": "🇪🇪",
-    "estonian": "🇪🇪",
+  "moldova": "🇲🇩",
+  "moldovan": "🇲🇩",
 
-    "latvia": "🇱🇻",
-    "latvian": "🇱🇻",
+  "estonia": "🇪🇪",
+  "estonian": "🇪🇪",
 
-    "lithuania": "🇱🇹",
-    "lithuanian": "🇱🇹",
+  "latvia": "🇱🇻",
+  "latvian": "🇱🇻",
 
-    "georgia": "🇬🇪",
-    "georgian": "🇬🇪",
+  "lithuania": "🇱🇹",
+  "lithuanian": "🇱🇹",
 
-    "armenia": "🇦🇲",
-    "armenian": "🇦🇲",
+  "georgia": "🇬🇪",
+  "georgian": "🇬🇪",
 
-    "azerbaijan": "🇦🇿",
-    "azerbaijani": "🇦🇿",
+  "armenia": "🇦🇲",
+  "armenian": "🇦🇲",
 
-    "kazakhstan": "🇰🇿",
-    "kazakh": "🇰🇿",
+  "azerbaijan": "🇦🇿",
+  "azerbaijani": "🇦🇿",
 
-    "uzbekistan": "🇺🇿",
-    "uzbek": "🇺🇿",
+  "kazakhstan": "🇰🇿",
+  "kazakh": "🇰🇿",
 
-    "turkmenistan": "🇹🇲",
-    "turkmen": "🇹🇲",
+  "uzbekistan": "🇺🇿",
+  "uzbek": "🇺🇿",
 
-    "tajikistan": "🇹🇯",
-    "tajik": "🇹🇯",
-
-    "kyrgyzstan": "🇰🇬",
-    "kyrgyz": "🇰🇬",
-  
-    // ======================
-    // China / Taiwan / East Asia
-    // ======================
-    
-    "china": "🇨🇳",
-    "chinese": "🇨🇳",
-
-    "japan": "🇯🇵",
-    "japanese": "🇯🇵",
-
-    "north korea": "🇰🇵",
-    "north korean": "🇰🇵",
-
-    "south korea": "🇰🇷",
-    "south korean": "🇰🇷",
-
-    "taiwan": "🇹🇼",
-    "taiwanese": "🇹🇼",
-
-    "mongolia": "🇲🇳",
-    "mongolian": "🇲🇳",
-
-    "hong kong": "🇭🇰",
-    "hongkonger": "🇭🇰",
-    "hk": "🇭🇰",
-
-    "macau": "🇲🇴",
-    "macaense": "🇲🇴",
-  
-    // ======================
-    // Middle East
-    // ======================
-
-    "bahrain": "🇧🇭",
-    "bahraini": "🇧🇭",
-
-    "cyprus": "🇨🇾",
-    "cypriot": "🇨🇾",
-
-    "egypt": "🇪🇬",
-    "egyptian": "🇪🇬",
-
-    "iran": "🇮🇷",
-    "iranian": "🇮🇷",
-
-    "iraq": "🇮🇶",
-    "iraqi": "🇮🇶",
-
-    "israel": "🇮🇱",
-    "israeli": "🇮🇱",
-
-    "jordan": "🇯🇴",
-    "jordanian": "🇯🇴",
-
-    "kuwait": "🇰🇼",
-    "kuwaiti": "🇰🇼",
-
-    "lebanon": "🇱🇧",
-    "lebanese": "🇱🇧",
-
-    "oman": "🇴🇲",
-    "omani": "🇴🇲",
-
-    "palestine": "🇵🇸",
-    "palestinian": "🇵🇸",
-
-    "qatar": "🇶🇦",
-    "qatari": "🇶🇦",
-
-    "saudi arabia": "🇸🇦",
-    "saudi": "🇸🇦",
-    "saudi arabian": "🇸🇦",
-
-    "syria": "🇸🇾",
-    "syrian": "🇸🇾",
-
-    "turkey": "🇹🇷",
-    "turkish": "🇹🇷",
-
-    "united arab emirates": "🇦🇪",
-    "uae": "🇦🇪",
-    "emirati": "🇦🇪",
-
-    "yemen": "🇾🇪",
-    "yemeni": "🇾🇪",
-  
-    // ======================
-    // South & Central Asia
-    // ======================
-    "afghanistan": "🇦🇫",
-    "afghan": "🇦🇫",
-  
-    "pakistan": "🇵🇰",
-    "pakistani": "🇵🇰",
-  
-    "india": "🇮🇳",
-    "indian": "🇮🇳",
-  
-    "bangladesh": "🇧🇩",
-    "bangladeshi": "🇧🇩",
-  
-    "sri lanka": "🇱🇰",
-    "sri lankan": "🇱🇰",
-  
-    // ======================
-    // Europe
-    // ======================
-    "united kingdom": "🇬🇧",
-    "uk": "🇬🇧",
-    "britain": "🇬🇧",
-    "british": "🇬🇧",
-  
-    "france": "🇫🇷",
-    "french": "🇫🇷",
-  
-    "germany": "🇩🇪",
-    "german": "🇩🇪",
-  
-    "italy": "🇮🇹",
-    "italian": "🇮🇹",
-  
-    "spain": "🇪🇸",
-    "spanish": "🇪🇸",
-  
-    "portugal": "🇵🇹",
-    "portuguese": "🇵🇹",
-  
-    "netherlands": "🇳🇱",
-    "dutch": "🇳🇱",
-  
-    "belgium": "🇧🇪",
-    "belgian": "🇧🇪",
-  
-    "switzerland": "🇨🇭",
-    "swiss": "🇨🇭",
-  
-    "austria": "🇦🇹",
-    "austrian": "🇦🇹",
-  
-    "poland": "🇵🇱",
-    "polish": "🇵🇱",
-  
-    "czech republic": "🇨🇿",
-    "czech": "🇨🇿",
-  
-    "slovakia": "🇸🇰",
-    "slovak": "🇸🇰",
-    "slovakian": "🇸🇰",
-  
-    "hungary": "🇭🇺",
-    "hungarian": "🇭🇺",
-  
-    "romania": "🇷🇴",
-    "romanian": "🇷🇴",
-  
-    "bulgaria": "🇧🇬",
-    "bulgarian": "🇧🇬",
-  
-    "greece": "🇬🇷",
-    "greek": "🇬🇷",
-  
-    "serbia": "🇷🇸",
-    "serbian": "🇷🇸",
-  
-    "croatia": "🇭🇷",
-    "croatian": "🇭🇷",
-  
-    "bosnia": "🇧🇦",
-    "bosnian": "🇧🇦",
-  
-    "albania": "🇦🇱",
-    "albanian": "🇦🇱",
-  
-    "slovenia": "🇸🇮",
-    "slovenian": "🇸🇮",
-  
-    // ======================
-    // Nordics
-    // ======================
-    "norway": "🇳🇴",
-    "norwegian": "🇳🇴",
-  
-    "sweden": "🇸🇪",
-    "swedish": "🇸🇪",
-  
-    "finland": "🇫🇮",
-    "finnish": "🇫🇮",
-  
-    "denmark": "🇩🇰",
-    "danish": "🇩🇰",
-  
-    "iceland": "🇮🇸",
-    "icelandic": "🇮🇸",
-
-    "greenland": "🇬🇱",
-    "greenlandic": "🇬🇱",
-    "greenlanders": "🇬🇱",
-  
-    // ======================
-    // Africa
-    // ======================
-    "algeria": "🇩🇿",
-    "algerian": "🇩🇿",
-
-    "angola": "🇦🇴",
-    "angolan": "🇦🇴",
-
-    "benin": "🇧🇯",
-    "beninese": "🇧🇯",
-
-    "botswana": "🇧🇼",
-    "botswanan": "🇧🇼",
-
-    "burkina faso": "🇧🇫",
-    "burkinabe": "🇧🇫",
-
-    "burundi": "🇧🇮",
-    "burundian": "🇧🇮",
-
-    "cabo verde": "🇨🇻",
-    "cape verdean": "🇨🇻",
-
-    "cameroon": "🇨🇲",
-    "cameroonian": "🇨🇲",
-
-    "central african republic": "🇨🇫",
-    "central african": "🇨🇫",
-
-    "chad": "🇹🇩",
-    "chadian": "🇹🇩",
-
-    "comoros": "🇰🇲",
-    "comorian": "🇰🇲",
-
-    "congo": "🇨🇬",
-    "congolese": "🇨🇬",
-
-    "democratic republic of the congo": "🇨🇩",
-    "congolese": "🇨🇩",
-
-    "djibouti": "🇩🇯",
-    "djiboutian": "🇩🇯",
-
-    "egypt": "🇪🇬",
-    "egyptian": "🇪🇬",
-
-    "equatorial guinea": "🇬🇶",
-    "equatoguinean": "🇬🇶",
-
-    "eritrea": "🇪🇷",
-    "eritrean": "🇪🇷",
-
-    "eswatini": "🇸🇿",
-    "swazi": "🇸🇿",
-
-    "ethiopia": "🇪🇹",
-    "ethiopian": "🇪🇹",
-
-    "gabon": "🇬🇦",
-    "gabonese": "🇬🇦",
-
-    "gambia": "🇬🇲",
-    "gambian": "🇬🇲",
-
-    "ghana": "🇬🇭",
-    "ghanaian": "🇬🇭",
-
-    "guinea": "🇬🇳",
-    "guinean": "🇬🇳",
-
-    "guinea-bissau": "🇬🇼",
-    "guinea-bissauan": "🇬🇼",
-
-    "ivory coast": "🇨🇮",
-    "côte d'ivoire": "🇨🇮",
-    "ivorian": "🇨🇮",
-
-    "kenya": "🇰🇪",
-    "kenyan": "🇰🇪",
-
-    "lesotho": "🇱🇸",
-    "lesothan": "🇱🇸",
-
-    "liberia": "🇱🇷",
-    "liberian": "🇱🇷",
-
-    "libya": "🇱🇾",
-    "libyan": "🇱🇾",
-
-    "madagascar": "🇲🇬",
-    "malagasy": "🇲🇬",
-
-    "malawi": "🇲🇼",
-    "malawian": "🇲🇼",
-
-    "mali": "🇲🇱",
-    "malian": "🇲🇱",
-
-    "mauritania": "🇲🇷",
-    "mauritanian": "🇲🇷",
-
-    "mauritius": "🇲🇺",
-    "mauritian": "🇲🇺",
-
-    "morocco": "🇲🇦",
-    "moroccan": "🇲🇦",
-
-    "mozambique": "🇲🇿",
-    "mozambican": "🇲🇿",
-
-    "namibia": "🇳🇦",
-    "namibian": "🇳🇦",
-
-    "niger": "🇳🇪",
-    "nigerien": "🇳🇪",
-
-    "nigeria": "🇳🇬",
-    "nigerian": "🇳🇬",
-
-    "rwanda": "🇷🇼",
-    "rwandan": "🇷🇼",
-
-    "sao tome and principe": "🇸🇹",
-    "sao tomean": "🇸🇹",
-
-    "senegal": "🇸🇳",
-    "senegalese": "🇸🇳",
-
-    "seychelles": "🇸🇨",
-    "seychellois": "🇸🇨",
-
-    "sierra leone": "🇸🇱",
-    "sierra leonean": "🇸🇱",
-
-    "somalia": "🇸🇴",
-    "somali": "🇸🇴",
-
-    "south africa": "🇿🇦",
-    "south african": "🇿🇦",
-
-    "south sudan": "🇸🇸",
-    "south sudanese": "🇸🇸",
-
-    "sudan": "🇸🇩",
-    "sudanese": "🇸🇩",
-
-    "tanzania": "🇹🇿",
-    "tanzanian": "🇹🇿",
-
-    "togo": "🇹🇬",
-    "togolese": "🇹🇬",
-
-    "tunisia": "🇹🇳",
-    "tunisian": "🇹🇳",
-
-    "uganda": "🇺🇬",
-    "ugandan": "🇺🇬",
-
-    "zambia": "🇿🇲",
-    "zambian": "🇿🇲",
-
-    "zimbabwe": "🇿🇼",
-    "zimbabwean": "🇿🇼",
-  
-    // ======================
-    // Southeast Asia
-    // ======================
-    "philippines": "🇵🇭",
-    "philippine": "🇵🇭",
-    "filipino": "🇵🇭",
-  
-    "thailand": "🇹🇭",
-    "thai": "🇹🇭",
-  
-    "vietnam": "🇻🇳",
-    "vietnamese": "🇻🇳",
-  
-    "indonesia": "🇮🇩",
-    "indonesian": "🇮🇩",
-  
-    "malaysia": "🇲🇾",
-    "malaysian": "🇲🇾",
-  
-    "singapore": "🇸🇬",
-    "singaporean": "🇸🇬",
-  
-    "myanmar": "🇲🇲",
-    "burma": "🇲🇲",
-    "burmese": "🇲🇲",
-
-    "laos": "🇱🇦",
-    "laotian": "🇱🇦",
-
-    "timor-leste": "🇹🇱",
-    "timorese": "🇹🇱",
-
-    "cambodia": "🇰🇭",
-    "cambodian": "🇰🇭",
-  
-    // ======================
-    // Americas
-    // ======================
-    "canada": "🇨🇦",
-    "canadian": "🇨🇦",
-  
-    "mexico": "🇲🇽",
-    "mexican": "🇲🇽",
-  
-    "brazil": "🇧🇷",
-    "brazilian": "🇧🇷",
-  
-    "argentina": "🇦🇷",
-    "argentine": "🇦🇷",
-    "argentenian": "🇦🇷",
-  
-    "chile": "🇨🇱",
-    "chilean": "🇨🇱",
-  
-    "colombia": "🇨🇴",
-    "colombian": "🇨🇴",
-  
-    "peru": "🇵🇪",
-    "peruvian": "🇵🇪",
-  
-    "venezuela": "🇻🇪",
-    "venezuelan": "🇻🇪",
-  
-    "cuba": "🇨🇺",
-    "cuban": "🇨🇺",
-
-    "guatemala": "🇬🇹",
-    "guatemalan": "🇬🇹",
-
-    "bolivia": "🇧🇴",
-    "bolivian": "🇧🇴",
-
-    "uruguay": "🇺🇾",
-    "uruguayan": "🇺🇾",
-
-    "ecuador": "🇪🇨",
-    "ecuadorian": "🇪🇨",
-
-    "paraguay": "🇵🇾",
-    "paraguayan": "🇵🇾",
-
-    "venezuela": "🇻🇪",
-    "venezuelan": "🇻🇪",
-
-    "suriname": "🇸🇷",
-    "surinamese": "🇸🇷",
-
-  };
-
-  // Leader → Country map
+  "turkmenistan": "🇹🇲",
+  "turkmen": "🇹🇲",
+
+  "tajikistan": "🇹🇯",
+  "tajik": "🇹🇯",
+
+  "kyrgyzstan": "🇰🇬",
+  "kyrgyz": "🇰🇬",
+
+  // ======================
+  // China / Taiwan / East Asia
+  // ======================
+
+  "china": "🇨🇳",
+  "chinese": "🇨🇳",
+
+  "japan": "🇯🇵",
+  "japanese": "🇯🇵",
+
+  "north korea": "🇰🇵",
+  "north korean": "🇰🇵",
+
+  "south korea": "🇰🇷",
+  "south korean": "🇰🇷",
+
+  "taiwan": "🇹🇼",
+  "taiwanese": "🇹🇼",
+
+  "mongolia": "🇲🇳",
+  "mongolian": "🇲🇳",
+
+  "hong kong": "🇭🇰",
+  "hongkonger": "🇭🇰",
+  "hk": "🇭🇰",
+
+  "macau": "🇲🇴",
+  "macaense": "🇲🇴",
+
+  // ======================
+  // Middle East
+  // ======================
+
+  "bahrain": "🇧🇭",
+  "bahraini": "🇧🇭",
+
+  "cyprus": "🇨🇾",
+  "cypriot": "🇨🇾",
+
+  "egypt": "🇪🇬",
+  "egyptian": "🇪🇬",
+
+  "iran": "🇮🇷",
+  "iranian": "🇮🇷",
+
+  "iraq": "🇮🇶",
+  "iraqi": "🇮🇶",
+
+  "israel": "🇮🇱",
+  "israeli": "🇮🇱",
+
+  "jordan": "🇯🇴",
+  "jordanian": "🇯🇴",
+
+  "kuwait": "🇰🇼",
+  "kuwaiti": "🇰🇼",
+
+  "lebanon": "🇱🇧",
+  "lebanese": "🇱🇧",
+
+  "oman": "🇴🇲",
+  "omani": "🇴🇲",
+
+  "palestine": "🇵🇸",
+  "palestinian": "🇵🇸",
+
+  "qatar": "🇶🇦",
+  "qatari": "🇶🇦",
+
+  "saudi arabia": "🇸🇦",
+  "saudi": "🇸🇦",
+  "saudi arabian": "🇸🇦",
+
+  "syria": "🇸🇾",
+  "syrian": "🇸🇾",
+
+  "turkey": "🇹🇷",
+  "turkish": "🇹🇷",
+
+  "united arab emirates": "🇦🇪",
+  "uae": "🇦🇪",
+  "emirati": "🇦🇪",
+
+  "yemen": "🇾🇪",
+  "yemeni": "🇾🇪",
+
+  // ======================
+  // South & Central Asia
+  // ======================
+  "afghanistan": "🇦🇫",
+  "afghan": "🇦🇫",
+
+  "pakistan": "🇵🇰",
+  "pakistani": "🇵🇰",
+
+  "india": "🇮🇳",
+  "indian": "🇮🇳",
+
+  "bangladesh": "🇧🇩",
+  "bangladeshi": "🇧🇩",
+
+  "sri lanka": "🇱🇰",
+  "sri lankan": "🇱🇰",
+
+  // ======================
+  // Europe
+  // ======================
+  "united kingdom": "🇬🇧",
+  "uk": "🇬🇧",
+  "britain": "🇬🇧",
+  "british": "🇬🇧",
+
+  "france": "🇫🇷",
+  "french": "🇫🇷",
+
+  "germany": "🇩🇪",
+  "german": "🇩🇪",
+
+  "italy": "🇮🇹",
+  "italian": "🇮🇹",
+
+  "spain": "🇪🇸",
+  "spanish": "🇪🇸",
+
+  "portugal": "🇵🇹",
+  "portuguese": "🇵🇹",
+
+  "netherlands": "🇳🇱",
+  "dutch": "🇳🇱",
+
+  "belgium": "🇧🇪",
+  "belgian": "🇧🇪",
+
+  "switzerland": "🇨🇭",
+  "swiss": "🇨🇭",
+
+  "austria": "🇦🇹",
+  "austrian": "🇦🇹",
+
+  "poland": "🇵🇱",
+  "polish": "🇵🇱",
+
+  "czech republic": "🇨🇿",
+  "czech": "🇨🇿",
+
+  "slovakia": "🇸🇰",
+  "slovak": "🇸🇰",
+  "slovakian": "🇸🇰",
+
+  "hungary": "🇭🇺",
+  "hungarian": "🇭🇺",
+
+  "romania": "🇷🇴",
+  "romanian": "🇷🇴",
+
+  "bulgaria": "🇧🇬",
+  "bulgarian": "🇧🇬",
+
+  "greece": "🇬🇷",
+  "greek": "🇬🇷",
+
+  "serbia": "🇷🇸",
+  "serbian": "🇷🇸",
+
+  "croatia": "🇭🇷",
+  "croatian": "🇭🇷",
+
+  "bosnia": "🇧🇦",
+  "bosnian": "🇧🇦",
+
+  "albania": "🇦🇱",
+  "albanian": "🇦🇱",
+
+  "slovenia": "🇸🇮",
+  "slovenian": "🇸🇮",
+
+  // ======================
+  // Nordics
+  // ======================
+  "norway": "🇳🇴",
+  "norwegian": "🇳🇴",
+
+  "sweden": "🇸🇪",
+  "swedish": "🇸🇪",
+
+  "finland": "🇫🇮",
+  "finnish": "🇫🇮",
+
+  "denmark": "🇩🇰",
+  "danish": "🇩🇰",
+
+  "iceland": "🇮🇸",
+  "icelandic": "🇮🇸",
+
+  "greenland": "🇬🇱",
+  "greenlandic": "🇬🇱",
+  "greenlanders": "🇬🇱",
+
+  // ======================
+  // Africa
+  // ======================
+  "algeria": "🇩🇿",
+  "algerian": "🇩🇿",
+
+  "angola": "🇦🇴",
+  "angolan": "🇦🇴",
+
+  "benin": "🇧🇯",
+  "beninese": "🇧🇯",
+
+  "botswana": "🇧🇼",
+  "botswanan": "🇧🇼",
+
+  "burkina faso": "🇧🇫",
+  "burkinabe": "🇧🇫",
+
+  "burundi": "🇧🇮",
+  "burundian": "🇧🇮",
+
+  "cabo verde": "🇨🇻",
+  "cape verdean": "🇨🇻",
+
+  "cameroon": "🇨🇲",
+  "cameroonian": "🇨🇲",
+
+  "central african republic": "🇨🇫",
+  "central african": "🇨🇫",
+
+  "chad": "🇹🇩",
+  "chadian": "🇹🇩",
+
+  "comoros": "🇰🇲",
+  "comorian": "🇰🇲",
+
+  "congo": "🇨🇬",
+  "congolese": "🇨🇬",
+
+  "democratic republic of the congo": "🇨🇩",
+  "congolese": "🇨🇩",
+
+  "djibouti": "🇩🇯",
+  "djiboutian": "🇩🇯",
+
+  "equatorial guinea": "🇬🇶",
+  "equatoguinean": "🇬🇶",
+
+  "eritrea": "🇪🇷",
+  "eritrean": "🇪🇷",
+
+  "eswatini": "🇸🇿",
+  "swazi": "🇸🇿",
+
+  "ethiopia": "🇪🇹",
+  "ethiopian": "🇪🇹",
+
+  "gabon": "🇬🇦",
+  "gabonese": "🇬🇦",
+
+  "gambia": "🇬🇲",
+  "gambian": "🇬🇲",
+
+  "ghana": "🇬🇭",
+  "ghanaian": "🇬🇭",
+
+  "guinea": "🇬🇳",
+  "guinean": "🇬🇳",
+
+  "guinea-bissau": "🇬🇼",
+  "guinea-bissauan": "🇬🇼",
+
+  "ivory coast": "🇨🇮",
+  "côte d'ivoire": "🇨🇮",
+  "ivorian": "🇨🇮",
+
+  "kenya": "🇰🇪",
+  "kenyan": "🇰🇪",
+
+  "lesotho": "🇱🇸",
+  "lesothan": "🇱🇸",
+
+  "liberia": "🇱🇷",
+  "liberian": "🇱🇷",
+
+  "libya": "🇱🇾",
+  "libyan": "🇱🇾",
+
+  "madagascar": "🇲🇬",
+  "malagasy": "🇲🇬",
+
+  "malawi": "🇲🇼",
+  "malawian": "🇲🇼",
+
+  "mali": "🇲🇱",
+  "malian": "🇲🇱",
+
+  "mauritania": "🇲🇷",
+  "mauritanian": "🇲🇷",
+
+  "mauritius": "🇲🇺",
+  "mauritian": "🇲🇺",
+
+  "morocco": "🇲🇦",
+  "moroccan": "🇲🇦",
+
+  "mozambique": "🇲🇿",
+  "mozambican": "🇲🇿",
+
+  "namibia": "🇳🇦",
+  "namibian": "🇳🇦",
+
+  "niger": "🇳🇪",
+  "nigerien": "🇳🇪",
+
+  "nigeria": "🇳🇬",
+  "nigerian": "🇳🇬",
+
+  "rwanda": "🇷🇼",
+  "rwandan": "🇷🇼",
+
+  "sao tome and principe": "🇸🇹",
+  "sao tomean": "🇸🇹",
+
+  "senegal": "🇸🇳",
+  "senegalese": "🇸🇳",
+
+  "seychelles": "🇸🇨",
+  "seychellois": "🇸🇨",
+
+  "sierra leone": "🇸🇱",
+  "sierra leonean": "🇸🇱",
+
+  "somalia": "🇸🇴",
+  "somali": "🇸🇴",
+
+  "south africa": "🇿🇦",
+  "south african": "🇿🇦",
+
+  "south sudan": "🇸🇸",
+  "south sudanese": "🇸🇸",
+
+  "sudan": "🇸🇩",
+  "sudanese": "🇸🇩",
+
+  "tanzania": "🇹🇿",
+  "tanzanian": "🇹🇿",
+
+  "togo": "🇹🇬",
+  "togolese": "🇹🇬",
+
+  "tunisia": "🇹🇳",
+  "tunisian": "🇹🇳",
+
+  "uganda": "🇺🇬",
+  "ugandan": "🇺🇬",
+
+  "zambia": "🇿🇲",
+  "zambian": "🇿🇲",
+
+  "zimbabwe": "🇿🇼",
+  "zimbabwean": "🇿🇼",
+
+  // ======================
+  // Southeast Asia
+  // ======================
+  "philippines": "🇵🇭",
+  "philippine": "🇵🇭",
+  "filipino": "🇵🇭",
+
+  "thailand": "🇹🇭",
+  "thai": "🇹🇭",
+
+  "vietnam": "🇻🇳",
+  "vietnamese": "🇻🇳",
+
+  "indonesia": "🇮🇩",
+  "indonesian": "🇮🇩",
+
+  "malaysia": "🇲🇾",
+  "malaysian": "🇲🇾",
+
+  "singapore": "🇸🇬",
+  "singaporean": "🇸🇬",
+
+  "myanmar": "🇲🇲",
+  "burma": "🇲🇲",
+  "burmese": "🇲🇲",
+
+  "laos": "🇱🇦",
+  "laotian": "🇱🇦",
+
+  "timor-leste": "🇹🇱",
+  "timorese": "🇹🇱",
+
+  "cambodia": "🇰🇭",
+  "cambodian": "🇰🇭",
+
+  // ======================
+  // Americas
+  // ======================
+  "canada": "🇨🇦",
+  "canadian": "🇨🇦",
+
+  "mexico": "🇲🇽",
+  "mexican": "🇲🇽",
+
+  "brazil": "🇧🇷",
+  "brazilian": "🇧🇷",
+
+  "argentina": "🇦🇷",
+  "argentine": "🇦🇷",
+  "argentenian": "🇦🇷",
+
+  "chile": "🇨🇱",
+  "chilean": "🇨🇱",
+
+  "colombia": "🇨🇴",
+  "colombian": "🇨🇴",
+
+  "peru": "🇵🇪",
+  "peruvian": "🇵🇪",
+
+  "venezuela": "🇻🇪",
+  "venezuelan": "🇻🇪",
+
+  "cuba": "🇨🇺",
+  "cuban": "🇨🇺",
+
+  "guatemala": "🇬🇹",
+  "guatemalan": "🇬🇹",
+
+  "bolivia": "🇧🇴",
+  "bolivian": "🇧🇴",
+
+  "uruguay": "🇺🇾",
+  "uruguayan": "🇺🇾",
+
+  "ecuador": "🇪🇨",
+  "ecuadorian": "🇪🇨",
+
+  "paraguay": "🇵🇾",
+  "paraguayan": "🇵🇾",
+
+  "suriname": "🇸🇷",
+  "surinamese": "🇸🇷",
+};
+
+// Leader → Country map
 const LEADER_TO_COUNTRY = {
-    "trump": "united states",
-    "biden": "united states",
-  
-    "putin": "russia",
-    "zelensky": "ukraine",
-  
-    "xi": "china",
-    "jinping": "china",
-  
-    "kim jong un": "north korea",
-    "netanyahu": "israel",
-  
-    "khamenei": "iran",
-    "pezeshkian": "iran",
-  
-    "erdogan": "turkey"
-  };
-  
-  const getFlagsFromTitle = (title) => {
-    const text = title.toLowerCase().replace(/[^\w\s]/g, " ");
-    const flags = new Set();
-  
-    // Country name detection
-    Object.entries(COUNTRY_FLAGS).forEach(([country, flag]) => {
-      if (text.includes(country)) {
-        flags.add(flag);
-      }
-    });
-  
-    // Leader detection → infer country → flag
-    Object.entries(LEADER_TO_COUNTRY).forEach(([leader, country]) => {
-      if (text.includes(leader)) {
-        const flag = COUNTRY_FLAGS[country];
-        if (flag) flags.add(flag);
-      }
-    });
-  
-    return Array.from(flags);
-  };
-  
+  "trump": "united states",
+  "biden": "united states",
+
+  "putin": "russia",
+  "zelensky": "ukraine",
+
+  "xi": "china",
+  "jinping": "china",
+
+  "kim jong un": "north korea",
+  "netanyahu": "israel",
+
+  "khamenei": "iran",
+  "pezeshkian": "iran",
+
+  "erdogan": "turkey",
+};
+
+const getFlagsFromTitle = (title) => {
+  const text = title.toLowerCase().replace(/[^\w\s]/g, " ");
+  const flags = new Set();
+
+  // Country name detection
+  Object.entries(COUNTRY_FLAGS).forEach(([country, flag]) => {
+    if (text.includes(country)) {
+      flags.add(flag);
+    }
+  });
+
+  // Leader detection → infer country → flag
+  Object.entries(LEADER_TO_COUNTRY).forEach(([leader, country]) => {
+    if (text.includes(leader)) {
+      const flag = COUNTRY_FLAGS[country];
+      if (flag) flags.add(flag);
+    }
+  });
+
+  return Array.from(flags);
+};
 
 // Escalation context for deaths → RED
 const KILLED_RED_TRIGGERS = [
@@ -581,7 +573,7 @@ const KILLED_RED_TRIGGERS = [
   "explosion",
   "shelling",
   "strike",
-  "strikes"
+  "strikes",
 ];
 
 // High-urgency diplomatic escalation → RED
@@ -594,7 +586,7 @@ const DIPLOMACY_RED_TRIGGERS = [
   "diplomatic emergency",
   "imminent conflict",
   "potential war",
-  "red alert"
+  "red alert",
 ];
 
 // Global attack triggers → RED
@@ -636,7 +628,7 @@ const GLOBAL_ATTACK_TRIGGERS = [
   "terror plot",
   "suicide attack",
   "military raid",
-  "large-scale raid"
+  "large-scale raid",
 ];
 
 // Conflict regions for global attack detection
@@ -660,7 +652,7 @@ const CONFLICT_REGIONS = [
   "luhansk",
   "hebron",
   "gaza strip",
-  "west bank"
+  "west bank",
 ];
 
 // Keyword-based urgency colors
@@ -720,7 +712,7 @@ const getUrgencyColor = (title) => {
     "strikes infrastructure",
     "strikes hit infrastructure",
     "hits infrastructure",
-    "destroys infrastructure"
+    "destroys infrastructure",
   ];
 
   const medium = [
@@ -802,35 +794,54 @@ const getUrgencyColor = (title) => {
     "dead",
     "death",
     "fatal",
-    "fatalities"
+    "fatalities",
   ];
 
   // Detection flags
-  const hasHigh = high.some(word => text.includes(word));
-  const hasMedium = medium.some(word => text.includes(word));
+  const hasHigh = high.some((word) => text.includes(word));
+  const hasMedium = medium.some((word) => text.includes(word));
   const hasKilled = text.includes("killed") || text.includes("dead");
-  const hasRedContext = KILLED_RED_TRIGGERS.some(word => text.includes(word));
-  const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some(word => text.includes(word));
+  const hasRedContext = KILLED_RED_TRIGGERS.some((word) => text.includes(word));
+  const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some((word) => text.includes(word));
 
   // Improved global attack detection
-  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some(trigger =>
-    CONFLICT_REGIONS.some(region =>
-      new RegExp(`\\b${trigger}\\b|\\b${region}\\b`, 'i').test(title)
-    )
+  const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some((trigger) =>
+    CONFLICT_REGIONS.some((region) => new RegExp(`\\b${trigger}\\b|\\b${region}\\b`, "i").test(title))
   );
 
   // Priority:
-  if (hasHigh) return "#ff4d4f";                    // RED
+  if (hasHigh) return "#ff4d4f"; // RED
   if (hasKilled && hasRedContext) return "#ff4d4f"; // Escalated RED
-  if (hasDiplomacyRed) return "#ff4d4f";            // Diplomatic crisis → RED
-  if (isGlobalAttack) return "#ff4d4f";             // Major global attack → RED
-  if (hasMedium || hasKilled) return "#fa8c16";     // ORANGE
-  return "#1890ff";                                  // BLUE
+  if (hasDiplomacyRed) return "#ff4d4f"; // Diplomatic crisis → RED
+  if (isGlobalAttack) return "#ff4d4f"; // Major global attack → RED
+  if (hasMedium || hasKilled) return "#fa8c16"; // ORANGE
+  return "#1890ff"; // BLUE
 };
 
 // Get first red headline for breaking banner
 const getBreakingHeadline = (news) => {
   return news.find((item) => getUrgencyColor(item.title) === "#ff4d4f");
+};
+
+// --- NEW: Source + rundown helpers (no NLP) ---
+const getSourceName = (url = "") => {
+  try {
+    const host = new URL(url).hostname.replace("www.", "");
+    if (host.includes("bbc")) return "BBC";
+    if (host.includes("aljazeera")) return "Al Jazeera";
+    if (host.includes("news.google")) return "Google News";
+    return host;
+  } catch {
+    return "Source";
+  }
+};
+
+const snippetToBullets = (snippet = "") => {
+  const clean = snippet.replace(/\s+/g, " ").trim();
+  if (!clean) return [];
+
+  const sentences = clean.split(/(?<=[.!?])\s+/).filter(Boolean);
+  return sentences.slice(0, 4).map((s) => s.trim());
 };
 
 export default function Home() {
@@ -839,6 +850,9 @@ export default function Home() {
   const [lastUpdated, setLastUpdated] = useState(null);
   const [breaking, setBreaking] = useState(null);
   const [showOnlyRed, setShowOnlyRed] = useState(false);
+
+  // --- NEW: modal state ---
+  const [selectedStory, setSelectedStory] = useState(null);
 
   useEffect(() => {
     const fetchNews = () => {
@@ -861,130 +875,293 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", width: "100%", color: "#fff" }}>
-          <div
-            style={{
-              minHeight: "100vh",
-              width: "100%",
-              backgroundColor: "rgba(0,0,0,0.25)",
-              padding: 20,
-            }}
-          >
-            <div
+      <div
+        style={{
+          minHeight: "100vh",
+          width: "100%",
+          backgroundColor: "rgba(0,0,0,0.25)",
+          padding: 20,
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1000,
+            margin: "0 auto",
+            fontFamily: "Arial, sans-serif",
+          }}
+        >
+          <header style={{ textAlign: "center", marginBottom: 20 }}>
+            <h1
               style={{
-                maxWidth: 1000,
-                margin: "0 auto",
-                fontFamily: "Arial, sans-serif",
+                fontSize: 42,
+                fontWeight: 800,
+                color: "#fff",
+                textShadow: "0 0 8px #aaa, 0 0 12px #aaa",
+                letterSpacing: 1.2,
               }}
             >
+              Signal Watch Global
+            </h1>
+            <p style={{ fontSize: 18, color: "#aaa" }}>Live Global Crisis Tracker</p>
+            {lastUpdated && (
+              <p style={{ fontSize: 12, color: "#aaa" }}>
+                Last updated: {lastUpdated.toLocaleTimeString()}
+              </p>
+            )}
+          </header>
 
-        <header style={{ textAlign: "center", marginBottom: 20 }}>
-          <h1 style={{
-            fontSize: 42,
-            fontWeight: 800,
-            color: "#fff",
-            textShadow: "0 0 8px #aaa, 0 0 12px #aaa",
-            letterSpacing: 1.2,
-          }}>Signal Watch Global</h1>
-          <p style={{ fontSize: 18, color: "#aaa" }}>Live Global Crisis Tracker</p>
-          {lastUpdated && <p style={{ fontSize: 12, color: "#aaa" }}>Last updated: {lastUpdated.toLocaleTimeString()}</p>}
-        </header>
-  
-        {/* Red toggle */}
-        <div style={{ marginBottom: 30, textAlign: "center" }}>
-          <label style={{
-            fontSize: 16,
-            color: "#fff",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 10,
-            cursor: "pointer",
-            backgroundColor: "rgba(0,0,0,0.5)",
-            padding: "8px 12px",
-            borderRadius: 6,
-          }}>
-            <input
-              type="checkbox"
-              checked={showOnlyRed}
-              onChange={() => setShowOnlyRed(!showOnlyRed)}
-              style={{ width: 18, height: 18, cursor: "pointer" }}
-            />
-            Show only high-urgency news
-          </label>
-        </div>
-  
-        {/* Breaking banner */}
-        {breaking && (
-          <a href={breaking.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
-            <div style={{
-              backgroundColor: "#ff4d4f",
-              color: "#fff",
-              padding: "14px 20px",
-              borderRadius: 8,
-              marginBottom: 30,
-              fontWeight: 600,
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              boxShadow: "0 6px 16px rgba(0,0,0,0.4)"
-            }}>
-              <span style={{
-                backgroundColor: "#fff",
-                color: "#ff4d4f",
-                padding: "4px 10px",
-                borderRadius: 4,
-                fontSize: 12,
-                fontWeight: 700
-              }}>BREAKING</span>
-              <span style={{ fontSize: 15 }}>{breaking.title}</span>
-            </div>
-          </a>
-        )}
-  
-        {loading && <p style={{ textAlign: "center", color: "#fff" }}>Loading news...</p>}
-  
-        <main style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          {news
-            .filter(item => !showOnlyRed || getUrgencyColor(item.title) === "#ff4d4f")
-            .map((item, index) => {
-              const color = getUrgencyColor(item.title);
-              const flags = getFlagsFromTitle(item.title);
-              return (
-                <a key={index} href={item.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
-                  <div style={{
-                    padding: 20,
-                    borderLeft: `6px solid ${color}`,
-                    borderRadius: 10,
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
-                    backgroundColor: "rgba(0,0,0,0.6)",
-                    transition: "transform 0.15s ease, box-shadow 0.15s ease",
-                    cursor: "pointer"
+          {/* Red toggle */}
+          <div style={{ marginBottom: 30, textAlign: "center" }}>
+            <label
+              style={{
+                fontSize: 16,
+                color: "#fff",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                cursor: "pointer",
+                backgroundColor: "rgba(0,0,0,0.5)",
+                padding: "8px 12px",
+                borderRadius: 6,
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={showOnlyRed}
+                onChange={() => setShowOnlyRed(!showOnlyRed)}
+                style={{ width: 18, height: 18, cursor: "pointer" }}
+              />
+              Show only high-urgency news
+            </label>
+          </div>
+
+          {/* Breaking banner (kept as external link) */}
+          {breaking && (
+            <a
+              href={breaking.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none" }}
+            >
+              <div
+                style={{
+                  backgroundColor: "#ff4d4f",
+                  color: "#fff",
+                  padding: "14px 20px",
+                  borderRadius: 8,
+                  marginBottom: 30,
+                  fontWeight: 600,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  boxShadow: "0 6px 16px rgba(0,0,0,0.4)",
+                }}
+              >
+                <span
+                  style={{
+                    backgroundColor: "#fff",
+                    color: "#ff4d4f",
+                    padding: "4px 10px",
+                    borderRadius: 4,
+                    fontSize: 12,
+                    fontWeight: 700,
                   }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = "translateY(-3px)";
-                      e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.6)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.5)";
-                    }}
+                >
+                  BREAKING
+                </span>
+                <span style={{ fontSize: 15 }}>{breaking.title}</span>
+              </div>
+            </a>
+          )}
+
+          {loading && <p style={{ textAlign: "center", color: "#fff" }}>Loading news...</p>}
+
+          <main style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {news
+              .filter((item) => !showOnlyRed || getUrgencyColor(item.title) === "#ff4d4f")
+              .map((item, index) => {
+                const color = getUrgencyColor(item.title);
+                const flags = getFlagsFromTitle(item.title);
+
+                return (
+                  <div
+                    key={index}
+                    onClick={() => setSelectedStory(item)}
+                    style={{ textDecoration: "none" }}
                   >
-                    <div style={{ fontWeight: 600, fontSize: 16, color: "#fff" }}>
-                      {flags.length > 0 && (
-                        <div style={{ fontSize: 18, marginBottom: 6 }}>
-                          {flags.join(" ")}
+                    <div
+                      style={{
+                        padding: 20,
+                        borderLeft: `6px solid ${color}`,
+                        borderRadius: 10,
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
+                        backgroundColor: "rgba(0,0,0,0.6)",
+                        transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                        cursor: "pointer",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "translateY(-3px)";
+                        e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.6)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.5)";
+                      }}
+                    >
+                      <div style={{ fontWeight: 600, fontSize: 16, color: "#fff" }}>
+                        {flags.length > 0 && (
+                          <div style={{ fontSize: 18, marginBottom: 6 }}>{flags.join(" ")}</div>
+                        )}
+                        {item.title}
+                      </div>
+                      {item.pubDate && (
+                        <div style={{ fontSize: 12, color: "#ccc", marginTop: 6 }}>
+                          {new Date(item.pubDate).toLocaleString()}
                         </div>
                       )}
-                      {item.title}
+                      {item.contentSnippet && (
+                        <p style={{ marginTop: 10, color: "#eee", lineHeight: 1.5 }}>
+                          {item.contentSnippet}
+                        </p>
+                      )}
                     </div>
-                    {item.pubDate && <div style={{ fontSize: 12, color: "#ccc", marginTop: 6 }}>{new Date(item.pubDate).toLocaleString()}</div>}
-                    {item.contentSnippet && <p style={{ marginTop: 10, color: "#eee", lineHeight: 1.5 }}>{item.contentSnippet}</p>}
                   </div>
-                </a>
-              );
-            })}
-        </main>
+                );
+              })}
+          </main>
+
+          {/* --- NEW: Rundown Modal --- */}
+          {selectedStory && (
+            <div
+              onClick={() => setSelectedStory(null)}
+              style={{
+                position: "fixed",
+                inset: 0,
+                background: "rgba(0,0,0,0.6)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 9999,
+                padding: 16,
+              }}
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  width: "min(720px, 100%)",
+                  background: "rgba(15,15,15,0.95)",
+                  borderRadius: 12,
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  boxShadow: "0 12px 40px rgba(0,0,0,0.6)",
+                  padding: 20,
+                  color: "#fff",
+                }}
+              >
+                {/* Header */}
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          padding: "4px 10px",
+                          borderRadius: 999,
+                          fontSize: 12,
+                          fontWeight: 700,
+                          background: getUrgencyColor(selectedStory.title),
+                          color: "#fff",
+                        }}
+                      >
+                        RUNDOWN
+                      </span>
+
+                      <span style={{ fontSize: 12, color: "#bbb" }}>
+                        {getSourceName(selectedStory.link)}
+                      </span>
+                    </div>
+
+                    <div style={{ fontSize: 18, fontWeight: 800, lineHeight: 1.3 }}>
+                      {selectedStory.title}
+                    </div>
+
+                    <div style={{ marginTop: 8, color: "#aaa", fontSize: 12 }}>
+                      {selectedStory.pubDate ? new Date(selectedStory.pubDate).toLocaleString() : ""}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setSelectedStory(null)}
+                    style={{
+                      background: "transparent",
+                      border: "1px solid rgba(255,255,255,0.2)",
+                      color: "#fff",
+                      borderRadius: 10,
+                      padding: "8px 12px",
+                      cursor: "pointer",
+                      height: 40,
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+
+                {/* Flags */}
+                <div style={{ marginTop: 12, fontSize: 20 }}>
+                  {getFlagsFromTitle(selectedStory.title).join(" ")}
+                </div>
+
+                {/* Bullets */}
+                <div style={{ marginTop: 16 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#ddd", marginBottom: 8 }}>
+                    Quick rundown
+                  </div>
+                  <ul style={{ margin: 0, paddingLeft: 18, color: "#eee", lineHeight: 1.6 }}>
+                    {snippetToBullets(selectedStory.contentSnippet || "").map((b, i) => (
+                      <li key={i}>{b}</li>
+                    ))}
+                    {!selectedStory.contentSnippet && <li>No snippet available for this story.</li>}
+                  </ul>
+                </div>
+
+                {/* Actions */}
+                <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
+                  <a
+                    href={selectedStory.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      textDecoration: "none",
+                      background: "#fff",
+                      color: "#000",
+                      padding: "10px 14px",
+                      borderRadius: 10,
+                      fontWeight: 800,
+                    }}
+                  >
+                    Read full article →
+                  </a>
+
+                  <button
+                    onClick={() => setSelectedStory(null)}
+                    style={{
+                      background: "rgba(255,255,255,0.08)",
+                      border: "1px solid rgba(255,255,255,0.15)",
+                      color: "#fff",
+                      padding: "10px 14px",
+                      borderRadius: 10,
+                      cursor: "pointer",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Back to feed
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* --- End Modal --- */}
+        </div>
       </div>
     </div>
-</div>
-    );
-  }
+  );
+}
