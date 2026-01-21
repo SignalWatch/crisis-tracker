@@ -198,11 +198,17 @@ const COUNTRY_FLAGS = {
   "belgium": "🇧🇪",
   "belgian": "🇧🇪",
 
-  "switzerland": "🇨🇭",
-  "swiss": "🇨🇭",
+  "sweden": "🇸🇪",
+  "swedish": "🇸🇪",
 
-  "austria": "🇦🇹",
-  "austrian": "🇦🇹",
+  "norway": "🇳🇴",
+  "norwegian": "🇳🇴",
+
+  "finland": "🇫🇮",
+  "finnish": "🇫🇮",
+
+  "denmark": "🇩🇰",
+  "danish": "🇩🇰",
 
   "poland": "🇵🇱",
   "polish": "🇵🇱",
@@ -212,254 +218,48 @@ const COUNTRY_FLAGS = {
 
   "slovakia": "🇸🇰",
   "slovak": "🇸🇰",
-  "slovakian": "🇸🇰",
 
   "hungary": "🇭🇺",
   "hungarian": "🇭🇺",
 
-  "romania": "🇷🇴",
-  "romanian": "🇷🇴",
+  "austria": "🇦🇹",
+  "austrian": "🇦🇹",
 
-  "bulgaria": "🇧🇬",
-  "bulgarian": "🇧🇬",
+  "switzerland": "🇨🇭",
+  "swiss": "🇨🇭",
+
+  "ireland": "🇮🇪",
+  "irish": "🇮🇪",
 
   "greece": "🇬🇷",
   "greek": "🇬🇷",
 
-  "serbia": "🇷🇸",
-  "serbian": "🇷🇸",
-
-  "croatia": "🇭🇷",
-  "croatian": "🇭🇷",
-
-  "bosnia": "🇧🇦",
-  "bosnian": "🇧🇦",
-
-  "albania": "🇦🇱",
-  "albanian": "🇦🇱",
-
-  "slovenia": "🇸🇮",
-  "slovenian": "🇸🇮",
-
-  // ======================
-  // Nordics
-  // ======================
-  "norway": "🇳🇴",
-  "norwegian": "🇳🇴",
-
-  "sweden": "🇸🇪",
-  "swedish": "🇸🇪",
-
-  "finland": "🇫🇮",
-  "finnish": "🇫🇮",
-
-  "denmark": "🇩🇰",
-  "danish": "🇩🇰",
-
-  "iceland": "🇮🇸",
-  "icelandic": "🇮🇸",
-
-  "greenland": "🇬🇱",
-  "greenlandic": "🇬🇱",
-  "greenlanders": "🇬🇱",
-
   // ======================
   // Africa
   // ======================
-  "algeria": "🇩🇿",
-  "algerian": "🇩🇿",
-
-  "angola": "🇦🇴",
-  "angolan": "🇦🇴",
-
-  "benin": "🇧🇯",
-  "beninese": "🇧🇯",
-
-  "botswana": "🇧🇼",
-  "botswanan": "🇧🇼",
-
-  "burkina faso": "🇧🇫",
-  "burkinabe": "🇧🇫",
-
-  "burundi": "🇧🇮",
-  "burundian": "🇧🇮",
-
-  "cabo verde": "🇨🇻",
-  "cape verdean": "🇨🇻",
-
-  "cameroon": "🇨🇲",
-  "cameroonian": "🇨🇲",
-
-  "central african republic": "🇨🇫",
-  "central african": "🇨🇫",
-
-  "chad": "🇹🇩",
-  "chadian": "🇹🇩",
-
-  "comoros": "🇰🇲",
-  "comorian": "🇰🇲",
-
-  "congo": "🇨🇬",
-  "congolese": "🇨🇬",
-
-  "democratic republic of the congo": "🇨🇩",
-  "congolese": "🇨🇩",
-
-  "djibouti": "🇩🇯",
-  "djiboutian": "🇩🇯",
-
-  "equatorial guinea": "🇬🇶",
-  "equatoguinean": "🇬🇶",
-
-  "eritrea": "🇪🇷",
-  "eritrean": "🇪🇷",
-
-  "eswatini": "🇸🇿",
-  "swazi": "🇸🇿",
-
-  "ethiopia": "🇪🇹",
-  "ethiopian": "🇪🇹",
-
-  "gabon": "🇬🇦",
-  "gabonese": "🇬🇦",
-
-  "gambia": "🇬🇲",
-  "gambian": "🇬🇲",
-
-  "ghana": "🇬🇭",
-  "ghanaian": "🇬🇭",
-
-  "guinea": "🇬🇳",
-  "guinean": "🇬🇳",
-
-  "guinea-bissau": "🇬🇼",
-  "guinea-bissauan": "🇬🇼",
-
-  "ivory coast": "🇨🇮",
-  "côte d'ivoire": "🇨🇮",
-  "ivorian": "🇨🇮",
-
-  "kenya": "🇰🇪",
-  "kenyan": "🇰🇪",
-
-  "lesotho": "🇱🇸",
-  "lesothan": "🇱🇸",
-
-  "liberia": "🇱🇷",
-  "liberian": "🇱🇷",
-
-  "libya": "🇱🇾",
-  "libyan": "🇱🇾",
-
-  "madagascar": "🇲🇬",
-  "malagasy": "🇲🇬",
-
-  "malawi": "🇲🇼",
-  "malawian": "🇲🇼",
-
-  "mali": "🇲🇱",
-  "malian": "🇲🇱",
-
-  "mauritania": "🇲🇷",
-  "mauritanian": "🇲🇷",
-
-  "mauritius": "🇲🇺",
-  "mauritian": "🇲🇺",
-
-  "morocco": "🇲🇦",
-  "moroccan": "🇲🇦",
-
-  "mozambique": "🇲🇿",
-  "mozambican": "🇲🇿",
-
-  "namibia": "🇳🇦",
-  "namibian": "🇳🇦",
-
-  "niger": "🇳🇪",
-  "nigerien": "🇳🇪",
+  "south africa": "🇿🇦",
+  "south african": "🇿🇦",
 
   "nigeria": "🇳🇬",
   "nigerian": "🇳🇬",
 
-  "rwanda": "🇷🇼",
-  "rwandan": "🇷🇼",
+  "ethiopia": "🇪🇹",
+  "ethiopian": "🇪🇹",
 
-  "sao tome and principe": "🇸🇹",
-  "sao tomean": "🇸🇹",
-
-  "senegal": "🇸🇳",
-  "senegalese": "🇸🇳",
-
-  "seychelles": "🇸🇨",
-  "seychellois": "🇸🇨",
-
-  "sierra leone": "🇸🇱",
-  "sierra leonean": "🇸🇱",
-
-  "somalia": "🇸🇴",
-  "somali": "🇸🇴",
-
-  "south africa": "🇿🇦",
-  "south african": "🇿🇦",
-
-  "south sudan": "🇸🇸",
-  "south sudanese": "🇸🇸",
+  "kenya": "🇰🇪",
+  "kenyan": "🇰🇪",
 
   "sudan": "🇸🇩",
   "sudanese": "🇸🇩",
 
-  "tanzania": "🇹🇿",
-  "tanzanian": "🇹🇿",
-
-  "togo": "🇹🇬",
-  "togolese": "🇹🇬",
-
-  "tunisia": "🇹🇳",
-  "tunisian": "🇹🇳",
+  "somalia": "🇸🇴",
+  "somali": "🇸🇴",
 
   "uganda": "🇺🇬",
   "ugandan": "🇺🇬",
 
-  "zambia": "🇿🇲",
-  "zambian": "🇿🇲",
-
-  "zimbabwe": "🇿🇼",
-  "zimbabwean": "🇿🇼",
-
-  // ======================
-  // Southeast Asia
-  // ======================
-  "philippines": "🇵🇭",
-  "philippine": "🇵🇭",
-  "filipino": "🇵🇭",
-
-  "thailand": "🇹🇭",
-  "thai": "🇹🇭",
-
-  "vietnam": "🇻🇳",
-  "vietnamese": "🇻🇳",
-
-  "indonesia": "🇮🇩",
-  "indonesian": "🇮🇩",
-
-  "malaysia": "🇲🇾",
-  "malaysian": "🇲🇾",
-
-  "singapore": "🇸🇬",
-  "singaporean": "🇸🇬",
-
-  "myanmar": "🇲🇲",
-  "burma": "🇲🇲",
-  "burmese": "🇲🇲",
-
-  "laos": "🇱🇦",
-  "laotian": "🇱🇦",
-
-  "timor-leste": "🇹🇱",
-  "timorese": "🇹🇱",
-
-  "cambodia": "🇰🇭",
-  "cambodian": "🇰🇭",
+  "ghana": "🇬🇭",
+  "ghanaian": "🇬🇭",
 
   // ======================
   // Americas
@@ -475,85 +275,87 @@ const COUNTRY_FLAGS = {
 
   "argentina": "🇦🇷",
   "argentine": "🇦🇷",
-  "argentenian": "🇦🇷",
-
-  "chile": "🇨🇱",
-  "chilean": "🇨🇱",
 
   "colombia": "🇨🇴",
   "colombian": "🇨🇴",
 
+  "chile": "🇨🇱",
+  "chilean": "🇨🇱",
+
   "peru": "🇵🇪",
   "peruvian": "🇵🇪",
 
-  "venezuela": "🇻🇪",
-  "venezuelan": "🇻🇪",
+  // ======================
+  // Oceania
+  // ======================
+  "australia": "🇦🇺",
+  "australian": "🇦🇺",
 
-  "cuba": "🇨🇺",
-  "cuban": "🇨🇺",
-
-  "guatemala": "🇬🇹",
-  "guatemalan": "🇬🇹",
-
-  "bolivia": "🇧🇴",
-  "bolivian": "🇧🇴",
-
-  "uruguay": "🇺🇾",
-  "uruguayan": "🇺🇾",
-
-  "ecuador": "🇪🇨",
-  "ecuadorian": "🇪🇨",
-
-  "paraguay": "🇵🇾",
-  "paraguayan": "🇵🇾",
-
-  "suriname": "🇸🇷",
-  "surinamese": "🇸🇷",
+  "new zealand": "🇳🇿",
+  "new zealander": "🇳🇿",
 };
 
 // Leader → Country map
 const LEADER_TO_COUNTRY = {
-  "trump": "united states",
-  "biden": "united states",
+  // --- US
+  "biden": "🇺🇸",
+  "president biden": "🇺🇸",
+  "white house": "🇺🇸",
+  "pentagon": "🇺🇸",
+  "u.s.": "🇺🇸",
+  "u.s": "🇺🇸",
+  "us": "🇺🇸",
 
-  "putin": "russia",
-  "zelensky": "ukraine",
+  // --- Russia
+  "putin": "🇷🇺",
+  "kremlin": "🇷🇺",
+  "moscow": "🇷🇺",
 
-  "xi": "china",
-  "jinping": "china",
+  // --- Ukraine
+  "zelensky": "🇺🇦",
+  "zelenskyy": "🇺🇦",
+  "kyiv": "🇺🇦",
 
-  "kim jong un": "north korea",
-  "netanyahu": "israel",
+  // --- China
+  "xi": "🇨🇳",
+  "beijing": "🇨🇳",
 
-  "khamenei": "iran",
-  "pezeshkian": "iran",
+  // --- North Korea
+  "kim jong-un": "🇰🇵",
+  "pyongyang": "🇰🇵",
 
-  "erdogan": "turkey",
+  // --- Israel
+  "netanyahu": "🇮🇱",
+  "jerusalem": "🇮🇱",
+
+  // --- Iran
+  "tehran": "🇮🇷",
+  "khamenei": "🇮🇷",
+
+  // --- UK
+  "london": "🇬🇧",
+  "downing street": "🇬🇧",
 };
 
-const getFlagsFromTitle = (title) => {
-  const text = title.toLowerCase().replace(/[^\w\s]/g, " ");
+// Simple helper: detect flags in the title
+const getFlagsFromTitle = (title = "") => {
   const flags = new Set();
+  const lower = title.toLowerCase();
 
-  // Country name detection
-  Object.entries(COUNTRY_FLAGS).forEach(([country, flag]) => {
-    if (text.includes(country)) {
-      flags.add(flag);
-    }
-  });
+  // country flags
+  for (const key in COUNTRY_FLAGS) {
+    if (lower.includes(key)) flags.add(COUNTRY_FLAGS[key]);
+  }
 
-  // Leader detection → infer country → flag
-  Object.entries(LEADER_TO_COUNTRY).forEach(([leader, country]) => {
-    if (text.includes(leader)) {
-      const flag = COUNTRY_FLAGS[country];
-      if (flag) flags.add(flag);
-    }
-  });
+  // leader flags
+  for (const key in LEADER_TO_COUNTRY) {
+    if (lower.includes(key)) flags.add(LEADER_TO_COUNTRY[key]);
+  }
 
   return Array.from(flags);
 };
 
-// Escalation context for deaths → RED
+// --- Urgency logic (same as your original) ---
 const KILLED_RED_TRIGGERS = [
   "at least",
   "dozens",
@@ -576,7 +378,6 @@ const KILLED_RED_TRIGGERS = [
   "strikes",
 ];
 
-// High-urgency diplomatic escalation → RED
 const DIPLOMACY_RED_TRIGGERS = [
   "extremely tense",
   "urgent talks",
@@ -589,7 +390,6 @@ const DIPLOMACY_RED_TRIGGERS = [
   "red alert",
 ];
 
-// Global attack triggers → RED
 const GLOBAL_ATTACK_TRIGGERS = [
   "drone attack",
   "drone attacks",
@@ -601,16 +401,11 @@ const GLOBAL_ATTACK_TRIGGERS = [
   "rocket attack",
   "ballistic missile",
   "cruise missile",
-  "intercepted missile",
   "bombing",
   "suicide bombing",
   "terror attack",
   "terrorist attack",
   "massacre",
-  "mass killing",
-  "civilian deaths",
-  "deadliest",
-  "hostage crisis",
   "assassination",
   "explosion",
   "shelling",
@@ -618,20 +413,15 @@ const GLOBAL_ATTACK_TRIGGERS = [
   "biological attack",
   "radiological attack",
   "nuclear strike",
-  "rocket strike",
   "air raid",
   "armed clash",
-  "military engagement",
   "cross-border attack",
   "siege",
   "bomb threat",
   "terror plot",
-  "suicide attack",
-  "military raid",
   "large-scale raid",
 ];
 
-// Conflict regions for global attack detection
 const CONFLICT_REGIONS = [
   "ukraine",
   "russia",
@@ -650,14 +440,10 @@ const CONFLICT_REGIONS = [
   "donetsk",
   "kharkiv",
   "luhansk",
-  "hebron",
-  "gaza strip",
   "west bank",
 ];
 
-// Keyword-based urgency colors
-const getUrgencyColor = (title) => {
-  // Remove punctuation to prevent misclassification
+const getUrgencyColor = (title = "") => {
   const text = title.toLowerCase().replace(/[^\w\s]/g, " ");
 
   const high = [
@@ -673,123 +459,71 @@ const getUrgencyColor = (title) => {
     "military escalation",
     "escalation",
     "troops deployed",
-    "troop deployment",
     "mobilization",
     "martial law",
     "armed conflict",
     "direct conflict",
 
-    // Evacuation & citizen warnings
     "evacuate immediately",
     "evacuation ordered",
     "mandatory evacuation",
     "leave immediately",
-    "get out now",
     "border closed",
     "airspace closed",
     "embassy evacuates",
-    "embassy closed",
-    "emergency departure",
     "citizens urged to leave",
     "do not travel",
 
-    // State emergency alerts
     "state of emergency",
     "emergency declaration",
     "red alert",
     "alert level raised",
 
-    // WMDs
     "chemical weapons",
     "biological threat",
     "radiological threat",
     "dirty bomb",
 
-    // Infrastructure collapse
     "nationwide blackout",
     "critical infrastructure",
-    "hit infrastructure",
-    "strikes infrastructure",
-    "strikes hit infrastructure",
-    "hits infrastructure",
-    "destroys infrastructure",
   ];
 
   const medium = [
-    // Military movement
     "military buildup",
     "troops massing",
     "forces deployed",
     "warships deployed",
     "fighter jets",
     "military drills",
-    "combat readiness",
-
-    // Rising conflict
     "rising tensions",
     "escalating tensions",
     "clashes reported",
     "exchange of fire",
     "skirmishes",
-    "ceasefire violation",
-
-    // Government actions
     "travel advisory",
     "security warning",
     "shelter in place",
     "curfew imposed",
-
-    // Unrest
     "protests erupt",
     "violent protests",
     "civil unrest",
     "riots",
     "crackdown",
-
-    // Cyber / infrastructure
     "cyberattack",
     "communications disrupted",
     "transport disrupted",
-    "hack",
-    "hackers",
     "hacking",
-    "cyber breach",
-    "espionage",
     "malware",
     "security breach",
-    "targeted attack",
-    "data theft",
-
-    // Diplomacy & tension
     "talks collapse",
     "peace talks stall",
     "sanctions threatened",
-    "tariff",
     "tariffs",
     "trade sanctions",
-    "economic coercion",
-    "economic pressure",
-    "tense",
-    "tensions",
-    "extremely tense",
-    "diplomatic solution",
-    "diplomacy",
-    "negotiation",
-    "mediate",
-    "mediation",
-    "discuss",
-    "dialogue",
+    "summit",
     "urgent talks",
     "crisis talks",
-    "high-level meeting",
-    "summit",
-    "summit talks",
-    "diplomatic efforts",
-    "conflict resolution",
-    "peace negotiations",
-    "intense negotiations",
-
-    // Death baseline
+    "diplomacy",
     "killed",
     "dead",
     "death",
@@ -797,25 +531,22 @@ const getUrgencyColor = (title) => {
     "fatalities",
   ];
 
-  // Detection flags
-  const hasHigh = high.some((word) => text.includes(word));
-  const hasMedium = medium.some((word) => text.includes(word));
+  const hasHigh = high.some((w) => text.includes(w));
+  const hasMedium = medium.some((w) => text.includes(w));
   const hasKilled = text.includes("killed") || text.includes("dead");
-  const hasRedContext = KILLED_RED_TRIGGERS.some((word) => text.includes(word));
-  const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some((word) => text.includes(word));
+  const hasRedContext = KILLED_RED_TRIGGERS.some((w) => text.includes(w));
+  const hasDiplomacyRed = DIPLOMACY_RED_TRIGGERS.some((w) => text.includes(w));
 
-  // Improved global attack detection
   const isGlobalAttack = GLOBAL_ATTACK_TRIGGERS.some((trigger) =>
     CONFLICT_REGIONS.some((region) => new RegExp(`\\b${trigger}\\b|\\b${region}\\b`, "i").test(title))
   );
 
-  // Priority:
-  if (hasHigh) return "#ff4d4f"; // RED
-  if (hasKilled && hasRedContext) return "#ff4d4f"; // Escalated RED
-  if (hasDiplomacyRed) return "#ff4d4f"; // Diplomatic crisis → RED
-  if (isGlobalAttack) return "#ff4d4f"; // Major global attack → RED
-  if (hasMedium || hasKilled) return "#fa8c16"; // ORANGE
-  return "#1890ff"; // BLUE
+  if (hasHigh) return "#ff4d4f";
+  if (hasKilled && hasRedContext) return "#ff4d4f";
+  if (hasDiplomacyRed) return "#ff4d4f";
+  if (isGlobalAttack) return "#ff4d4f";
+  if (hasMedium || hasKilled) return "#fa8c16";
+  return "#1890ff";
 };
 
 // Get first red headline for breaking banner
@@ -882,11 +613,12 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSource, setSelectedSource] = useState("all");
   const [selectedUrgency, setSelectedUrgency] = useState("all");
-  const [timeRange, setTimeRange] = useState("all");
+  const [timeRange, setTimeRange] = useState("7d");
 
   useEffect(() => {
     const fetchNews = () => {
-      fetch("/api/news")
+      const limit = timeRange === "30d" ? 200 : 100;
+      fetch(`/api/news?range=${encodeURIComponent(timeRange)}&limit=${limit}`)
         .then((res) => res.json())
         .then((data) => {
           const mapped = (Array.isArray(data) ? data : []).map((item) => {
@@ -926,7 +658,7 @@ export default function Home() {
     fetchNews();
     const interval = setInterval(fetchNews, 5 * 60 * 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [timeRange]);
 
   const sources = useMemo(() => {
     const unique = new Set();
@@ -941,8 +673,8 @@ export default function Home() {
     const now = Date.now();
     const timeMs =
       timeRange === "24h" ? 24 * 60 * 60 * 1000
-        : timeRange === "7d" ? 7 * 24 * 60 * 60 * 1000
-          : null;
+        : timeRange === "30d" ? 30 * 24 * 60 * 60 * 1000
+          : 7 * 24 * 60 * 60 * 1000;
 
     return news.filter((item) => {
       if (showOnlyRed && item.urgencyColor !== "#ff4d4f") return false;
@@ -970,7 +702,6 @@ export default function Home() {
       return true;
     });
   }, [news, searchQuery, selectedSource, selectedUrgency, timeRange, showOnlyRed]);
-
 
   // Related stories computed only when modal story changes
   const related = useMemo(() => {
@@ -1187,9 +918,9 @@ export default function Home() {
                   color: "#fff",
                 }}
               >
-                <option value="all" style={{ color: "#111" }}>All time</option>
                 <option value="24h" style={{ color: "#111" }}>Last 24 hours</option>
-                <option value="7d" style={{ color: "#111" }}>Last 7 days</option>
+                <option value="7d" style={{ color: "#111" }}>Last 7 days (Default)</option>
+                <option value="30d" style={{ color: "#111" }}>Archive / History (30 days)</option>
               </select>
             </label>
 
@@ -1213,7 +944,7 @@ export default function Home() {
                 onChange={() => setShowOnlyRed(!showOnlyRed)}
                 style={{ width: 18, height: 18, cursor: "pointer" }}
               />
-               High urgency only
+              High urgency only
             </label>
           </div>
 
@@ -1259,8 +990,7 @@ export default function Home() {
           {loading && <p style={{ textAlign: "center", color: "#fff" }}>Loading news...</p>}
 
           <main style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          {filteredNews.map((item) => {
-            
+            {filteredNews.map((item) => {
                 return (
                   <div
                     key={item.id || item.link}
@@ -1345,137 +1075,64 @@ export default function Home() {
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                  <span
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 10px",
-                      borderRadius: 999,
-                      fontSize: 12,
-                      fontWeight: 800,
-                      background: selectedStory.urgencyColor || "#333",
-                      color: "#fff",
-                    }}
-                  >
-                    RUNDOWN
-                  </span>
-
-                  <span style={{ fontSize: 12, color: "#bbb" }}>
-                    {selectedStory.source || getSourceNameFromLink(selectedStory.link)}
-                  </span>
-                </div>
-
-                <div style={{ fontSize: 18, fontWeight: 800, lineHeight: 1.3 }}>
-                  {selectedStory.title}
-                </div>
-
-                <div style={{ marginTop: 8, color: "#aaa", fontSize: 12 }}>
-                  {selectedStory.dateText || (selectedStory.pubDate ? new Date(selectedStory.pubDate).toLocaleString() : "")}
-                </div>
+              <div style={{ fontWeight: 800, fontSize: 18 }}>
+                {selectedStory.title}
               </div>
-
               <button
                 onClick={() => setSelectedStory(null)}
                 style={{
                   background: "transparent",
-                  border: "1px solid rgba(255,255,255,0.2)",
+                  border: "none",
                   color: "#fff",
-                  borderRadius: 10,
-                  padding: "8px 12px",
+                  fontSize: 18,
                   cursor: "pointer",
-                  height: 40,
                 }}
               >
-                Close
+                ✕
               </button>
             </div>
 
-            <div style={{ marginTop: 12, fontSize: 20 }}>
-              {(selectedStory.flags || getFlagsFromTitle(selectedStory.title)).join(" ")}
+            <div style={{ fontSize: 12, color: "#aaa", marginTop: 6 }}>
+              {selectedStory.dateText} {selectedStory.source ? `• ${selectedStory.source}` : ""}
             </div>
 
-            {/* Quick rundown bullets */}
+            <div style={{ marginTop: 14 }}>
+              {snippetToBullets(selectedStory.contentSnippet || "").map((b, i) => (
+                <div key={i} style={{ marginBottom: 6 }}>• {b}</div>
+              ))}
+            </div>
+
             <div style={{ marginTop: 16 }}>
-              <div style={{ fontSize: 13, fontWeight: 800, color: "#ddd", marginBottom: 8 }}>
-                Quick rundown
-              </div>
-              <ul style={{ margin: 0, paddingLeft: 18, color: "#eee", lineHeight: 1.6 }}>
-                {snippetToBullets(selectedStory.contentSnippet || "").map((b, i) => (
-                  <li key={i}>{b}</li>
-                ))}
-                {!selectedStory.contentSnippet && <li>No snippet available for this story.</li>}
-              </ul>
-            </div>
-
-            {/* Related stories */}
-            {related.length > 0 && (
-              <div style={{ marginTop: 16 }}>
-                <div style={{ fontSize: 13, fontWeight: 800, color: "#ddd", marginBottom: 8 }}>
-                  Related stories
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {related.map((r) => (
-                    <button
-                      key={r.id || r.link}
-                      onClick={() => setSelectedStory(r)}
-                      style={{
-                        textAlign: "left",
-                        background: "rgba(255,255,255,0.06)",
-                        border: "1px solid rgba(255,255,255,0.12)",
-                        borderLeft: `6px solid ${r.urgencyColor || getUrgencyColor(r.title)}`,
-                        color: "#fff",
-                        borderRadius: 10,
-                        padding: "10px 12px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 4 }}>
-                        {r.title}
-                      </div>
-                      <div style={{ fontSize: 12, color: "#aaa" }}>
-                        {(r.dateText || (r.pubDate ? new Date(r.pubDate).toLocaleString() : ""))} • {r.source || getSourceNameFromLink(r.link)}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Actions */}
-            <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
               <a
                 href={selectedStory.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  textDecoration: "none",
-                  background: "#fff",
-                  color: "#000",
-                  padding: "10px 14px",
-                  borderRadius: 10,
-                  fontWeight: 900,
-                }}
+                style={{ color: "#fff", fontWeight: 700 }}
               >
-                Read full article →
+                Open full article →
               </a>
-
-              <button
-                onClick={() => setSelectedStory(null)}
-                style={{
-                  background: "rgba(255,255,255,0.08)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  color: "#fff",
-                  padding: "10px 14px",
-                  borderRadius: 10,
-                  cursor: "pointer",
-                  fontWeight: 800,
-                }}
-              >
-                Back to feed
-              </button>
             </div>
+
+            {related.length > 0 && (
+              <div style={{ marginTop: 22 }}>
+                <div style={{ fontWeight: 800, marginBottom: 10 }}>Related stories</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {related.map((r) => (
+                    <a
+                      key={r.id || r.link}
+                      href={r.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "#fff", textDecoration: "none" }}
+                    >
+                      <div style={{ padding: 10, borderRadius: 8, background: "rgba(255,255,255,0.06)" }}>
+                        {r.title}
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

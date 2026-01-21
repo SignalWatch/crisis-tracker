@@ -4,10 +4,16 @@ const parser = new Parser({
   timeout: 10000, // rss-parser option (not always enforced by all fetches, but helps)
 });
 
+const DEFAULT_RANGE = "7d";
+const DEFAULT_LIMIT = 100;
+const MAX_LIMIT = 200;
+
 // --- Simple in-memory cache (works great on warm serverless instances) ---
 let CACHE = {
   ts: 0,
   data: null,
+  range: DEFAULT_RANGE,
+  limit: DEFAULT_LIMIT,
 };
 
 const CACHE_TTL_MS = 3 * 60 * 1000; // 3 minutes
@@ -60,9 +66,20 @@ export default async function handler(req, res) {
   // Allow caching at the edge/CDN a bit too (optional)
   res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=300");
 
+  const range = typeof req.query.range === "string" ? req.query.range : DEFAULT_RANGE;
+  const rawLimit = typeof req.query.limit === "string" ? Number.parseInt(req.query.limit, 10) : DEFAULT_LIMIT;
+  const limit = Number.isFinite(rawLimit)
+    ? Math.min(Math.max(rawLimit, 1), MAX_LIMIT)
+    : DEFAULT_LIMIT;
+
   // Return cached if fresh
   const now = Date.now();
-  if (CACHE.data && now - CACHE.ts < CACHE_TTL_MS) {
+  if (
+    CACHE.data
+    && now - CACHE.ts < CACHE_TTL_MS
+    && CACHE.range === range
+    && CACHE.limit === limit
+  ) {
     return res.status(200).json(CACHE.data);
   }
 
@@ -154,6 +171,24 @@ export default async function handler(req, res) {
     return true;
   });
 
+  // Filter by time range (default 7d)
+  const rangeMs = range === "24h"
+    ? 24 * 60 * 60 * 1000
+    : range === "30d"
+      ? 30 * 24 * 60 * 60 * 1000
+      : range === "all"
+        ? null
+        : 7 * 24 * 60 * 60 * 1000;
+
+  if (rangeMs) {
+    const cutoff = now - rangeMs;
+    items = items.filter((it) => {
+      if (!it.pubDate) return false;
+      const ts = new Date(it.pubDate).getTime();
+      return Number.isFinite(ts) && ts >= cutoff;
+    });
+  }
+
   // Sort newest first (handle null dates)
   items.sort((a, b) => {
     const da = a.pubDate ? new Date(a.pubDate).getTime() : 0;
@@ -161,8 +196,8 @@ export default async function handler(req, res) {
     return db - da;
   });
 
-  // Limit items (50 is fine; you can raise to 75 without major impact)
-  items = items.slice(0, 50);
+  // Limit items (default 100, optional history up to 200)
+  items = items.slice(0, limit);
 
   const sanitized = items.map((it) => ({
     id: makeId(it.title, it.link),
@@ -174,7 +209,12 @@ export default async function handler(req, res) {
   }));
 
   // store cache
-  CACHE = { ts: now, data: sanitized };
+  CACHE = {
+    ts: now,
+    data: sanitized,
+    range,
+    limit,
+  };
 
   return res.status(200).json(sanitized);
 }
