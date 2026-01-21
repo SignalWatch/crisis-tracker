@@ -603,6 +603,79 @@ const jaccardSimilarity = (aTokens, bTokens) => {
   return union ? intersection / union : 0;
 };
 
+const buildShareLinks = (url = "", title = "") => {
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(title);
+
+  return {
+    x: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+  };
+};
+
+const shareButtonBase = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 6,
+  padding: "6px 10px",
+  borderRadius: 999,
+  border: "1px solid rgba(255,255,255,0.18)",
+  background: "rgba(255,255,255,0.08)",
+  color: "#fff",
+  fontSize: 12,
+  fontWeight: 700,
+  textDecoration: "none",
+};
+
+const ShareButtons = ({ url, title, label, onInteract }) => {
+  const links = buildShareLinks(url, title);
+  const isReady = Boolean(url);
+  const disabledStyle = isReady ? {} : { opacity: 0.5, pointerEvents: "none" };
+
+  return (
+    <div
+      onClick={onInteract}
+      onKeyDown={onInteract}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        flexWrap: "wrap",
+      }}
+    >
+      {label && <span style={{ fontSize: 12, color: "#9aa4b2", fontWeight: 700 }}>{label}</span>}
+      <a
+        href={links.x}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Share on X"
+        style={{ ...shareButtonBase, ...disabledStyle }}
+      >
+        𝕏
+      </a>
+      <a
+        href={links.facebook}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Share on Facebook"
+        style={{ ...shareButtonBase, ...disabledStyle }}
+      >
+        Facebook
+      </a>
+      <a
+        href={links.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Share on LinkedIn"
+        style={{ ...shareButtonBase, ...disabledStyle }}
+      >
+        LinkedIn
+      </a>
+    </div>
+  );
+};
+
 export default function Home() {
   const [news, setNews] = useState([]); // precomputed view-model items
   const [loading, setLoading] = useState(true);
@@ -614,6 +687,13 @@ export default function Home() {
   const [selectedSource, setSelectedSource] = useState("all");
   const [selectedUrgency, setSelectedUrgency] = useState("all");
   const [timeRange, setTimeRange] = useState("7d");
+  const [pageUrl, setPageUrl] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setPageUrl(window.location.href);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchNews = () => {
@@ -825,6 +905,15 @@ export default function Home() {
   )}
 </header>
 
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: 18,
+            }}
+          >
+            <ShareButtons url={pageUrl} title="Signal Watch Global" label="Share this site" />
+          </div>
 
           {/* Filters */}
           <div
@@ -1039,6 +1128,15 @@ export default function Home() {
                           {item.contentSnippet}
                         </p>
                       )}
+
+                      <div style={{ marginTop: 12 }}>
+                        <ShareButtons
+                          url={item.link}
+                          title={item.title || "Signal Watch Global update"}
+                          label="Share"
+                          onInteract={(event) => event.stopPropagation()}
+                        />
+                      </div>
                     </div>
                   </div>
                 );
