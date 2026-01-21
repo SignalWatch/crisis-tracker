@@ -306,6 +306,62 @@ const COUNTRY_ALIASES = {
   america: "united states",
   american: "united states",
 
+  // Ukraine
+  kyiv: "ukraine",
+  kiev: "ukraine",
+  kharkiv: "ukraine",
+  kherson: "ukraine",
+  odesa: "ukraine",
+  odessa: "ukraine",
+  donetsk: "ukraine",
+  luhansk: "ukraine",
+  mariupol: "ukraine",
+
+  // Israel / Palestine / Gaza
+  jerusalem: "israel",
+  "tel aviv": "israel",
+  haifa: "israel",
+  "gaza city": "gaza",
+  rafah: "gaza",
+  "khan yunis": "gaza",
+  hebron: "palestine",
+  ramallah: "palestine",
+  nablus: "palestine",
+
+  // Russia
+  moscow: "russia",
+  "st petersburg": "russia",
+  "saint petersburg": "russia",
+  belgorod: "russia",
+  krasnodar: "russia",
+
+  // Iran
+  tehran: "iran",
+  isfahan: "iran",
+
+  // Syria
+  damascus: "syria",
+  aleppo: "syria",
+  idlib: "syria",
+
+  // Iraq
+  baghdad: "iraq",
+  mosul: "iraq",
+
+  // Yemen
+  sanaa: "yemen",
+  aden: "yemen",
+
+  // Afghanistan
+  kabul: "afghanistan",
+  kandahar: "afghanistan",
+
+  // China / Taiwan
+  beijing: "china",
+  shanghai: "china",
+  wuhan: "china",
+  taipei: "taiwan",
+
   // Common regional wording
   "gaza strip": "gaza",
   "west bank": "palestine",
@@ -347,6 +403,10 @@ const findCountryCoordsFromTitle = (rawTitle = "") => {
 export default function MapPage() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSource, setSelectedSource] = useState("all");
+  const [selectedUrgency, setSelectedUrgency] = useState("all");
+  const [timeRange, setTimeRange] = useState("all");
 
   useEffect(() => {
     fetch("/api/news")
@@ -361,31 +421,82 @@ export default function MapPage() {
       });
   }, []);
 
+  const sources = useMemo(() => {
+    const unique = new Set();
+    news.forEach((item) => {
+      if (item.source) unique.add(item.source);
+    });
+    return ["all", ...Array.from(unique).sort((a, b) => a.localeCompare(b))];
+  }, [news]);
+
+  const filteredNews = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    const now = Date.now();
+    const timeMs =
+      timeRange === "24h" ? 24 * 60 * 60 * 1000
+        : timeRange === "7d" ? 7 * 24 * 60 * 60 * 1000
+          : null;
+
+    return news.filter((item) => {
+      if (selectedSource !== "all" && item.source !== selectedSource) return false;
+
+      const urgencyColor = getUrgencyColor(item.title || "");
+      if (selectedUrgency !== "all") {
+        const matchesUrgency =
+          (selectedUrgency === "red" && urgencyColor === "#ff4d4f")
+          || (selectedUrgency === "orange" && urgencyColor === "#fa8c16")
+          || (selectedUrgency === "blue" && urgencyColor === "#1890ff");
+        if (!matchesUrgency) return false;
+      }
+
+      if (timeMs && item.pubDate) {
+        const itemTime = new Date(item.pubDate).getTime();
+        if (!Number.isNaN(itemTime) && now - itemTime > timeMs) return false;
+      }
+
+      if (query) {
+        const haystack = `${item.title || ""} ${item.contentSnippet || ""} ${item.source || ""}`.toLowerCase();
+        if (!haystack.includes(query)) return false;
+      }
+
+      return true;
+    });
+  }, [news, searchQuery, selectedSource, selectedUrgency, timeRange]);
+
   const markers = useMemo(() => {
-    return news
+    return filteredNews
       .map((item) => {
         const urgencyColor = getUrgencyColor(item.title || "");
-        const isRedOrOrange = urgencyColor === "#ff4d4f" || urgencyColor === "#fa8c16";
-        if (!isRedOrOrange) return null;
-
         const match = findCountryCoordsFromTitle(item.title || "");
         if (!match) return null;
+
+        const urgencyLabel =
+          urgencyColor === "#ff4d4f" ? "High"
+            : urgencyColor === "#fa8c16" ? "Elevated"
+              : "Low";
 
         return {
           title: item.title,
           lat: match.coords[0],
           lng: match.coords[1],
-          urgency: urgencyColor === "#ff4d4f" ? "RED" : "ORANGE",
+          urgency: urgencyLabel,
+          urgencyColor,
           link: item.link,
           country: match.country,
+          source: item.source,
+          dateText: item.pubDate ? new Date(item.pubDate).toLocaleString() : "",
         };
       })
       .filter(Boolean);
-  }, [news]);
+  }, [filteredNews]);
+
+  const matchedCount = markers.length;
+  const totalCount = news.length;
+  const filteredCount = filteredNews.length;
 
   return (
     <div style={{ minHeight: "100vh", color: "#fff", padding: 20 }}>
-      <div style={{ maxWidth: 1000, margin: "0 auto", fontFamily: "Arial, sans-serif" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", fontFamily: "Arial, sans-serif" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
           <h1 style={{ margin: 0, fontSize: 34, fontWeight: 900 }}>Crisis Map</h1>
 
@@ -396,31 +507,142 @@ export default function MapPage() {
         </div>
 
         <p style={{ color: "#aaa", marginTop: 6 }}>
-          Showing only high urgency (Red) and elevated (Orange) stories
+          Filter and explore urgent stories plotted by country mentions in headlines.
         </p>
 
-        {/* quick debug so you can confirm it’s working */}
-        {!loading && (
-          <p style={{ color: "#aaa", marginTop: 6, fontSize: 12 }}>
-            Stories loaded: <b>{news.length}</b> • Markers plotted: <b>{markers.length}</b>
-          </p>
-        )}
+        <div
+          style={{
+            marginTop: 16,
+            display: "grid",
+            gap: 12,
+            gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+            background: "rgba(0,0,0,0.35)",
+            padding: 14,
+            borderRadius: 12,
+            border: "1px solid rgba(255,255,255,0.12)",
+          }}
+        >
+          <label style={{ color: "#ccc", fontSize: 12, fontWeight: 700 }}>
+            Search
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search headlines, snippets, sources"
+              style={controlInputStyle}
+            />
+          </label>
+
+          <label style={{ color: "#ccc", fontSize: 12, fontWeight: 700 }}>
+            Source
+            <select
+              value={selectedSource}
+              onChange={(e) => setSelectedSource(e.target.value)}
+              style={controlInputStyle}
+            >
+              {sources.map((source) => (
+                <option key={source} value={source} style={{ color: "#111" }}>
+                  {source === "all" ? "All sources" : source}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label style={{ color: "#ccc", fontSize: 12, fontWeight: 700 }}>
+            Urgency
+            <select
+              value={selectedUrgency}
+              onChange={(e) => setSelectedUrgency(e.target.value)}
+              style={controlInputStyle}
+            >
+              <option value="all" style={{ color: "#111" }}>All urgency</option>
+              <option value="red" style={{ color: "#111" }}>High (Red)</option>
+              <option value="orange" style={{ color: "#111" }}>Elevated (Orange)</option>
+              <option value="blue" style={{ color: "#111" }}>Low (Blue)</option>
+            </select>
+          </label>
+
+          <label style={{ color: "#ccc", fontSize: 12, fontWeight: 700 }}>
+            Time range
+            <select
+              value={timeRange}
+              onChange={(e) => setTimeRange(e.target.value)}
+              style={controlInputStyle}
+            >
+              <option value="all" style={{ color: "#111" }}>All time</option>
+              <option value="24h" style={{ color: "#111" }}>Last 24 hours</option>
+              <option value="7d" style={{ color: "#111" }}>Last 7 days</option>
+            </select>
+          </label>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+              color: "#bbb",
+              fontSize: 12,
+              background: "rgba(0,0,0,0.4)",
+              borderRadius: 10,
+              padding: "10px 12px",
+              border: "1px solid rgba(255,255,255,0.12)",
+            }}
+          >
+            <div>Stories loaded: <b>{totalCount}</b></div>
+            <div>After filters: <b>{filteredCount}</b></div>
+            <div>Mapped markers: <b>{matchedCount}</b></div>
+          </div>
+        </div>
 
         {loading && (
           <p style={{ textAlign: "center", marginTop: 20 }}>Loading map data...</p>
         )}
 
         {!loading && (
-          <div
-            style={{
-              marginTop: 16,
-              borderRadius: 14,
-              overflow: "hidden",
-              border: "1px solid rgba(255,255,255,0.12)",
-            }}
-          >
-            <MapClient markers={markers} />
-          </div>
+          <>
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginTop: 16, color: "#aaa", fontSize: 12 }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ff4d4f" }} />
+                High urgency
+              </span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#fa8c16" }} />
+                Elevated urgency
+              </span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#1890ff" }} />
+                Low urgency
+              </span>
+            </div>
+
+            {markers.length === 0 ? (
+              <div
+                style={{
+                  marginTop: 16,
+                  padding: 20,
+                  borderRadius: 12,
+                  background: "rgba(0,0,0,0.35)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                }}
+              >
+                <strong>No markers match these filters.</strong>
+                <div style={{ color: "#aaa", marginTop: 6 }}>
+                  Try broadening the search, selecting “All urgency,” or expanding the time range.
+                </div>
+              </div>
+            ) : (
+              <div
+                style={{
+                  marginTop: 16,
+                  borderRadius: 14,
+                  overflow: "hidden",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                }}
+              >
+                <MapClient markers={markers} />
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
@@ -436,4 +658,14 @@ const linkStyle = {
   borderRadius: 10,
   fontWeight: 800,
   fontSize: 14,
+};
+
+const controlInputStyle = {
+  marginTop: 6,
+  width: "100%",
+  padding: "10px 12px",
+  borderRadius: 8,
+  border: "1px solid rgba(255,255,255,0.15)",
+  background: "rgba(0,0,0,0.5)",
+  color: "#fff",
 };

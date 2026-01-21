@@ -28,14 +28,18 @@ export default function MapClient({ markers = [] }) {
           <Marker
             key={idx}
             position={[m.lat, m.lng]}
-            icon={createIcon(m.urgency === "RED" ? "#ff4d4f" : "#fa8c16")}
+            icon={createIcon(m.urgencyColor || "#fa8c16")}
           >
             <Popup>
               <div style={{ fontWeight: 800, marginBottom: 6 }}>{m.title}</div>
 
-              <div style={{ marginBottom: 8 }}>
-                Urgency: {m.urgency}
-              </div>
+              <div style={{ marginBottom: 6 }}>Urgency: {m.urgency}</div>
+              {m.source && (
+                <div style={{ marginBottom: 6 }}>Source: {m.source}</div>
+              )}
+              {m.dateText && (
+                <div style={{ marginBottom: 8, color: "#555" }}>{m.dateText}</div>
+              )}
 
               <a
                 href={m.link}
