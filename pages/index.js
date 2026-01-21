@@ -575,6 +575,19 @@ const snippetToBullets = (snippet = "") => {
   return sentences.slice(0, 4).map((s) => s.replace(/^[•\-]\s*/, "").trim());
 };
 
+const getShortSummary = (snippet = "") => {
+    const clean = snippet.replace(/\s+/g, " ").trim();
+    if (!clean) return "";
+  
+    const [firstSentence] = clean.split(/(?<=[.!?])\s+/).filter(Boolean);
+    const summary = firstSentence || clean;
+    const maxLength = 180;
+  
+    if (summary.length <= maxLength) return summary;
+    return `${summary.slice(0, maxLength - 1).trimEnd()}…`;
+  };
+  
+
 // --- Related stories (fast overlap scoring; no heavy NLP) ---
 const STOP_WORDS = new Set([
   "the","a","an","and","or","but","to","of","in","on","for","with","at","by","from","as",
