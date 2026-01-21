@@ -52,6 +52,53 @@ function normalizeTitle(t = "") {
     .trim();
 }
 
+function stripHtml(text = "") {
+    return text.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  }
+  
+  const SUMMARY_STOP_WORDS = new Set([
+    "the","a","an","and","or","but","to","of","in","on","for","with","at","by","from","as",
+    "is","are","was","were","be","been","it","its","this","that","these","those","after",
+    "before","over","under","into","out","about","amid","says","say","new","latest","live",
+    "update","breaking",
+  ]);
+  
+  function summarizeText(text = "", maxSentences = 2) {
+    const clean = stripHtml(text);
+    if (!clean) return "";
+  
+    const sentences = clean.split(/(?<=[.!?])\s+/).filter(Boolean);
+    if (sentences.length <= maxSentences) return sentences.join(" ");
+  
+    const tokens = clean
+      .toLowerCase()
+      .replace(/[^\w\s]/g, " ")
+      .split(/\s+/)
+      .filter(Boolean)
+      .filter((w) => w.length >= 3 && !SUMMARY_STOP_WORDS.has(w));
+  
+    const frequencies = new Map();
+    for (const token of tokens) {
+      frequencies.set(token, (frequencies.get(token) || 0) + 1);
+    }
+  
+    const scored = sentences.map((sentence, index) => {
+      const words = sentence
+        .toLowerCase()
+        .replace(/[^\w\s]/g, " ")
+        .split(/\s+/)
+        .filter(Boolean)
+        .filter((w) => w.length >= 3 && !SUMMARY_STOP_WORDS.has(w));
+  
+      const score = words.reduce((sum, w) => sum + (frequencies.get(w) || 0), 0);
+      return { sentence, score, index };
+    });
+  
+    scored.sort((a, b) => b.score - a.score);
+    const top = scored.slice(0, maxSentences).sort((a, b) => a.index - b.index);
+    return top.map((item) => item.sentence).join(" ");
+  }
+
 // Stable-ish id from title+link (no extra deps)
 function makeId(title = "", link = "") {
   const base = `${normalizeTitle(title)}|${link}`;
@@ -153,6 +200,7 @@ export default async function handler(req, res) {
         link: it.link || "",
         pubDate: it.pubDate || it.isoDate || null,
         contentSnippet: it.contentSnippet || "",
+        content: stripHtml(it.content || it["content:encoded"] || ""),
         source,
       }))
     );
@@ -207,6 +255,7 @@ export default async function handler(req, res) {
     link: it.link,
     pubDate: it.pubDate,
     contentSnippet: it.contentSnippet,
+    summary: summarizeText(it.content || it.contentSnippet),
     source: it.source,
   }));
 

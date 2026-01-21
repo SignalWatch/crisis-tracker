@@ -503,6 +503,7 @@ export default function MapPage() {
           <div style={{ display: "flex", gap: 10 }}>
             <a href="/" style={linkStyle}>Home</a>
             <a href="/dashboard" style={linkStyle}>Dashboard</a>
+            <a href="/newsletter" style={linkStyle}>Newsletter</a>
           </div>
         </div>
 

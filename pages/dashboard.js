@@ -209,6 +209,9 @@ export default function Dashboard() {
               <Link href="/map" style={navLinkStyle}>
                 Map
               </Link>
+              <Link href="/newsletter" style={navLinkStyle}>
+                Newsletter
+              </Link>
               <span style={navLinkActiveStyle}>Dashboard</span>
             </nav>
           </header>
