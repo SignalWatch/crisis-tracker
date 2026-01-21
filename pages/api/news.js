@@ -88,6 +88,8 @@ export default async function handler(req, res) {
     "https://news.google.com/rss/search?q=world+crisis&hl=en-US&gl=US&ceid=US:en",
     "https://www.aljazeera.com/xml/rss/all.xml",
     "https://feeds.bbci.co.uk/news/world/rss.xml",
+    "https://www.defensenews.com/arc/outboundfeeds/rss/category/global/?outputType=xml",
+    "https://news.un.org/feed/subscribe/en/news/region/global/feed/rss.xml",
   ];
 
   // Expanded keywords for urgent/global news (keep it focused; too many creates noise)
