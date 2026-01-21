@@ -575,6 +575,8 @@ const snippetToBullets = (snippet = "") => {
   return sentences.slice(0, 4).map((s) => s.replace(/^[•\-]\s*/, "").trim());
 };
 
+const normalizeText = (text = "") => text.replace(/\s+/g, " ").trim().toLowerCase();
+
 const getShortSummary = (summary = "", snippet = "") => {
   const cleanSummary = summary.replace(/\s+/g, " ").trim();
   if (cleanSummary) return cleanSummary;
@@ -588,6 +590,16 @@ const getShortSummary = (summary = "", snippet = "") => {
 
   if (fallback.length <= maxLength) return fallback;
   return `${fallback.slice(0, maxLength - 1).trimEnd()}…`;
+};
+
+const getStoryBullets = (snippet = "", summary = "") => {
+  const bullets = snippetToBullets(snippet);
+  if (!summary) return bullets;
+
+  const cleanSummary = normalizeText(summary);
+  if (!cleanSummary) return bullets;
+
+  return bullets.filter((bullet) => normalizeText(bullet) !== cleanSummary);
 };
 
 // --- Related stories (fast overlap scoring; no heavy NLP) ---
@@ -816,6 +828,13 @@ export default function Home() {
 
     return scored;
   }, [selectedStory, news]);
+
+  const summaryText = selectedStory
+    ? getShortSummary(selectedStory.summary || "", selectedStory.contentSnippet || "")
+    : "";
+  const storyBullets = selectedStory
+    ? getStoryBullets(selectedStory.contentSnippet || "", summaryText)
+    : [];
 
   return (
     <div style={{ minHeight: "100vh", width: "100%", color: "#fff" }}>
@@ -1224,19 +1243,19 @@ export default function Home() {
               {selectedStory.dateText} {selectedStory.source ? `• ${selectedStory.source}` : ""}
             </div>
 
-            {(selectedStory.summary || selectedStory.contentSnippet) && (
+            {summaryText && (
               <div style={{ marginTop: 12 }}>
                 <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", color: "#bbb" }}>
                   Summary
                 </div>
                 <div style={{ marginTop: 6, color: "#eee", lineHeight: 1.5 }}>
-                  {getShortSummary(selectedStory.summary || "", selectedStory.contentSnippet || "")}
+                  {summaryText}
                 </div>
               </div>
             )}
 
             <div style={{ marginTop: 14 }}>
-              {snippetToBullets(selectedStory.contentSnippet || "").map((b, i) => (
+              {storyBullets.map((b, i) => (
                 <div key={i} style={{ marginBottom: 6 }}>• {b}</div>
               ))}
             </div>
