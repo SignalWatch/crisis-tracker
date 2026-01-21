@@ -170,29 +170,48 @@ export default function Dashboard() {
     <div className="app-container" style={{ minHeight: "100vh", width: "100%", color: "#fff" }}>
       <div style={{ minHeight: "100vh", backgroundColor: "rgba(0,0,0,0.25)", padding: 20 }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", fontFamily: "Arial, sans-serif" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          <header
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 16,
+              flexWrap: "wrap",
+              background: "rgba(0,0,0,0.45)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: 16,
+              padding: "16px 18px",
+              boxShadow: "0 12px 28px rgba(0,0,0,0.35)",
+              backdropFilter: "blur(10px)",
+            }}
+          >
             <div>
-              <h1 style={{ fontSize: 34, fontWeight: 900, margin: 0 }}>Dashboard</h1>
-              <div style={{ color: "#bbb", fontSize: 12, marginTop: 6 }}>
-                {lastUpdated ? `Last updated: ${lastUpdated.toLocaleTimeString()}` : ""}
+              <div style={{ fontSize: 12, letterSpacing: 2, textTransform: "uppercase", color: "#9aa4b2" }}>
+                Signal Watch
+              </div>
+              <h1 style={{ fontSize: 32, fontWeight: 900, margin: "4px 0 0" }}>Operations Dashboard</h1>
+              <div style={{ color: "#b8c0cc", fontSize: 13, marginTop: 6 }}>
+                {lastUpdated ? `Last updated: ${lastUpdated.toLocaleTimeString()}` : "Live intelligence overview"}
               </div>
             </div>
 
-            <Link
-              href="/"
+            <nav
               style={{
-                textDecoration: "none",
-                background: "rgba(255,255,255,0.10)",
-                border: "1px solid rgba(255,255,255,0.15)",
-                color: "#fff",
-                padding: "10px 14px",
-                borderRadius: 10,
-                fontWeight: 900,
+                display: "flex",
+                gap: 10,
+                alignItems: "center",
+                flexWrap: "wrap",
               }}
             >
-              ← Back to feed
-            </Link>
-          </div>
+              <Link href="/" style={navLinkStyle}>
+                Live Feed
+              </Link>
+              <Link href="/map" style={navLinkStyle}>
+                Map
+              </Link>
+              <span style={navLinkActiveStyle}>Dashboard</span>
+            </nav>
+          </header>
 
           {loading && <p style={{ marginTop: 18 }}>Loading dashboard…</p>}
 
@@ -309,3 +328,20 @@ const cardStyle = {
 const kpiLabel = { fontSize: 12, color: "#bbb", fontWeight: 800 };
 const kpiValue = { marginTop: 8, fontSize: 32, fontWeight: 900 };
 const sectionTitle = { fontSize: 13, color: "#ddd", fontWeight: 900 };
+
+const navLinkStyle = {
+  textDecoration: "none",
+  color: "#fff",
+  background: "rgba(255,255,255,0.08)",
+  border: "1px solid rgba(255,255,255,0.12)",
+  padding: "8px 12px",
+  borderRadius: 999,
+  fontWeight: 700,
+  fontSize: 13,
+};
+
+const navLinkActiveStyle = {
+  ...navLinkStyle,
+  background: "rgba(255,255,255,0.18)",
+  border: "1px solid rgba(255,255,255,0.28)",
+};
